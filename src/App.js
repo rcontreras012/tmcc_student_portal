@@ -7,6 +7,7 @@ import { Routes, Route, Link, BrowserRouter, Switch, NavLink } from "react-route
 import { AuthPage } from './Pages/Auth';
 import { StudentPage } from './Pages/StudentPage';
 import ProtectedRoute from './Pages/Security';
+import { TeacherPage } from './Pages/Teacher';
 
 function App() {
   return (
@@ -24,10 +25,19 @@ function App() {
 
             </Route>
 
-            <Route path='/home'
+            <Route path='/student'
               element={
                 <ProtectedRoute>
                   <StudentPage />
+                </ProtectedRoute>
+              }>
+
+            </Route>
+
+            <Route path='/teacher'
+              element={
+                <ProtectedRoute>
+                  <TeacherPage />
                 </ProtectedRoute>
               }>
 

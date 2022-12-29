@@ -8,6 +8,7 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var studentRouter = require('./routes/student')
+var teacherRouter = require('./routes/teacher')
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -42,6 +43,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/addstudent', studentRouter)
+app.use('/addteacher', teacherRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 
-const StudentModel = require('../model/studentModel')
+const TeacherModel = require('../model/teacherModel')
 
 /* GET users listing. */
 router.post('/', async function (req, res, next) {
@@ -13,7 +13,7 @@ router.post('/', async function (req, res, next) {
     let address = req.query.address
     let email = req.query.email
     let contact_no = req.query.contact_no
-    let LRNNum = req.query.lrnnumbers
+    let teacher_id_no = req.query.teachernum
 
 
 
@@ -47,25 +47,25 @@ router.post('/', async function (req, res, next) {
             error: "Contact number is required"
         })
     }
-    else if (LRNNum == "" || LRNNum == undefined) {
+    else if (teacher_id_no == "" || teacher_id_no == undefined) {
         res.status(400)
         res.send({
-            error: "LRN is required"
+            error: "Teacher id numer is required"
         })
     }
     else {
-        const student = new StudentModel({
+        const teacher = new TeacherModel({
             first_name,
             last_name,
             address,
             email,
-            LRNNum,
             contact_no,
-            role: 3
+            teacher_id_no,
+            role: 2
         })
 
         try {
-            const dataToSave = await student.save();
+            const dataToSave = await teacher.save();
             res.status(200).json(dataToSave)
         }
         catch (error) {
@@ -74,7 +74,7 @@ router.post('/', async function (req, res, next) {
                 error: "something went wrong"
             })
         }
-        
+
     }
 
 

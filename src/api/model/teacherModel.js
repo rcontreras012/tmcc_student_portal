@@ -21,7 +21,7 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    LRNNum: {
+    teacher_id_no: {
         required: true,
         type: String
     },
@@ -31,4 +31,4 @@ const dataSchema = new mongoose.Schema({
     }
 })
 
-module.exports = mongoose.model('student', dataSchema)      
+module.exports = mongoose.model('teacher', dataSchema)      

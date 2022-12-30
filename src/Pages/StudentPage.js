@@ -1,5 +1,5 @@
 import React from 'react'
-
+import 'w3-css/4/w3pro.css'
 
 export const StudentPage = (props) => {
 

@@ -16,8 +16,6 @@ export const StudentPage = (props) => {
                 </div>
             </div>
 
-
-
             <div className="w3-content w3-margin-top w3-padding-top-32">
 
 

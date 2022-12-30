@@ -1,11 +1,12 @@
 import react from 'react'
 
-export const auth = () => {
+export const AuthPage = () => {
 
     return(
 
         <div>
 
+            Im AAuth
             
         </div>
 

@@ -1,0 +1,25 @@
+.center {
+  margin: auto;
+  padding: 10px;
+  height: 100vh;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  flex-direction: column;
+}
+
+.cardContainer{
+box-shadow: 5px 5px 5px #c5c5c5;
+padding: 10px;
+width: 50%;
+border-radius: 8px;
+background-color: #fff;
+}
+
+.appname{
+    font-family: Georgia, 'Times New Roman', Times, serif;
+    font-size: 32px;
+    margin-bottom: 25px;
+}

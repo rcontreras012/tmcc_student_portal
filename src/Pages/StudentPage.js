@@ -1,37 +1,14 @@
 import React, { useEffect, useState } from 'react'
-import 'w3-css/4/w3pro.css';
+import Carousel from 'react-bootstrap/Carousel';
 import '../App.css';
 
 //let slideIndex = 1;
 
 export const StudentPage = (props) => {
 
-    const [slideIndex, setSlideIndex] = useState(1)
+    // const [slideIndex, setSlideIndex] = useState(1)
 
-    useEffect(() => {
-
-        showDivs(slideIndex);
-
-    }, [slideIndex])
-
-    const plusDivs = (n) => {
-        console.log(slideIndex);
-        showDivs(slideIndex += n);
-
-    }
-
-    const showDivs = (n) => {
-
-        var i;
-        var x = document.getElementsByClassName("mySlides");
-        if (n > x.length) { slideIndex = 1 }
-        if (n < 1) { slideIndex = x.length }
-        for (i = 0; i < x.length; i++) {
-            x[i].style.display = "none";
-        }
-        x[slideIndex - 1].style.display = "block";
-        setSlideIndex(n);
-    }
+ 
 
     return (
 
@@ -156,32 +133,42 @@ export const StudentPage = (props) => {
                     {/*<!-- Right Column -->*/}
                     <div className="w3-twothird">
 
-                        <div className="w3-container w3-card w3-white w3-margin-bottom">
-                            <h2 className="w3-text-grey w3-padding-16"><i
-                                className="fa fa-bullhorn fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Announcement</h2>
+                        <Carousel>
+                            <Carousel.Item>
+                                <div
+                                    className="d-block w-100"
+                                    style={{backgroundColor:"#c5c5c5", height: "300px"}}
+                                />
+                                <Carousel.Caption>
+                                    <h3>First slide label</h3>
+                                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                </Carousel.Caption>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <div
+                                    className="d-block w-100"
+                                    style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                />
 
-                            <div className="w3-content w3-display-container">
+                                <Carousel.Caption>
+                                    <h3>Second slide label</h3>
+                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                </Carousel.Caption>
+                            </Carousel.Item>
+                            <Carousel.Item>
+                                <div
+                                    className="d-block w-100"
+                                    style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                />
 
-                                <div className="w3-panel w3-leftbar w3-light-grey w3-padding-64 mySlides" style={{ width: "100%" }}>
-                                    <p className="w3-xlarge w3-serif" style={{ paddingLeft: "5%" }}><i>"Make it as simple as possible, but not
-                                        simpler. 1"</i></p>
-                                </div>
-
-                                <div className="w3-panel w3-leftbar w3-light-grey w3-padding-64 mySlides">
-                                    <p className="w3-xlarge w3-serif" style={{ paddingLeft: "5%" }}><i>"Make it as simple as possible, but not
-                                        simpler. 2"</i></p>
-                                </div>
-
-                                <div className="w3-panel w3-leftbar w3-light-grey w3-padding-64 mySlides">
-                                    <p className="w3-xlarge w3-serif" style={{ paddingLeft: "5%" }}><i>"Make it as simple as possible, but not
-                                        simpler. 3"</i></p>
-                                </div>
-
-                                <button className="w3-button w3-black w3-display-left" onClick={() => plusDivs(-1)}>&#10094;</button>
-                                <button className="w3-button w3-black w3-display-right" onClick={() => plusDivs(1)}>&#10095;</button>
-                            </div>
-                        </div>
-
+                                <Carousel.Caption>
+                                    <h3>Third slide label</h3>
+                                    <p>
+                                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                                    </p>
+                                </Carousel.Caption>
+                            </Carousel.Item>
+                        </Carousel>
                         <div className="w3-container w3-card w3-white">
                             <h2 className="w3-text-grey w3-padding-16"><i
                                 className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grades</h2>

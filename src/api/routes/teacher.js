@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 const TeacherModel = require('../model/teacherModel')
+const nodemailer = require("nodemailer");
 
 /* GET users listing. */
 router.post('/', async function (req, res, next) {
@@ -54,6 +55,56 @@ router.post('/', async function (req, res, next) {
         })
     }
     else {
+        var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var passwordLength = 12;
+        var password = "";
+
+        for (var i = 0; i <= passwordLength; i++) {
+            var randomNumber = Math.floor(Math.random() * chars.length);
+            password += chars.substring(randomNumber, randomNumber + 1);
+        }
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bc00005rc@gmail.com',
+                pass: 'iktochduruvxxfui'
+            }
+        });
+
+        const mailOptions = {
+            from: 'tmcc@example.com',
+            to: email,
+            subject: 'TMCCC Student Portal Account Creation',
+            html: `Hi Teacher <b>${first_name} ${last_name}</b> your account for TMCC Student Portal has been created.
+
+            <br>
+              <br>
+                <br>
+
+            Credentials: 
+            
+            <br>
+             Email: ${email}
+            <br>
+             Password: ${password}
+
+             <br>
+
+         
+            `
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                // do something useful
+            }
+        });
+
+
         const teacher = new TeacherModel({
             first_name,
             last_name,
@@ -61,7 +112,8 @@ router.post('/', async function (req, res, next) {
             email,
             contact_no,
             teacher_id_no,
-            role: 2
+            role: 2,
+            password
         })
 
         try {

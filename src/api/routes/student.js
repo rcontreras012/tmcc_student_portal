@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-
+const nodemailer = require("nodemailer");
 const StudentModel = require('../model/studentModel')
 
 /* GET users listing. */
@@ -54,6 +54,62 @@ router.post('/', async function (req, res, next) {
         })
     }
     else {
+        // iktochduruvxxfui
+
+
+        var chars = "0123456789abcdefghijklmnopqrstuvwxyz!@#$%^&*()ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+        var passwordLength = 12;
+        var password = "";
+
+        for (var i = 0; i <= passwordLength; i++) {
+            var randomNumber = Math.floor(Math.random() * chars.length);
+            password += chars.substring(randomNumber, randomNumber + 1);
+        }
+
+
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: 'bc00005rc@gmail.com',
+                pass: 'iktochduruvxxfui'
+            }
+        });
+
+        const mailOptions = {
+            from: 'tmcc@example.com',
+            to: email,
+            subject: 'TMCCC Student Portal Account Creation',
+            html: `Hi student <b>${first_name} ${last_name}</b> your account for TMCC Student Portal has been created.
+
+            <br>
+              <br>
+                <br>
+
+            Credentials: 
+            
+            <br>
+             Email: ${email}
+            <br>
+             Password: ${password}
+
+             <br>
+
+         
+            `
+        };
+
+        transporter.sendMail(mailOptions, function (error, info) {
+            if (error) {
+                console.log(error);
+            } else {
+                console.log('Email sent: ' + info.response);
+                // do something useful
+            }
+        });
+
+
+
+
         const student = new StudentModel({
             first_name,
             last_name,
@@ -61,7 +117,8 @@ router.post('/', async function (req, res, next) {
             email,
             LRNNum,
             contact_no,
-            role: 3
+            role: 3,
+            password
         })
 
         try {
@@ -74,7 +131,7 @@ router.post('/', async function (req, res, next) {
                 error: "something went wrong"
             })
         }
-        
+
     }
 
 

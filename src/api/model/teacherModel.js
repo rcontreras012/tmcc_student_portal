@@ -28,6 +28,10 @@ const dataSchema = new mongoose.Schema({
     role: {
         require: true,
         type: Number
+    },
+    password:{
+        reuire: true,
+        type: String
     }
 })
 

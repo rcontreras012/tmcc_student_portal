@@ -186,7 +186,7 @@ export const StudentPage = (props) => {
                             <h2 className="w3-text-grey w3-padding-16"><i
                                 className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grades</h2>
                             <div className="w3-container">
-                                <div className="w3-card-2">
+                                <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">
                                         <thead>
 

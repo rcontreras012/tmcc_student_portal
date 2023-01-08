@@ -30,7 +30,11 @@ const dataSchema = new mongoose.Schema({
         type: Number
     },
     password:{
-        reuire: true,
+        require: true,
+        type: String
+    },
+    schoolEmail:{
+        require: true,
         type: String
     }
 })

@@ -85,7 +85,7 @@ router.post('/', async function (req, res, next) {
             Credentials: 
             
             <br>
-             Email: ${email}
+             Email: ${first_name + "." + last_name + "@tmcc.teacher.com"}
             <br>
              Password: ${password}
 
@@ -113,7 +113,8 @@ router.post('/', async function (req, res, next) {
             contact_no,
             teacher_id_no,
             role: 2,
-            password
+            password,
+            schoolEmail: first_name +"."+last_name+"@tmcc.teacher.com"
         })
 
         try {

@@ -11,6 +11,7 @@ var loginRouter = require('./routes/login')
 var studentRouter = require('./routes/student')
 var teacherRouter = require('./routes/teacher')
 var announcementRouter = require('./routes/announcement')
+var scheduleRouter = require('./routes/schedule')
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -20,11 +21,11 @@ mongoose.connect(mongoString);
 const database = mongoose.connection;
 
 database.on('error', (error) => {
-  console.log(error)
+  
 })
 
 database.once('connected', () => {
-  console.log('Database Connected');
+  
 })
 
 var app = express();
@@ -48,6 +49,7 @@ app.use('/login', loginRouter)
 app.use('/addstudent', studentRouter)
 app.use('/addteacher', teacherRouter)
 app.use('/addAnnouncement', announcementRouter)
+app.use('/addschedule', scheduleRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,6 +3,8 @@ var router = express.Router();
 const nodemailer = require("nodemailer");
 const StudentModel = require('../model/studentModel')
 
+
+require('dotenv').config();
 /* GET users listing. */
 router.post('/', async function (req, res, next) {
 
@@ -70,8 +72,8 @@ router.post('/', async function (req, res, next) {
         const transporter = nodemailer.createTransport({
             service: 'gmail',
             auth: {
-                user: 'bc00005rc@gmail.com',
-                pass: 'iktochduruvxxfui'
+                user: process.env.EMAIL,
+                pass: process.env.PASS
             }
         });
 

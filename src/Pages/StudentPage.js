@@ -44,6 +44,7 @@ import '../App.css';
                                     <h2>Student Name</h2>
                                 </div>
                             </div>
+                            <br/>
                             <div className="w3-container">
                                 <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>Grade / Section</p>
                                 <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address</p>

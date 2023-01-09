@@ -13,7 +13,7 @@ export const TeacherPage = (props) => {
                 <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
-                    <div className="w3-right w3-hide-small">                    ss
+                    <div className="w3-right w3-hide-small">
                         <a href="#about" className="w3-bar-item w3-button">About</a>
                         <a href="#menu" className="w3-bar-item w3-button">Menu</a>
                         <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
@@ -39,7 +39,7 @@ export const TeacherPage = (props) => {
                                     style={{ width: "100%" }} />
 
                                 <div className="w3-display-bottomleft w3-container w3-text-black">
-                                    <h2>Student Name</h2>
+                                    <h2>Teachers Name</h2>
                                 </div>
                             </div>
                             <br/>
@@ -50,7 +50,7 @@ export const TeacherPage = (props) => {
                                 <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number</p>
                                 <hr />
 
-                                <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Subjects</b></p>
+                                <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>My Schedule</b></p>
 
                                 <div className="w3-card-2">
                                     <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
@@ -178,9 +178,44 @@ export const TeacherPage = (props) => {
                         </div>
 
                         <div className="w3-container w3-card w3-white">
-                            <h2 className="w3-text-grey w3-padding-16"><i
-                                className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grades</h2>
+                            <h2 className="w3-text-grey w3-padding-16">
+                                <i className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grading</h2>
                             <div className="w3-container">
+
+                                <div className='w3-row'>
+                                    <h3>Subject: </h3>
+                                </div>
+
+                                <br/>
+                                
+                                <div className='w3-row'>
+                                    
+                                    <div className='w3-half' style={{width: "48%", marginRight: "5px"}}>
+                                        <select class="w3-select w3-border" name="option">
+                                            <option value="" disabled selected>Choose your Grade</option>
+                                            <option value="1">Option 1</option>
+                                            <option value="2">Option 2</option>
+                                            <option value="3">Option 3</option>
+                                        </select>
+                                    </div>
+
+                                    <div className='w3-half' style={{width: "48%", marginRight: "5px"}}>
+                                        <select class="w3-select w3-border" name="option">
+                                            <option value="" disabled selected>Choose your Section</option>
+                                            <option value="1">Option 1</option>
+                                            <option value="2">Option 2</option>
+                                            <option value="3">Option 3</option>
+                                        </select>
+                                    </div>
+                                    
+                                </div>
+                                
+                                <br/>
+
+                                <div className='w3-row'>
+                                    
+                                </div>
+
                                 <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">
                                         <thead>
@@ -222,6 +257,7 @@ export const TeacherPage = (props) => {
                                         </tbody>
                                     </table>
                                 </div>
+
                             </div>
                             <br/>
                         </div>

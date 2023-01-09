@@ -1,14 +1,8 @@
 import React from 'react'
-import Carousel from 'react-bootstrap/Carousel';
-import '../App.css';
 
-//let slideIndex = 1;
+export const TeacherPage = (props) => {
 
-    export const StudentPage = (props) => {
-
-    // const [slideIndex, setSlideIndex] = useState(1)
-
-    return (
+    return(
 
         <div className="w3-light-grey">
 
@@ -17,9 +11,9 @@ import '../App.css';
                 <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
-                    <div className="w3-right w3-hide-small">                      
+                    <div className="w3-right w3-hide-small">                    ss
                         <a href="#about" className="w3-bar-item w3-button">About</a>
-                        {/*<a href="#menu" className="w3-bar-item w3-button">Menu</a>*/}
+                        <a href="#menu" className="w3-bar-item w3-button">Menu</a>
                         <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
                     </div>
                 </div>

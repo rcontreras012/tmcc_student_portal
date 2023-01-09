@@ -19,7 +19,7 @@ import '../App.css';
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">                      
                         <a href="#about" className="w3-bar-item w3-button">About</a>
-                        <a href="#menu" className="w3-bar-item w3-button">Menu</a>
+                        {/*<a href="#menu" className="w3-bar-item w3-button">Menu</a>*/}
                         <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
                     </div>
                 </div>

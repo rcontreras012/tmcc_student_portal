@@ -182,12 +182,10 @@ export const TeacherPage = (props) => {
                                 <i className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grading</h2>
                             <div className="w3-container">
 
-                                <div className='w3-row'>
-                                    <h3>Subject: </h3>
-                                </div>
+                                <h3>Subject: <label id='SubName'>Subject Name Here</label> </h3>
 
                                 <br/>
-                                
+
                                 <div className='w3-row'>
                                     
                                     <div className='w3-half' style={{width: "48%", marginRight: "5px"}}>
@@ -212,47 +210,33 @@ export const TeacherPage = (props) => {
                                 
                                 <br/>
 
-                                <div className='w3-row'>
-                                    
-                                </div>
-
                                 <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">
                                         <thead>
 
                                             <tr>
-                                                <th>Subjects</th>
-                                                <th>1st</th>
-                                                <th>2nd</th>
-                                                <th>3rd</th>
-                                                <th>4th</th>
-                                                <th>Final Grade</th>
+                                                <th>Student Name</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>MAPEH</td>
+                                                <td>Student 1</td>
+                                                <td>
+                                                    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add Grade</button>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>ENGLISH</td>
+                                                <td>Student 2</td>
+                                                <td>
+                                                    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add Grade</button>
+                                                </td>
                                             </tr>
                                             <tr>
-                                                <td>MATHEMATICS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>AP</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ESP</td>
-                                            </tr>                                           
-                                            <tr>
-                                                <td>FILIPINO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TLE</td>
-                                            </tr>
-                                            <tr>
-                                                <td>SCIENCE</td>
+                                                <td>Student 3</td>
+                                                <td>
+                                                    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add Grade</button>
+                                                </td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -274,8 +258,11 @@ export const TeacherPage = (props) => {
                 {/*<!-- End page content -->*/}
             </div>
 
+            {/*<!-- Modal content -->*/}
 
+            {/*<!-- End Modal content -->*/}
         </div>
+
 
     )
 }

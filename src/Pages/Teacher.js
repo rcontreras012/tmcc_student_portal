@@ -4,7 +4,7 @@ import '../App.css';
 
 export const TeacherPage = (props) => {
 
-    return(
+    return (
 
         <div className="w3-light-grey">
 
@@ -42,7 +42,7 @@ export const TeacherPage = (props) => {
                                     <h2>Teachers Name</h2>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                             <div className="w3-container">
                                 <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>Grade / Section</p>
                                 <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address</p>
@@ -184,11 +184,11 @@ export const TeacherPage = (props) => {
 
                                 <h3>Subject: <label id='SubName'>Subject Name Here</label> </h3>
 
-                                <br/>
+                                <br />
 
                                 <div className='w3-row'>
-                                    
-                                    <div className='w3-half' style={{width: "48%", marginRight: "5px"}}>
+
+                                    <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
                                         <select class="w3-select w3-border" name="option">
                                             <option value="" disabled selected>Choose your Grade</option>
                                             <option value="1">Option 1</option>
@@ -197,7 +197,7 @@ export const TeacherPage = (props) => {
                                         </select>
                                     </div>
 
-                                    <div className='w3-half' style={{width: "48%", marginRight: "5px"}}>
+                                    <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
                                         <select class="w3-select w3-border" name="option">
                                             <option value="" disabled selected>Choose your Section</option>
                                             <option value="1">Option 1</option>
@@ -205,10 +205,10 @@ export const TeacherPage = (props) => {
                                             <option value="3">Option 3</option>
                                         </select>
                                     </div>
-                                    
+
                                 </div>
-                                
-                                <br/>
+
+                                <br />
 
                                 <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">
@@ -223,19 +223,19 @@ export const TeacherPage = (props) => {
                                             <tr>
                                                 <td>Student 1</td>
                                                 <td>
-                                                    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add Grade</button>
+                                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Student 2</td>
                                                 <td>
-                                                    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add Grade</button>
+                                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
                                                 </td>
                                             </tr>
                                             <tr>
                                                 <td>Student 3</td>
                                                 <td>
-                                                    <button onclick="document.getElementById('id01').style.display='block'" class="w3-button w3-black">Add Grade</button>
+                                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
                                                 </td>
                                             </tr>
                                         </tbody>
@@ -243,7 +243,7 @@ export const TeacherPage = (props) => {
                                 </div>
 
                             </div>
-                            <br/>
+                            <br />
                         </div>
 
 
@@ -259,7 +259,33 @@ export const TeacherPage = (props) => {
             </div>
 
             {/*<!-- Modal content -->*/}
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <span onClick={() => document.getElementById('id01').style.display = 'none'}
+                            class="w3-button w3-teal w3-xlarge w3-display-topright">&times;</span>
+                        <h2>Add Grade</h2>
+                    </header>
 
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <h4>Grading Period :
+                        <select class="w3-select w3-border" name="option" style={{width: "40%"}}>
+                            <option value="" disabled selected>Choose your grading period</option>
+                            <option value="1">1st</option>
+                            <option value="2">2nd</option>
+                            <option value="3">3rd</option>
+                            <option value="3">4th</option>
+                        </select>
+                        </h4>
+
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id01').style.display = 'none'}>Close</button>
+                    </div>
+                </div>
+            </div>
             {/*<!-- End Modal content -->*/}
         </div>
 

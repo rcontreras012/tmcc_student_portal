@@ -1,14 +1,12 @@
-import React, { useEffect, useState } from 'react'
+import React from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import '../App.css';
 
 //let slideIndex = 1;
 
-export const StudentPage = (props) => {
+    export const StudentPage = (props) => {
 
     // const [slideIndex, setSlideIndex] = useState(1)
-
- 
 
     return (
 
@@ -46,6 +44,7 @@ export const StudentPage = (props) => {
                                     <h2>Student Name</h2>
                                 </div>
                             </div>
+                            <br/>
                             <div className="w3-container">
                                 <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>Grade / Section</p>
                                 <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address</p>
@@ -56,7 +55,7 @@ export const StudentPage = (props) => {
                                 <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Subjects</b></p>
 
                                 <div className="w3-card-2">
-                                    <table className="w3-table w3-bordered" name="tblSched">
+                                    <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
                                         <thead>
                                             <tr>
                                                 <th>Time</th>
@@ -133,42 +132,53 @@ export const StudentPage = (props) => {
                     {/*<!-- Right Column -->*/}
                     <div className="w3-twothird">
 
-                        <Carousel>
-                            <Carousel.Item>
-                                <div
-                                    className="d-block w-100"
-                                    style={{backgroundColor:"#c5c5c5", height: "300px"}}
-                                />
-                                <Carousel.Caption>
-                                    <h3>First slide label</h3>
-                                    <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <div
-                                    className="d-block w-100"
-                                    style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                />
+                        <div class="w3-container w3-card w3-white w3-margin-bottom">
+                            <h2 class="w3-text-grey w3-padding-16"><i
+                                class="fa fa-bullhorn fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Announcement</h2>
 
-                                <Carousel.Caption>
-                                    <h3>Second slide label</h3>
-                                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                            <Carousel.Item>
-                                <div
-                                    className="d-block w-100"
-                                    style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                />
+                            <div class="w3-content w3-display-container w3-margin-bottom">
 
-                                <Carousel.Caption>
-                                    <h3>Third slide label</h3>
-                                    <p>
-                                        Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                                    </p>
-                                </Carousel.Caption>
-                            </Carousel.Item>
-                        </Carousel>
+                                <Carousel>
+                                    <Carousel.Item>
+                                        <div
+                                            className="d-block w-100"
+                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                        />
+                                        <Carousel.Caption>
+                                            <h3>First slide label</h3>
+                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                        <div
+                                            className="d-block w-100"
+                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                        />
+
+                                        <Carousel.Caption>
+                                            <h3>Second slide label</h3>
+                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                    <Carousel.Item>
+                                        <div
+                                            className="d-block w-100"
+                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                        />
+
+                                        <Carousel.Caption>
+                                            <h3>Third slide label</h3>
+                                            <p>
+                                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
+                                            </p>
+                                        </Carousel.Caption>
+                                    </Carousel.Item>
+                                </Carousel>
+
+                            </div>
+
+                        </div>
+
                         <div className="w3-container w3-card w3-white">
                             <h2 className="w3-text-grey w3-padding-16"><i
                                 className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grades</h2>

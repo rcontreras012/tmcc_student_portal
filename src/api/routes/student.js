@@ -110,6 +110,17 @@ router.post('/', async function (req, res, next) {
         });
 
 
+        const date = new Date();
+
+        let day = date.getDate();
+        let month = date.getMonth() + 1;
+        let year = date.getFullYear();
+        var id = ''
+
+        for (var i = 0; i <= passwordLength; i++) {
+            var randomNumber = Math.floor(Math.random() * chars.length);
+            id += chars.substring(randomNumber, randomNumber + 1);
+        }
 
 
         const student = new StudentModel({
@@ -121,7 +132,8 @@ router.post('/', async function (req, res, next) {
             contact_no,
             role: 3,
             password,
-            schoolEmail: first_name + "." + last_name + "@tmcc.student.com"
+            schoolEmail: first_name + "." + last_name + "@tmcc.student.com",
+            id: day + "-" + month + "-" + year + "-"+ id
         })
 
         try {

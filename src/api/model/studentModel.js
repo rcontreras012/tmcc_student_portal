@@ -36,6 +36,10 @@ const dataSchema = new mongoose.Schema({
     schoolEmail:{
         required: true,
         type: String
+    },
+    id:{
+        required: true,
+        type: String
     }
 })
 

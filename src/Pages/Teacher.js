@@ -262,22 +262,31 @@ export const TeacherPage = (props) => {
             <div id="id01" class="w3-modal">
                 <div class="w3-modal-content w3-card-4 w3-animate-zoom">
                     <header class="w3-container w3-teal">
-                        <span onClick={() => document.getElementById('id01').style.display = 'none'}
-                            class="w3-button w3-teal w3-xlarge w3-display-topright">&times;</span>
                         <h2>Add Grade</h2>
                     </header>
 
                     <div className='w3-row w3-margin-top w3-padding'>
-                        <h4>Grading Period :
-                        <select class="w3-select w3-border" name="option" style={{width: "40%"}}>
-                            <option value="" disabled selected>Choose your grading period</option>
-                            <option value="1">1st</option>
-                            <option value="2">2nd</option>
-                            <option value="3">3rd</option>
-                            <option value="3">4th</option>
-                        </select>
-                        </h4>
+                        <div className='w3-quarter'>
+                            <h4>Grading Period : </h4>                         
+                        </div>
+                        <div className='w3-rest'>
+                            <select class="w3-select w3-border" name="option" style={{ width: "60%" }}>
+                                <option value="" disabled selected>Choose your grading period</option>
+                                <option value="1">1st</option>
+                                <option value="2">2nd</option>
+                                <option value="3">3rd</option>
+                                <option value="3">4th</option>
+                            </select>                            
+                        </div>
+                    </div>
 
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>Grade: </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <input class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+                        </div>
                     </div>
 
                     <div class="w3-container w3-light-grey w3-padding">

@@ -1,20 +1,25 @@
-import React from 'react'
+import React, { useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import { useSelector } from 'react-redux';
 import '../App.css';
 import { EnrollModal } from '../Components/Modal';
-
+import Button from 'react-bootstrap/Button';
+import '../Utils/css/Adminpage.css'
 //let slideIndex = 1;
 
 export const AdminPage = (props) => {
 
     const user = useSelector(state => state.user.user)
 
+    const [showCreate, setShowCreate] = useState(false)
+
     
     return (
 
         <div className="w3-light-grey">
-            <EnrollModal show={true}/>
+            <EnrollModal 
+            onClose={() => setShowCreate(false)}
+            show={showCreate}/>
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
                 <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
@@ -114,7 +119,12 @@ export const AdminPage = (props) => {
 
                         <div className="w3-container w3-card w3-white">
                             <h2 className="w3-text-grey w3-padding-16"><i
-                                className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Section</h2>
+                                className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grade Level 
+                                <div className='col-12 levelContainer'>
+                                    <Button variant="primary" onClick={() => setShowCreate(true)}>New Student</Button>
+                                    <Button variant="secondary" style={{marginLeft:"10px"}}>Enroll Student</Button>
+                                </div>
+                                </h2>
                             <div className="w3-container">
                                 <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">

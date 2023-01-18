@@ -37,7 +37,8 @@ router.post('/', function (req, res, next) {
                     res.send({
                         user,
                         data: req.query,
-                        failed: false
+                        failed: false,
+                        role: 1
                     })
                 }
             }
@@ -45,10 +46,27 @@ router.post('/', function (req, res, next) {
         });
     }
     else if(isAdmin != null){
-        res.status(200)
-        res.send({
-            "nice": "asdasd"
-        })
+        teacherModel.find({ schoolEmail, password }, "", (err, user) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+                if (user.length == 0) {
+                    res.send({
+                        error: "Incorrect email or password, please try again.",
+                        failed: true
+                    })
+                } else {
+                    res.status(200)
+                    res.send({
+                        user,
+                        data: req.query,
+                        failed: false,
+                        role: 0
+                    })
+                }
+            }
+
+        });
     }
     else{
         // find all athletes who play tennis, selecting the 'name' and 'age' fields
@@ -67,7 +85,8 @@ router.post('/', function (req, res, next) {
                     res.send({
                         user,
                         data: req.query,
-                        failed: false
+                        failed: false,
+                        role: 2
                     })
                 }
             }

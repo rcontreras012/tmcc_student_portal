@@ -8,6 +8,7 @@ const initialState = {
 
 export const AuthReducer = (state = initialState, action) => {
     let item = action.data
+    
     switch (action.type) {
         case LOGIN:
 

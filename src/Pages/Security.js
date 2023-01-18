@@ -8,10 +8,10 @@ const ProtectedRoute = ({ children }) => {
 
 
 
-    console.log(user, "--> waaaa")
+    
 
 
-    if (!user.signedIn) return (
+    if (user.signedIn) return (
         children
     );
 

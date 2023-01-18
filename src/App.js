@@ -9,6 +9,7 @@ import { AuthPage } from './Pages/Auth';
 import { StudentPage } from './Pages/StudentPage';
 import ProtectedRoute from './Pages/Security';
 import { TeacherPage } from './Pages/Teacher';
+import { AdminPage } from './Pages/AdminPage';
 
 function App() {
   return (
@@ -22,27 +23,33 @@ function App() {
             <Route path='/' element={<AuthPage />}>
 
 
-
+          
 
             </Route>
 
-            <Route path='/student'
+            <Route path='student'
               element={
                 <ProtectedRoute>
                   <StudentPage />
                 </ProtectedRoute>
               }>
-
             </Route>
 
-            <Route path='/teacher'
+            <Route path='teacher'
               element={
                 <ProtectedRoute>
-                  <TeacherPage />
+                  <AdminPage />
                 </ProtectedRoute>
               }>
-
             </Route>
+
+            <Route path='admin'
+              element={
+                <ProtectedRoute>
+                  <AdminPage />
+                </ProtectedRoute>
+              }>
+                </Route>
           </Routes>
 
 

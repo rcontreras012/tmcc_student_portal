@@ -13,6 +13,8 @@ var teacherRouter = require('./routes/teacher')
 var announcementRouter = require('./routes/announcement')
 var scheduleRouter = require('./routes/schedule')
 var enrollStudentRouter = require('./routes/enrollStudent')
+var addAdminRouter = require('./routes/admin')
+var sectionRouter = require('./routes/section')
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -48,11 +50,12 @@ app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter)
 app.use('/addstudent', studentRouter)
+app.use('/addadmin', addAdminRouter)
 app.use('/addteacher', teacherRouter)
 app.use('/addAnnouncement', announcementRouter)
 app.use('/addschedule', scheduleRouter)
 app.use('/enrollstudent', enrollStudentRouter)
-
+app.use('/addsection', sectionRouter)
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

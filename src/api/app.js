@@ -15,6 +15,8 @@ var scheduleRouter = require('./routes/schedule')
 var enrollStudentRouter = require('./routes/enrollStudent')
 var addAdminRouter = require('./routes/admin')
 var sectionRouter = require('./routes/section')
+var forgetRouter = require('./routes/forgetPass')
+var changePassRouter = require('./routes/changePass')
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -56,6 +58,9 @@ app.use('/addAnnouncement', announcementRouter)
 app.use('/addschedule', scheduleRouter)
 app.use('/enrollstudent', enrollStudentRouter)
 app.use('/addsection', sectionRouter)
+app.use('/forgetpass', forgetRouter)
+app.use('/changepass', changePassRouter)
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));

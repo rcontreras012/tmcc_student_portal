@@ -8,6 +8,7 @@ import { url } from '../Utils/url';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { LOGIN } from '../redux/actionType';
+import { ForgotModal } from '../Components/Modal';
 
 export const AuthPage = () => {
 
@@ -15,7 +16,7 @@ export const AuthPage = () => {
     const navigate = useNavigate()
     const [email, setEmail] = useState('Admin.Admin@tmcc.admin.com')
     const [password, setPassword] = useState('ZWBp)D!aty^Ga')
-
+    const [showForgot, setForgot] = useState(false)
 
 
     const logMe = () => {
@@ -27,8 +28,8 @@ export const AuthPage = () => {
                 password
             }
         }).then(res => {
-            console.log(res.data.user[0], '--> check')
-
+            // console.log(res.data.user[0], '--> check')
+            console.log(res,"--> inanf s")
             if (res.data.failed) {
                 alert("Credentials not fouund, please try again.")
             } else {
@@ -49,7 +50,7 @@ export const AuthPage = () => {
                         replace: true
                     })
                 }
-                if (res.data.role == 3) {
+                if (res.data.role == 2) {
                     navigate('/student', {
                         replace: true
                     })
@@ -57,16 +58,26 @@ export const AuthPage = () => {
             }
 
         }).catch(err => {
-
+            console.log(err)
         })
 
 
     }
 
+    console.log(showForgot)
     return (
 
 
         <div class="w3-light-grey center">
+
+            <ForgotModal
+                onClose={() => setForgot(false)}
+                show={showForgot}
+                success={() => {
+                    console.log('not called?')
+                    setForgot(false)
+                }}
+            />
 
 
             <div className='appname'>
@@ -95,7 +106,11 @@ export const AuthPage = () => {
                     }} type="password" placeholder="Password" />
                 </Form.Group>
 
-                <Button onClick={() => logMe()} variant="primary" type="submit">
+                <div className='forgot' onClick={() => setForgot(true)}>
+                    Forgot password?
+                </div>
+
+                <Button className='loginButton' onClick={() => logMe()} variant="primary" type="submit">
                     Submit
                 </Button>
             </div>

@@ -23,3 +23,12 @@ background-color: #fff;
     font-size: 32px;
     margin-bottom: 25px;
 }
+
+.loginButton{
+  margin-top: 20px;
+}
+
+.forgot{
+  color:cornflowerblue;
+  cursor: pointer;
+}

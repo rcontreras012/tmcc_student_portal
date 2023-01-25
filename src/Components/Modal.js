@@ -16,6 +16,7 @@ export const EnrollModal = (props) => {
     const [contact, setContact] = useState('')
     const [error, setError] = useState('')
     const [showError, setShowError] = useState(false)
+    const [success, setShowSuccess] = useState(false)
 
     const addStudent = () => {
         axios.post(url + "addstudent", null, {
@@ -29,15 +30,17 @@ export const EnrollModal = (props) => {
             }
         }).then(res => {
 
+            setShowSuccess(true)
+            setTimeout(() => {
+                setFname('')
+                setLname('')
+                setAdress('')
+                setEmail('')
+                setLRN('')
+                setContact('')
+                props.onClose()
 
-            setFname('')
-            setLname('')
-            setAdress('')
-            setEmail('')
-            setLRN('')
-            setContact('')
-            props.onClose()
-
+            }, 2000)
 
         }).catch(err => {
 
@@ -65,6 +68,12 @@ export const EnrollModal = (props) => {
             {
                 showError && <Alert key={'danger'} variant={'danger'}>
                     {error}
+                </Alert>
+            }
+
+            {
+                success && <Alert key={'danger'} variant={'success'}>
+                    Successfully adding new student to the database
                 </Alert>
             }
 

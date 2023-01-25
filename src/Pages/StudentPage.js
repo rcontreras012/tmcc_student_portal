@@ -1,11 +1,14 @@
 import React from 'react'
 import Carousel from 'react-bootstrap/Carousel';
+import { useSelector } from 'react-redux';
 import '../App.css';
 
 //let slideIndex = 1;
 
     export const StudentPage = (props) => {
+        const user = useSelector(state => state.user.user)
 
+        console.log(user, "--> check")
     // const [slideIndex, setSlideIndex] = useState(1)
 
     return (
@@ -41,16 +44,15 @@ import '../App.css';
                                     style={{ width: "100%" }} />
 
                                 <div className="w3-display-bottomleft w3-container w3-text-black">
-                                    <h2>Student Name</h2>
+                                    <h2>{user.first_name} {user.last_name}</h2>
                                 </div>
                             </div>
                             <br/>
                             <div className="w3-container">
-                                <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>Grade / Section</p>
-                                <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address</p>
-                                <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address</p>
-                                <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number</p>
-                                <hr />
+                                <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>ID No: {user.id}</p>
+                                <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address: {user.address}</p>
+                                <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address: {user.schoolEmail}</p>
+                                <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number: {user.contact_no}</p>
 
                                 <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Subjects</b></p>
 

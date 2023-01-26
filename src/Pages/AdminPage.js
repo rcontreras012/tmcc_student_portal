@@ -13,13 +13,13 @@ export const AdminPage = (props) => {
 
     const [showCreate, setShowCreate] = useState(false)
 
-    
+
     return (
 
         <div className="w3-light-grey">
-            <EnrollModal 
-            onClose={() => setShowCreate(false)}
-            show={showCreate}/>
+            <EnrollModal
+                onClose={() => setShowCreate(false)}
+                show={showCreate} />
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
                 <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
@@ -58,7 +58,7 @@ export const AdminPage = (props) => {
                                 <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address: {user.address}</p>
                                 <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address: {user.schoolEmail}</p>
                                 <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number: {user.contact_no}</p>
-                            
+
                             </div>
                         </div><br />
 
@@ -115,60 +115,116 @@ export const AdminPage = (props) => {
 
                             </div>
 
+                            <div className='w3-row w3-center'>
+                                <div class="w3-half w3-padding-small">
+                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Announcement</button>
+                                </div>
+
+                                <div class="w3-half w3-padding-small">
+                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "95%" }}>Manage Announcement</button>
+                                </div>
+
+                            </div>
+
+                            <br />
+
                         </div>
 
-                        <div className="w3-container w3-card w3-white">
+                        <div className="w3-container w3-card w3-white w3-margin-bottom">
                             <h2 className="w3-text-grey w3-padding-16"><i
-                                className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grade Level 
-                                <div className='col-12 levelContainer'>
-                                    <Button variant="primary" onClick={() => setShowCreate(true)}>New Student</Button>
-                                    <Button variant="secondary" style={{marginLeft:"10px"}}>Enroll Student</Button>
-                                </div>
-                                </h2>
-                            <div className="w3-container">
-                                <div className="w3-card">
-                                    <table className="w3-table w3-bordered" name="tblSched">
-                                        <thead>
+                                className="fa fa-user fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>User Management
+                            </h2>
 
-                                            <tr>
-                                                <th>Subjects</th>
-                                                <th>1st</th>
-                                                <th>2nd</th>
-                                                <th>3rd</th>
-                                                <th>4th</th>
-                                                <th>Final Grade</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>MAPEH</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ENGLISH</td>
-                                            </tr>
-                                            <tr>
-                                                <td>MATHEMATICS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>AP</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ESP</td>
-                                            </tr>
-                                            <tr>
-                                                <td>FILIPINO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TLE</td>
-                                            </tr>
-                                            <tr>
-                                                <td>SCIENCE</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                            <div className='w3-container w3-card '>
+                                <div className='w3-row w3-center w3-margin-bottom'>
+                                    <h3>Student</h3>
+                                    <div class="w3-half w3-padding-small">
+                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Student</button>
+                                    </div>
+
+                                    <div class="w3-half w3-padding-small">
+                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Enroll Student</button>
+                                    </div>
+
                                 </div>
                             </div>
                             <br />
+                            <div className='w3-container w3-card '>
+                                <div className='w3-row w3-center w3-margin-bottom'>
+                                    <h3>Teacher</h3>
+                                    <div class="w3-half w3-padding-small">
+                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Teacher</button>
+                                    </div>
+
+                                    <div class="w3-half w3-padding-small">
+                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Enroll Teacher</button>
+                                    </div>
+
+                                </div>
+                            </div>
+
+
+                            <div className='col-12 levelContainer'>
+                                <Button variant="primary" onClick={() => setShowCreate(true)}>New Student</Button>
+                                <Button variant="secondary" style={{ marginLeft: "10px" }}>Enroll Student</Button>
+                            </div>
+                            <br />
+                        </div>
+
+                        <div className='w3-container w3-card w3-white w3-margin-bottom'>
+                            <h2 className="w3-text-grey w3-padding-16"><i
+                                className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grading Schedule
+                            </h2>
+
+                            <div className="w3-card w3-margin-bottom">
+                                <table className="w3-table w3-bordered" name="tblSched">
+                                    <thead>
+
+                                        <tr>
+                                            <th>Grading Period</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>1st Grading</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2nd Grading</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3rd Grading</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>4th Grading</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
 
 
@@ -184,6 +240,44 @@ export const AdminPage = (props) => {
             </div>
 
 
+            {/*<!-- Modal content -->*/}
+            <div id="id01" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>New Announcement</h2>
+                    </header>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>Grading Period : </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <select class="w3-select w3-border" name="option" style={{ width: "60%" }}>
+                                <option value="" disabled selected>Choose your grading period</option>
+                                <option value="1">1st</option>
+                                <option value="2">2nd</option>
+                                <option value="3">3rd</option>
+                                <option value="3">4th</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>Grade: </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <input class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+                        </div>
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id01').style.display = 'none'}>Close</button>
+                    </div>
+                </div>
+            </div>
+            {/*<!-- End Modal content -->*/}
         </div>
 
     )

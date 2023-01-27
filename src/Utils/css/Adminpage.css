@@ -3,3 +3,11 @@
     flex-direction: row;
     margin-top: 20px;
 }
+
+.dropzone{
+    border: 1px solid black;
+    padding: 20px 20px;
+    border-style: dashed;
+    border-radius: 8px;
+    cursor: pointer;
+}

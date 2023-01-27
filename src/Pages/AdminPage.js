@@ -4,15 +4,64 @@ import { useSelector } from 'react-redux';
 import '../App.css';
 import { EnrollModal } from '../Components/Modal';
 import Button from 'react-bootstrap/Button';
+import { useDropzone } from 'react-dropzone';
 import '../Utils/css/Adminpage.css'
+import * as xlsx from 'xlsx'
+import { url } from '../Utils/url';
+import axios from 'axios'
 //let slideIndex = 1;
 
 export const AdminPage = (props) => {
 
     const user = useSelector(state => state.user.user)
+    const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
+    const [file, setFile] = useState('')
     const [showCreate, setShowCreate] = useState(false)
 
+
+
+    const files = acceptedFiles.map(file => {
+
+        
+      
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const data = e.target.result;
+                const workbook = xlsx.read(data, { type: "array" });
+                const sheetName = workbook.SheetNames[0];
+                const worksheet = workbook.Sheets[sheetName];
+                const json = xlsx.utils.sheet_to_json(worksheet);
+            
+                setFile(json)
+            };
+            
+            reader.readAsArrayBuffer(file);
+
+
+            
+           
+        
+
+        
+    });
+
+
+    const importExcel = () => {
+        console.log(file)
+
+      
+        axios.post(url + "addschedule", null, {
+            params:{
+                file
+            }
+        }).then(res => {
+            console.log(res, "--> check now")
+            alert("Import success")
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
     return (
 
@@ -139,7 +188,7 @@ export const AdminPage = (props) => {
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Student</h3>
                                     <div class="w3-half w3-padding-small">
-                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Student</button>
+                                        <button onClick={() => setShowCreate(true)} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Student</button>
                                     </div>
 
                                     <div class="w3-half w3-padding-small">
@@ -164,10 +213,34 @@ export const AdminPage = (props) => {
                             </div>
 
 
-                            <div className='col-12 levelContainer'>
-                                <Button variant="primary" onClick={() => setShowCreate(true)}>New Student</Button>
-                                <Button variant="secondary" style={{ marginLeft: "10px" }}>Enroll Student</Button>
+                            <br />
+                            <div className='w3-container w3-card '>
+                                <div className='w3-row w3-center w3-margin-bottom'>
+                                    <h3>Excel</h3>
+                                    <div class="col-lg-12">
+                                        <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                    </div>
+
+                                </div>
+
+                                <section className="container">
+                                    <div {...getRootProps()} className="dropzone">
+                                        <input {...getInputProps()} />
+                                        <p>Drag 'n' drop your excel file here, or click to select files</p>
+                                    </div>
+                                    <aside>
+                                        <h4>Files</h4>
+                                        <ul>{files}</ul>
+                                    </aside>
+                                </section>
                             </div>
+
+
+
+                            
+
+
+                         
                             <br />
                         </div>
 

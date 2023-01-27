@@ -1,10 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import { useSelector } from 'react-redux';
 import '../App.css';
 import { EnrollModal } from '../Components/Modal';
 import Button from 'react-bootstrap/Button';
-import { useDropzone } from 'react-dropzone';
+import Dropzone, { useDropzone } from 'react-dropzone';
 import '../Utils/css/Adminpage.css'
 import * as xlsx from 'xlsx'
 import { url } from '../Utils/url';
@@ -16,50 +16,47 @@ export const AdminPage = (props) => {
     const user = useSelector(state => state.user.user)
     const { acceptedFiles, getRootProps, getInputProps } = useDropzone();
 
-    const [file, setFile] = useState('')
+    const [f, setFile] = useState('')
+    const [fname, setFname] = useState('')
     const [showCreate, setShowCreate] = useState(false)
 
 
 
-    const files = acceptedFiles.map(file => {
 
-        
-      
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                const data = e.target.result;
-                const workbook = xlsx.read(data, { type: "array" });
-                const sheetName = workbook.SheetNames[0];
-                const worksheet = workbook.Sheets[sheetName];
-                const json = xlsx.utils.sheet_to_json(worksheet);
-            
-                setFile(json)
-            };
-            
-            reader.readAsArrayBuffer(file);
+    const fileSelect = (v) => {
 
+        const file = v[0]
 
-            
-           
-        
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = e.target.result;
+            const workbook = xlsx.read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const json = xlsx.utils.sheet_to_json(worksheet);
 
-        
-    });
+            setFile(json)
+            setFname(file.name)
+        };
+
+        reader.readAsArrayBuffer(file);
+
+    }
 
 
     const importExcel = () => {
-        console.log(file)
 
-      
+        
+
         axios.post(url + "addschedule", null, {
-            params:{
-                file
+            params: {
+                file: f
             }
         }).then(res => {
-            console.log(res, "--> check now")
+
             alert("Import success")
         }).catch(err => {
-            console.log(err)
+            
         })
     }
 
@@ -224,23 +221,43 @@ export const AdminPage = (props) => {
                                 </div>
 
                                 <section className="container">
-                                    <div {...getRootProps()} className="dropzone">
-                                        <input {...getInputProps()} />
-                                        <p>Drag 'n' drop your excel file here, or click to select files</p>
-                                    </div>
-                                    <aside>
-                                        <h4>Files</h4>
-                                        <ul>{files}</ul>
-                                    </aside>
+                                    <Dropzone onDrop={(v) => fileSelect(v)}>
+                                        {({ getRootProps, getInputProps }) => (
+                                            <div className='dropzone' {...getRootProps()}>
+                                                <input {...getInputProps()} />
+                                                <p>Drag 'n' drop some files here, or click to select files</p>
+                                            </div>
+                                        )}
+                                    </Dropzone>
+                                    {
+                                        fname != "" &&
+                                        <aside>
+                                            <h4>Files</h4>
+                                            <div className='col-lg-12'>
+                                                <div className='row'>
+                                                    <div className='col-lg-3'>
+                                                        {fname}
+                                                    </div>
+
+                                                    <div className='col-lg-9'>
+                                                        <i 
+                                                            onClick={() => setFname('')}
+                                                            class="bi bi-trash" style={{color:"red"}}></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </aside>
+                                    }
+                                    <br />
                                 </section>
                             </div>
 
 
 
-                            
 
 
-                         
+
+
                             <br />
                         </div>
 

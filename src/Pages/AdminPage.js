@@ -46,8 +46,6 @@ export const AdminPage = (props) => {
 
     const importExcel = () => {
 
-        
-
         axios.post(url + "addschedule", null, {
             params: {
                 file: f
@@ -116,6 +114,7 @@ export const AdminPage = (props) => {
                     {/*<!-- Right Column -->*/}
                     <div className="w3-twothird">
 
+                        {/*<!-- Announcement -->*/}
                         <div class="w3-container w3-card w3-white w3-margin-bottom">
                             <h2 class="w3-text-grey w3-padding-16"><i
                                 class="fa fa-bullhorn fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Announcement</h2>
@@ -167,7 +166,7 @@ export const AdminPage = (props) => {
                                 </div>
 
                                 <div class="w3-half w3-padding-small">
-                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "95%" }}>Manage Announcement</button>
+                                    <button onClick={() => document.getElementById('id02').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "95%" }}>Manage Announcement</button>
                                 </div>
 
                             </div>
@@ -176,12 +175,13 @@ export const AdminPage = (props) => {
 
                         </div>
 
+                        {/*<!-- User Management -->*/}
                         <div className="w3-container w3-card w3-white w3-margin-bottom">
                             <h2 className="w3-text-grey w3-padding-16"><i
                                 className="fa fa-user fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>User Management
                             </h2>
 
-                            <div className='w3-container w3-card '>
+                            <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Student</h3>
                                     <div class="w3-half w3-padding-small">
@@ -195,7 +195,7 @@ export const AdminPage = (props) => {
                                 </div>
                             </div>
                             <br />
-                            <div className='w3-container w3-card '>
+                            <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Teacher</h3>
                                     <div class="w3-half w3-padding-small">
@@ -208,64 +208,15 @@ export const AdminPage = (props) => {
 
                                 </div>
                             </div>
-
-
-                            <br />
-                            <div className='w3-container w3-card '>
-                                <div className='w3-row w3-center w3-margin-bottom'>
-                                    <h3>Excel</h3>
-                                    <div class="col-lg-12">
-                                        <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
-                                    </div>
-
-                                </div>
-
-                                <section className="container">
-                                    <Dropzone onDrop={(v) => fileSelect(v)}>
-                                        {({ getRootProps, getInputProps }) => (
-                                            <div className='dropzone' {...getRootProps()}>
-                                                <input {...getInputProps()} />
-                                                <p>Drag 'n' drop some files here, or click to select files</p>
-                                            </div>
-                                        )}
-                                    </Dropzone>
-                                    {
-                                        fname != "" &&
-                                        <aside>
-                                            <h4>Files</h4>
-                                            <div className='col-lg-12'>
-                                                <div className='row'>
-                                                    <div className='col-lg-3'>
-                                                        {fname}
-                                                    </div>
-
-                                                    <div className='col-lg-9'>
-                                                        <i 
-                                                            onClick={() => setFname('')}
-                                                            class="bi bi-trash" style={{color:"red"}}></i>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </aside>
-                                    }
-                                    <br />
-                                </section>
-                            </div>
-
-
-
-
-
-
-
-                            <br />
                         </div>
 
+                        {/*<!-- Gradring Schedule -->*/}
                         <div className='w3-container w3-card w3-white w3-margin-bottom'>
                             <h2 className="w3-text-grey w3-padding-16"><i
-                                className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grading Schedule
+                                className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Schedule
                             </h2>
 
+                            <h3>Grading Schedule Management</h3>
                             <div className="w3-card w3-margin-bottom">
                                 <table className="w3-table w3-bordered" name="tblSched">
                                     <thead>
@@ -315,6 +266,48 @@ export const AdminPage = (props) => {
                                     </tbody>
                                 </table>
                             </div>
+                            <br />
+                            <h3>Student Schedule Management</h3>
+                            <div className='w3-container w3-card w3-margin-bottom'>
+                                <div className='w3-row w3-center w3-margin-bottom'>
+                                    <h3>Excel</h3>
+                                    <div class="col-lg-12">
+                                        <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                    </div>
+
+                                </div>
+
+                                <section className="container">
+                                    <Dropzone onDrop={(v) => fileSelect(v)}>
+                                        {({ getRootProps, getInputProps }) => (
+                                            <div className='dropzone' {...getRootProps()}>
+                                                <input {...getInputProps()} />
+                                                <p>Drag 'n' drop some files here, or click to select files</p>
+                                            </div>
+                                        )}
+                                    </Dropzone>
+                                    {
+                                        fname != "" &&
+                                        <aside>
+                                            <h4>Files</h4>
+                                            <div className='col-lg-12'>
+                                                <div className='row'>
+                                                    <div className='col-lg-3'>
+                                                        {fname}
+                                                    </div>
+
+                                                    <div className='col-lg-9'>
+                                                        <i
+                                                            onClick={() => setFname('')}
+                                                            class="bi bi-trash" style={{ color: "red" }}></i>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </aside>
+                                    }
+                                    <br />
+                                </section>
+                            </div>
                         </div>
 
 
@@ -339,34 +332,96 @@ export const AdminPage = (props) => {
 
                     <div className='w3-row w3-margin-top w3-padding'>
                         <div className='w3-quarter'>
-                            <h4>Grading Period : </h4>
+                            <h4>Announcement : </h4>
                         </div>
                         <div className='w3-rest'>
-                            <select class="w3-select w3-border" name="option" style={{ width: "60%" }}>
-                                <option value="" disabled selected>Choose your grading period</option>
-                                <option value="1">1st</option>
-                                <option value="2">2nd</option>
-                                <option value="3">3rd</option>
-                                <option value="3">4th</option>
-                            </select>
+                            <textarea id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "70%" }}></textarea>
                         </div>
                     </div>
 
                     <div className='w3-row w3-margin-top w3-padding'>
                         <div className='w3-quarter'>
-                            <h4>Grade: </h4>
+                            <h4>Start Date : </h4>
                         </div>
                         <div className='w3-rest'>
-                            <input class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+                            <input class="w3-input w3-border" type="date" style={{ width: "70%" }} />
                         </div>
                     </div>
 
                     <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
-                            onClick={() => document.getElementById('id01').style.display = 'none'}>Close</button>
+                            onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%" }} >Close</button>
+                        <button class="w3-button w3-right w3-teal w3-border"
+                            onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%", marginRight: "5px"}} >Save</button>                        
                     </div>
                 </div>
             </div>
+
+            <div id="id02" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>Manage All Announcement</h2>
+                    </header>
+
+                    <div className="w3-card w3-margin-bottom">
+                                <table className="w3-table w3-bordered" name="tblSched">
+                                    <thead>
+
+                                        <tr>
+                                            <th>Announcement</th>
+                                            <th>Status</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>No class</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>1st Periodic Exam</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Payments before the exam</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>Start of Enrollment</td>
+                                            <td>
+                                                <label class="switch">
+                                                    <input type="checkbox"></input>
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%" }} >Close</button>
+                        <button class="w3-button w3-right w3-teal w3-border"
+                            onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%", marginRight: "5px"}} >Save</button>                        
+                    </div>
+                </div>
+            </div>
+
             {/*<!-- End Modal content -->*/}
         </div>
 

@@ -55,6 +55,8 @@ export const AdminPage = (props) => {
         }).then(res => {
 
             alert("Import success")
+            setFile('')
+            setFname('')
         }).catch(err => {
             
         })

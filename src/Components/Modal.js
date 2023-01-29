@@ -34,6 +34,7 @@ export const EnrollModal = (props) => {
             setTimeout(() => {
                 setFname('')
                 setLname('')
+                setShowSuccess(false)
                 setAdress('')
                 setEmail('')
                 setLRN('')

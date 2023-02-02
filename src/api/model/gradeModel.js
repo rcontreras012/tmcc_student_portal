@@ -5,14 +5,19 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    gradeName: {
+    secCode: {
         required: true,
         type: String
     },
-    term:{
+    studentID: {
         required: true,
         type: String
-    }
+    },
+    SchoolYear: {
+        required: true,
+        type: String
+    },
+    
 })
 
 module.exports = mongoose.model('grade', dataSchema)      

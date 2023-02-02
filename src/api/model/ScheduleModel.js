@@ -25,6 +25,14 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
+    teacher_id:{
+        required: true,
+        type: String
+    },
+    sy:{
+        required: true,
+        type: String
+    }
 })
 
 module.exports = mongoose.model('schedule', dataSchema)      

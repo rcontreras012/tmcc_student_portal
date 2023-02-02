@@ -8,7 +8,7 @@ router.post('/',async function  (req, res, next) {
     let file = req.query.file
 
    
-
+    
     await file.map((i, index) => {
         const schedule = new ScheduleModel({
             gcode: i.Gcode,
@@ -16,7 +16,9 @@ router.post('/',async function  (req, res, next) {
             subject: i.SchedSubject,
             teacher: i.SchedTeacher,
             time: i.SchedTime,
-            order: i.SchedOrder
+            order: i.SchedOrder,
+            teacher_id: i.T_iD,
+            sy: i.sy
         })
 
         try {

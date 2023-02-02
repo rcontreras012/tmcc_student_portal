@@ -1,31 +1,27 @@
 const mongoose = require('mongoose');
 
 const dataSchema = new mongoose.Schema({
-    studentID: {
-        required: true,
-        type: String
-    },
-    // school term date and year
-    secCode:{
-        required: true,
-        type: String,
-    },
-    gradeCode:{
-        required: true,
-        type: String
-    },
-    name:{
+    sy:{
         require: true,
         type: String
     },
-    schoolYear:{
+    first: {
         require: true,
         type: String
     },
-    LRNNumber:{
+    second: {
+        require: true,
+        type: String
+    },
+    third: {
+        require: true,
+        type: String
+    },
+    fourth: {
         require: true,
         type: String
     }
+    
 })
 
-module.exports = mongoose.model('studentRecord', dataSchema)      
+module.exports = mongoose.model('term', dataSchema)      

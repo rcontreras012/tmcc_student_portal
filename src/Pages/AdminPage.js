@@ -2,13 +2,14 @@ import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import { useSelector } from 'react-redux';
 import '../App.css';
-import { EnrollModal } from '../Components/Modal';
+import { AddTeacherModal, EnrollModal } from '../Components/Modal';
 import Button from 'react-bootstrap/Button';
 import Dropzone, { useDropzone } from 'react-dropzone';
 import '../Utils/css/Adminpage.css'
 import * as xlsx from 'xlsx'
 import { url } from '../Utils/url';
 import axios from 'axios'
+import moment from 'moment'
 //let slideIndex = 1;
 
 export const AdminPage = (props) => {
@@ -20,11 +21,26 @@ export const AdminPage = (props) => {
     const [fname, setFname] = useState('')
     const [showCreate, setShowCreate] = useState(false)
 
+    const [studentFile, setStudentFile] = useState('')
+    const [studentFileName, setStudentFileName] = useState('')
+
+    const [showAddTeacher, setShowAddTeacher] = useState(false)
+    const [announcementList, setAnnouncementList] = useState([])
+
+
+    const [announcement, setAnnouncement] = useState({
+        desc: '',
+        startDate: moment().format('YYYY-MM-DD')
+    })
+
+
+console.log(announcement)
+    
 
 
 
-    const fileSelect = (v) => {
-
+    const fileSelect = (v,label) => {
+        
         const file = v[0]
 
         const reader = new FileReader();
@@ -35,8 +51,15 @@ export const AdminPage = (props) => {
             const worksheet = workbook.Sheets[sheetName];
             const json = xlsx.utils.sheet_to_json(worksheet);
 
-            setFile(json)
-            setFname(file.name)
+            if(label == "schedule"){
+                setFile(json)
+                setFname(file.name)
+            }
+            else if (label == "enrollee"){
+                
+                setStudentFile(json)
+                setStudentFileName(file.name)
+            }
         };
 
         reader.readAsArrayBuffer(file);
@@ -46,6 +69,8 @@ export const AdminPage = (props) => {
 
     const importExcel = () => {
 
+
+        
         axios.post(url + "addschedule", null, {
             params: {
                 file: f
@@ -60,9 +85,77 @@ export const AdminPage = (props) => {
         })
     }
 
+    useEffect(() => {
+        getAnnouncement()
+    },[])
+
+    const createAnnouncement = () => {
+
+        axios.post(url + 'addAnnouncement', null, {
+            params: {
+                announcement: announcement.desc,
+                is_active: true,
+                date_announce: announcement.startDate,
+                expired_date: announcement.startDate
+            }
+        }).then(res => {
+            // console.log(res.data.user[0], '--> check')
+            console.log(res.data, "--> announcement list")
+          
+            
+
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+    
+
+    const getAnnouncement = () => {
+        axios.post(url + 'getannouncement', null, null).then(res => {
+            // console.log(res.data.user[0], '--> check')
+           
+
+            // document.getElementById('id01').style.display = 'none'
+
+            setAnnouncementList(res.data.result)
+
+        }).catch(err => {
+            console.log(err)
+        })
+
+        
+    }
+
+
+    console.log(announcementList)
+    const importStudent = () => {
+
+
+
+        axios.post(url + "enrollstudent", null, {
+            params: {
+                file: studentFile
+            }
+        }).then(res => {
+
+            alert("Importing student success")
+            setStudentFile('')
+            setStudentFileName('')
+        }).catch(err => {
+
+        })
+    }
+
+
+
     return (
 
         <div className="w3-light-grey">
+            <AddTeacherModal
+                onClose={() => setShowAddTeacher(false)}
+                show={showAddTeacher}
+            />
             <EnrollModal
                 onClose={() => setShowCreate(false)}
                 show={showCreate} />
@@ -124,40 +217,25 @@ export const AdminPage = (props) => {
                             <div class="w3-content w3-display-container w3-margin-bottom">
 
                                 <Carousel>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
-                                        <Carousel.Caption>
-                                            <h3>First slide label</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
+                                  {
+                                    announcementList.map((i, k ) => {
 
-                                        <Carousel.Caption>
-                                            <h3>Second slide label</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
-
-                                        <Carousel.Caption>
-                                            <h3>Third slide label</h3>
-                                            <p>
-                                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                                            </p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
+                                        return (
+                                            <Carousel.Item>
+                                                <div
+                                                    className="d-block w-100"
+                                                    style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                                />
+                                                <Carousel.Caption>
+                                                    <h3>{i.announcement}</h3>
+                                                    <p>{i.DateAnnounce}</p>
+                                                </Carousel.Caption>
+                                            </Carousel.Item>
+                                        )
+                                    })
+                                  }
+                                    
+                                    
                                 </Carousel>
 
                             </div>
@@ -186,12 +264,52 @@ export const AdminPage = (props) => {
                             <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Student</h3>
-                                    <div class="w3-half w3-padding-small">
-                                        <button onClick={() => setShowCreate(true)} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Student</button>
+                                    <div class="w3-full w3-padding-small">
+                                        <button onClick={() => setShowCreate(true)} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Create Student Account</button>
                                     </div>
 
-                                    <div class="w3-half w3-padding-small">
-                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Enroll Student</button>
+                                    <div class="col-xl-12 w3-padding-small">
+                                        <h4>
+                                            Import Student List
+                                        </h4>
+
+                                        <Dropzone onDrop={(v) => fileSelect(v, "enrollee")}>
+                                            {({ getRootProps, getInputProps }) => (
+                                                <div className='dropzone' {...getRootProps()}>
+                                                    <input {...getInputProps()} />
+                                                    <p>Drag 'n' drop some files here, or click to select files</p>
+                                                </div>
+                                            )}
+                                        </Dropzone>
+                                        
+                                        {
+                                            studentFileName != "" &&
+                                            <aside>
+                                                <h4>Files</h4>
+                                                <div className='col-lg-12'>
+                                                    <div className='row'>
+                                                        <div className='col-lg-3'>
+                                                            {studentFileName}
+                                                        </div>
+
+                                                        <div className='col-lg-9'>
+                                                            <i
+                                                                onClick={() => {
+                                                                        setStudentFileName('')
+                                                                        setStudentFile('')
+                                                                }}
+                                                                class="bi bi-trash" style={{ color: "red" }}></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12" style={{marginTop:"20px"}}>
+                                                        <button onClick={() => importStudent()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                                    </div>
+
+                                                </div>
+                                            </aside>
+                                        }
+
                                     </div>
 
                                 </div>
@@ -200,13 +318,15 @@ export const AdminPage = (props) => {
                             <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Teacher</h3>
-                                    <div class="w3-half w3-padding-small">
-                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Teacher</button>
+                                    <div class="w3-padding-small">
+                                        <button onClick={() => {
+                                            setShowAddTeacher(true)
+                                        }} 
+                                        
+                                        class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Teacher</button>
                                     </div>
 
-                                    <div class="w3-half w3-padding-small">
-                                        <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Enroll Teacher</button>
-                                    </div>
+                                  
 
                                 </div>
                             </div>
@@ -219,6 +339,7 @@ export const AdminPage = (props) => {
                             </h2>
 
                             <h3>Grading Schedule Management</h3>
+                            <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large w3-margin-bottom" style={{ width: "100%" }}>Add Grading School Year</button>
                             <div className="w3-card w3-margin-bottom">
                                 <table className="w3-table w3-bordered" name="tblSched">
                                     <thead>
@@ -267,20 +388,19 @@ export const AdminPage = (props) => {
                                         </tr>
                                     </tbody>
                                 </table>
+                                <br/>
+                                
                             </div>
                             <br />
                             <h3>Student Schedule Management</h3>
                             <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Excel</h3>
-                                    <div class="col-lg-12">
-                                        <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
-                                    </div>
-
+                                
                                 </div>
 
                                 <section className="container">
-                                    <Dropzone onDrop={(v) => fileSelect(v)}>
+                                    <Dropzone onDrop={(v) => fileSelect(v, "schedule")}>
                                         {({ getRootProps, getInputProps }) => (
                                             <div className='dropzone' {...getRootProps()}>
                                                 <input {...getInputProps()} />
@@ -304,6 +424,11 @@ export const AdminPage = (props) => {
                                                             class="bi bi-trash" style={{ color: "red" }}></i>
                                                     </div>
                                                 </div>
+
+                                                    <div class="col-lg-12">
+                                                        <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                                    </div>
+
                                             </div>
                                         </aside>
                                     }
@@ -337,7 +462,15 @@ export const AdminPage = (props) => {
                             <h4>Announcement : </h4>
                         </div>
                         <div className='w3-rest'>
-                            <textarea id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "70%" }}></textarea>
+                            <textarea 
+                                value={announcement.desc}
+                                onChange={(e) => {
+                                    setAnnouncement({
+                                        ...announcement,
+                                        desc: e.target.value
+                                    })
+                                }}
+                                id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "70%" }}></textarea>
                         </div>
                     </div>
 
@@ -346,7 +479,11 @@ export const AdminPage = (props) => {
                             <h4>Start Date : </h4>
                         </div>
                         <div className='w3-rest'>
-                            <input class="w3-input w3-border" type="date" style={{ width: "70%" }} />
+                            <input
+                                onChange={(e) => {
+                                    console.log(e.target.value)
+                                }}
+                            class="w3-input w3-border" type="date" style={{ width: "70%" }} />
                         </div>
                     </div>
 
@@ -354,7 +491,11 @@ export const AdminPage = (props) => {
                         <button class="w3-button w3-right w3-white w3-border"
                             onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%" }} >Close</button>
                         <button class="w3-button w3-right w3-teal w3-border"
-                            onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%", marginRight: "5px"}} >Save</button>                        
+                            onClick={() => {
+
+                               createAnnouncement()
+
+                            }} style={{ width: "15%", marginRight: "5px"}} >Save</button>                        
                     </div>
                 </div>
             </div>

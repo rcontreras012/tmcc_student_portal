@@ -191,18 +191,24 @@ export const TeacherPage = (props) => {
                                     <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
                                         <select class="w3-select w3-border" name="option">
                                             <option value="" disabled selected>Choose your Grade</option>
-                                            <option value="1">Option 1</option>
-                                            <option value="2">Option 2</option>
-                                            <option value="3">Option 3</option>
+                                            <option value="G7">Grade 7</option>
+                                            <option value="G8">Grade 8</option>
+                                            <option value="G9">Grade 9</option>
+                                            <option value="G10">Grade 10</option>
+                                            <option value="G11">Grade 11</option>
+                                            <option value="G12">Grade 12</option>
                                         </select>
                                     </div>
 
                                     <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
                                         <select class="w3-select w3-border" name="option">
                                             <option value="" disabled selected>Choose your Section</option>
-                                            <option value="1">Option 1</option>
-                                            <option value="2">Option 2</option>
-                                            <option value="3">Option 3</option>
+                                            <option value="G7">Grade 7</option>
+                                            <option value="G8">Grade 8</option>
+                                            <option value="G9">Grade 9</option>
+                                            <option value="G10">Grade 10</option>
+                                            <option value="G11">Grade 11</option>
+                                            <option value="G12">Grade 12</option>
                                         </select>
                                     </div>
 
@@ -286,6 +292,21 @@ export const TeacherPage = (props) => {
                         </div>
                         <div className='w3-rest'>
                             <input class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+                        </div>
+                    </div>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>Subjec: </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <select class="w3-select w3-border" name="option" style={{ width: "60%" }}>
+                                <option value="" disabled selected>Choose your subject</option>
+                                <option value="1">S1</option>
+                                <option value="2">S2</option>
+                                <option value="3">S3</option>
+                                <option value="3">S4</option>
+                            </select>
                         </div>
                     </div>
 

@@ -34,7 +34,7 @@ export const AdminPage = (props) => {
     })
 
 
-console.log(announcement)
+
     
 
 
@@ -99,13 +99,13 @@ console.log(announcement)
                 expired_date: announcement.startDate
             }
         }).then(res => {
-            // console.log(res.data.user[0], '--> check')
-            console.log(res.data, "--> announcement list")
+            // 
+            
           
             
 
         }).catch(err => {
-            console.log(err)
+            
         })
 
     }
@@ -113,7 +113,7 @@ console.log(announcement)
 
     const getAnnouncement = () => {
         axios.post(url + 'getannouncement', null, null).then(res => {
-            // console.log(res.data.user[0], '--> check')
+            // 
            
 
             // document.getElementById('id01').style.display = 'none'
@@ -121,14 +121,31 @@ console.log(announcement)
             setAnnouncementList(res.data.result)
 
         }).catch(err => {
-            console.log(err)
+            
         })
 
         
     }
 
 
-    console.log(announcementList)
+    const openGrading = (v) => {
+
+        axios.post(url + "opengrading", null, {
+            params:{
+                sy: moment().format("YYYY"),
+                first: v == 1 ? true : false,
+                second: v == 2  ? true : false,
+                third: v == 3 ? true : false,
+                fourth: v == 4 ? true : false
+
+            }
+        }).then(res => {
+            console.log(res)
+        }).catch(err => {
+            console.log(err)
+        })
+    }    
+
     const importStudent = () => {
 
 
@@ -339,7 +356,7 @@ console.log(announcement)
                             </h2>
 
                             <h3>Grading Schedule Management</h3>
-                            <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large w3-margin-bottom" style={{ width: "100%" }}>Add Grading School Year</button>
+                            {/* <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large w3-margin-bottom" style={{ width: "100%" }}>Add Grading School Year</button> */}
                             <div className="w3-card w3-margin-bottom">
                                 <table className="w3-table w3-bordered" name="tblSched">
                                     <thead>
@@ -481,7 +498,7 @@ console.log(announcement)
                         <div className='w3-rest'>
                             <input
                                 onChange={(e) => {
-                                    console.log(e.target.value)
+                                    
                                 }}
                             class="w3-input w3-border" type="date" style={{ width: "70%" }} />
                         </div>

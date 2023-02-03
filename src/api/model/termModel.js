@@ -7,19 +7,19 @@ const dataSchema = new mongoose.Schema({
     },
     first: {
         require: true,
-        type: String
+        type: Boolean
     },
     second: {
         require: true,
-        type: String
+        type: Boolean
     },
     third: {
         require: true,
-        type: String
+        type: Boolean
     },
     fourth: {
         require: true,
-        type: String
+        type: Boolean
     }
     
 })

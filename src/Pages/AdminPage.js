@@ -33,7 +33,13 @@ export const AdminPage = (props) => {
         startDate: moment().format('YYYY-MM-DD')
     })
 
-
+    const [grading, setOpenGrading] = useState({
+        sy: moment().format("YYYY"),
+        first: false,
+        second: false,
+        third: false,
+        fourth: false
+    })
 
     
 
@@ -87,7 +93,12 @@ export const AdminPage = (props) => {
 
     useEffect(() => {
         getAnnouncement()
+       
     },[])
+
+    useEffect(() => {
+        getGradingTerm()
+    }, [])
 
     const createAnnouncement = () => {
 
@@ -127,22 +138,47 @@ export const AdminPage = (props) => {
         
     }
 
+    const getGradingTerm = () => {
 
-    const openGrading = (v) => {
+        console.log('hello')
+
+        axios.post(url + "getTerm", null, {
+            params:{
+                sy: moment().format('YYYY')
+            }
+        }).then(res => {
+
+
+            console.log(res.data.data, "--> hello")
+            
+            setOpenGrading(res.data.data)
+        }).catch(err => {
+            console.log(err, "--> ?")
+        })
+
+    }
+
+
+
+
+    const openGrading = (v, fv) => {
+
+        // Check here
 
         axios.post(url + "opengrading", null, {
             params:{
                 sy: moment().format("YYYY"),
-                first: v == 1 ? true : false,
-                second: v == 2  ? true : false,
-                third: v == 3 ? true : false,
-                fourth: v == 4 ? true : false
+                first: v == 1 ? fv : grading.first,
+                second: v == 2  ? fv : grading.second,
+                third: v == 3 ? fv : grading.third,
+                fourth: v == 4 ? fv : grading.fourth
 
             }
         }).then(res => {
-            console.log(res)
+            // openGrading()
+            getGradingTerm()
         }).catch(err => {
-            console.log(err)
+            
         })
     }    
 
@@ -258,13 +294,13 @@ export const AdminPage = (props) => {
                             </div>
 
                             <div className='w3-row w3-center'>
-                                <div class="w3-half w3-padding-small">
+                                <div class="w3-padding-small">
                                     <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Announcement</button>
                                 </div>
 
-                                <div class="w3-half w3-padding-small">
+                                {/* <div class="w3-half w3-padding-small">
                                     <button onClick={() => document.getElementById('id02').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "95%" }}>Manage Announcement</button>
-                                </div>
+                                </div> */}
 
                             </div>
 
@@ -371,7 +407,19 @@ export const AdminPage = (props) => {
                                             <td>1st Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input type="checkbox"></input>
+                                                    <input
+                                                        checked={grading.first} 
+                                                        onChange={(v) => {
+
+                                                            setOpenGrading({
+                                                                ...grading,
+                                                                sy: moment().format('YYYY'),
+                                                                first: grading.first ? false : true
+                                                            })
+
+                                                            openGrading(1, grading.first ? false : true)
+                                                        }}
+                                                        type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
@@ -380,7 +428,18 @@ export const AdminPage = (props) => {
                                             <td>2nd Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input type="checkbox"></input>
+                                                    <input 
+                                                        checked={grading.second}
+                                                        onChange={(v) => {
+
+                                                            setOpenGrading({
+                                                                ...grading,
+                                                                sy: moment().format('YYYY'),
+                                                                second: grading.second ? false : true
+                                                            })
+                                                            openGrading(2, grading.second ? false : true)
+                                                        }}
+                                                    type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
@@ -389,7 +448,19 @@ export const AdminPage = (props) => {
                                             <td>3rd Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input type="checkbox"></input>
+                                                    <input 
+                                                        checked={grading.third}
+                                                        onChange={(v) => {
+
+                                                            setOpenGrading({
+                                                                ...grading,
+                                                                sy: moment().format('YYYY'),
+                                                                third: grading.third ? false : true
+                                                            })
+
+                                                            openGrading(3, grading.third ? false : true)
+                                                        }}
+                                                    type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
@@ -398,7 +469,18 @@ export const AdminPage = (props) => {
                                             <td>4th Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input type="checkbox"></input>
+                                                    <input 
+                                                        checked={grading.fourth}
+                                                        onChange={(v) => {
+
+                                                            setOpenGrading({
+                                                                ...grading,
+                                                                sy: moment().format('YYYY'),
+                                                                fourth: grading.fourth ? false : true
+                                                            })
+                                                            openGrading(4, grading.fourth ? false : true)
+                                                        }}
+                                                    type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>

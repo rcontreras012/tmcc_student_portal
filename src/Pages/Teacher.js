@@ -1,9 +1,85 @@
-import React from 'react'
+import axios from 'axios';
+import moment from 'moment';
+import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
+import { useSelector } from 'react-redux';
 import '../App.css';
+import { url } from '../Utils/url';
 
 export const TeacherPage = (props) => {
 
+    const [announcementList, setAnnouncementList] = useState([])
+    const user = useSelector(state => state.user.user)
+    const [gradeList, setGradeList] = useState([])
+    const [gcode, setGcode] = useState(0)
+    const  [seccode, setSecCode] = useState('')
+    const [sy, setSy] = useState(moment().format('YYYY'))
+    const [sectionList, setSectionList] = useState([])
+    const [studentList, setStudentList] = useState([])
+    
+
+    useEffect(() => {
+        getAnnouncement()
+        getGradeList()
+    }, [])
+
+    const getAnnouncement = () => {
+        axios.post(url + 'getannouncement', null, null).then(res => {
+            // 
+
+
+            // document.getElementById('id01').style.display = 'none'
+
+            setAnnouncementList(res.data.result)
+
+        }).catch(err => {
+
+        })
+
+
+    }
+
+
+
+    const getGradeList = () => {
+        axios.post(url + 'getteachersection', null, {
+            params: {
+                gcode: gcode,
+                seccode,
+                sy,
+                teacher_id: user.teacher_id_no
+            }
+        }).then(res => {
+            // 
+            
+
+            setSectionList(res.data.list)
+      
+        }).catch(err => {
+            
+        })
+
+    }
+
+    const getStudentList = () => {
+        axios.post(url + 'getstudentlist', null, {
+            params: {
+                gcode: gcode,
+                seccode,
+            }
+        }).then(res => {
+            // 
+
+
+            setStudentList(res.data.list)
+            
+
+        }).catch(err => {
+
+        })
+    }
+
+    
     return (
 
         <div className="w3-light-grey">
@@ -137,40 +213,23 @@ export const TeacherPage = (props) => {
                             <div class="w3-content w3-display-container w3-margin-bottom">
 
                                 <Carousel>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
-                                        <Carousel.Caption>
-                                            <h3>First slide label</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
+                                    {
+                                        announcementList.map((i, k) => {
 
-                                        <Carousel.Caption>
-                                            <h3>Second slide label</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
-
-                                        <Carousel.Caption>
-                                            <h3>Third slide label</h3>
-                                            <p>
-                                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                                            </p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
+                                            return (
+                                                <Carousel.Item>
+                                                    <div
+                                                        className="d-block w-100"
+                                                        style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                                    />
+                                                    <Carousel.Caption>
+                                                        <h3>{i.announcement}</h3>
+                                                        <p>{i.DateAnnounce}</p>
+                                                    </Carousel.Caption>
+                                                </Carousel.Item>
+                                            )
+                                        })
+                                    }
                                 </Carousel>
 
                             </div>
@@ -189,7 +248,9 @@ export const TeacherPage = (props) => {
                                 <div className='w3-row'>
 
                                     <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
-                                        <select class="w3-select w3-border" name="option">
+                                        <select 
+                                            onChange={(v) => setGcode(v.target.value)} 
+                                            class="w3-select w3-border" name="option">
                                             <option value="" disabled selected>Choose your Grade</option>
                                             <option value="G7">Grade 7</option>
                                             <option value="G8">Grade 8</option>
@@ -201,14 +262,14 @@ export const TeacherPage = (props) => {
                                     </div>
 
                                     <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
-                                        <select class="w3-select w3-border" name="option">
-                                            <option value="" disabled selected>Choose your Section</option>
-                                            <option value="G7">Grade 7</option>
-                                            <option value="G8">Grade 8</option>
-                                            <option value="G9">Grade 9</option>
-                                            <option value="G10">Grade 10</option>
-                                            <option value="G11">Grade 11</option>
-                                            <option value="G12">Grade 12</option>
+                                        <select onChange={(v) => setSecCode(v.target.value)}  class="w3-select w3-border" name="option">
+                                            <option value="" disabled selected>Choose your Sections</option>
+                                            {
+                                                sectionList.map((i, k) => {
+                                                  return  <option value={i.secCode}>{i.secCode}</option>
+                                                })
+                                            }
+                                           
                                         </select>
                                     </div>
 
@@ -216,6 +277,9 @@ export const TeacherPage = (props) => {
 
                                 <br />
 
+                                <button 
+                                onClick={() => getStudentList()}
+                                className='w3-button w3-teal w3-round-large w3-margin-bottom'>Proceed</button>                                            
                                 <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">
                                         <thead>
@@ -226,24 +290,20 @@ export const TeacherPage = (props) => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>Student 1</td>
-                                                <td>
-                                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Student 2</td>
-                                                <td>
-                                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>Student 3</td>
-                                                <td>
-                                                    <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
-                                                </td>
-                                            </tr>
+                                          {
+                                            studentList.map((i, k) => {
+
+                                                return(
+                                                    <tr>
+                                                        <td>{i.name}</td>
+                                                        <td>
+                                                            <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
+                                                        </td>
+                                                    </tr>
+                                                )
+                                            })
+                                          }
+                                            
                                         </tbody>
                                     </table>
                                 </div>

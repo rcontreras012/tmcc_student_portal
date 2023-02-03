@@ -20,7 +20,8 @@ var changePassRouter = require('./routes/changePass')
 var getScheduleRouter = require('./routes/gradeList')
 var getannouncementRouter = require('./routes/getAnnouncement')
 var openGradingRouter = require('./routes/term')
-
+var getTermRouter = require('./routes/getTerm')
+const getTeacherSchedule = require('./routes/getTeacherSchedule')()
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -68,6 +69,8 @@ app.use('/changepass', changePassRouter)
 app.use('/gradelist', getScheduleRouter)
 app.use('/getannouncement', getannouncementRouter)
 app.use('/opengrading', openGradingRouter)
+app.use('/getTerm', getTermRouter)
+app.use(getTeacherSchedule)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

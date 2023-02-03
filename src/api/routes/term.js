@@ -1,6 +1,5 @@
 var express = require('express');
 const termModel = require('../model/termModel');
-const passwordModel = require('../model/passwordModel');
 var router = express.Router();
 
 /* GET users listing. */

@@ -13,10 +13,30 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    SchoolYear: {
+    sy: {
         required: true,
         type: String
     },
+    first:{
+        required: false,
+        type: String
+    },
+    second:{
+        required: false,
+        type: String
+    },
+    third:{
+        require: false,
+        type: String
+    },
+    fourth:{
+        require: false,
+        type: String
+    },
+    subject:{
+        type: true,
+        type: String
+    }
     
 })
 

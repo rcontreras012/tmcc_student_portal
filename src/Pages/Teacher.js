@@ -16,11 +16,28 @@ export const TeacherPage = (props) => {
     const [sy, setSy] = useState(moment().format('YYYY'))
     const [sectionList, setSectionList] = useState([])
     const [studentList, setStudentList] = useState([])
+    const [subjectList, setSubjectList] = useState([])
+    const [studentID, setStudentID] = useState('')
+    const [subject, setSubject] = useState('')
+    const [selectedPeriod, setSelectedPeriod] = useState('')
+    const [grade, setGrade] = useState(0)
+
+    const [grading, setOpenGrading] = useState({
+        sy: moment().format("YYYY"),
+        first: false,
+        second: false,
+        third: false,
+        fourth: false
+    })
+
+
     
 
     useEffect(() => {
         getAnnouncement()
         getGradeList()
+        getSubject()
+        getGradingTerm()
     }, [])
 
     const getAnnouncement = () => {
@@ -39,9 +56,56 @@ export const TeacherPage = (props) => {
 
     }
 
+    const gradeStudent = () => {
 
+        
+
+        axios.post(url + "gradeStudent", null, {
+            params: {
+                sy: moment().format('YYYY'),
+                gcode,
+                seccode,
+                studentID,
+                sy,
+                selectedPeriod,
+                subject,
+                grade
+
+            }
+        }).then(res => {
+
+            
+            
+
+   
+        }).catch(err => {
+            
+        })
+
+    }
+
+    const getGradingTerm = () => {
+
+
+
+        axios.post(url + "getTerm", null, {
+            params: {
+                sy: moment().format('YYYY')
+            }
+        }).then(res => {
+
+
+            
+
+            setOpenGrading(res.data.data)
+        }).catch(err => {
+            
+        })
+
+    }
 
     const getGradeList = () => {
+        
         axios.post(url + 'getteachersection', null, {
             params: {
                 gcode: gcode,
@@ -51,6 +115,7 @@ export const TeacherPage = (props) => {
             }
         }).then(res => {
             // 
+
             
 
             setSectionList(res.data.list)
@@ -61,6 +126,28 @@ export const TeacherPage = (props) => {
 
     }
 
+    const getSubject = () => {
+        axios.post(url + 'getSubject', null, {
+            params: {
+                gcode: gcode,
+                seccode,
+                sy,
+                teacher_id: user.teacher_id_no
+            }
+        }).then(res => {
+            // 
+
+            
+
+            // setStudentList(res.data.list)
+            setSubjectList(res.data.list)
+
+        }).catch(err => {
+
+        })
+    }
+
+ 
     const getStudentList = () => {
         axios.post(url + 'getstudentlist', null, {
             params: {
@@ -72,13 +159,15 @@ export const TeacherPage = (props) => {
 
 
             setStudentList(res.data.list)
-            
+            getSubject()
 
         }).catch(err => {
 
         })
     }
 
+
+  
     
     return (
 
@@ -297,7 +386,15 @@ export const TeacherPage = (props) => {
                                                     <tr>
                                                         <td>{i.name}</td>
                                                         <td>
-                                                            <button onClick={() => document.getElementById('id01').style.display = 'block'} class="w3-button w3-teal w3-round-large">Add Grade</button>
+                                                            <button onClick={() => 
+                                                                
+                                                                {
+                                                                    
+                                                                    setStudentID(i.studentID)
+                                                                document.getElementById('id01').style.display = 'block'
+                                                                }
+                                                                
+                                                                } class="w3-button w3-teal w3-round-large">Add Grade</button>
                                                         </td>
                                                     </tr>
                                                 )
@@ -336,12 +433,15 @@ export const TeacherPage = (props) => {
                             <h4>Grading Period : </h4>                         
                         </div>
                         <div className='w3-rest'>
-                            <select class="w3-select w3-border" name="option" style={{ width: "60%" }}>
-                                <option value="" disabled selected>Choose your grading period</option>
-                                <option value="1">1st</option>
-                                <option value="2">2nd</option>
-                                <option value="3">3rd</option>
-                                <option value="3">4th</option>
+                            <select 
+                                onChange={(v) => setSelectedPeriod(v.target.value)}
+                                class="w3-select w3-border" name="option" style={{ width: "60%" }}>
+                                <option 
+                                    value="" disabled selected>Choose your grading period</option>
+                                <option disabled={grading.first ? false : true} value="1">1st</option>
+                                <option disabled={grading.second ? false : true} value="2">2nd</option>
+                                <option disabled={grading.third ? false : true} value="3">3rd</option>
+                                <option disabled={grading.fourth ? false : true} value="4">4th</option>
                             </select>                            
                         </div>
                     </div>
@@ -351,26 +451,42 @@ export const TeacherPage = (props) => {
                             <h4>Grade: </h4>
                         </div>
                         <div className='w3-rest'>
-                            <input class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+                            <input 
+                                onChange={(v) => setGrade(v.target.value)}
+                                class="w3-input w3-border" type="text" style={{ width: "60%" }} />
                         </div>
                     </div>
 
                     <div className='w3-row w3-margin-top w3-padding'>
                         <div className='w3-quarter'>
-                            <h4>Subjec: </h4>
+                            <h4>Subject: </h4>
                         </div>
                         <div className='w3-rest'>
-                            <select class="w3-select w3-border" name="option" style={{ width: "60%" }}>
-                                <option value="" disabled selected>Choose your subject</option>
-                                <option value="1">S1</option>
-                                <option value="2">S2</option>
-                                <option value="3">S3</option>
-                                <option value="3">S4</option>
+                            <select 
+
+                                onChange={(v) => setSubject(v.target.value)}
+                                class="w3-select w3-border" name="option" style={{ width: "60%" }}>
+                                <option 
+                                    value="" disabled selected>Choose your subject</option>
+                                          {
+                                            subjectList.map((i, k) => {
+
+                                                return(
+                                                    <option value={i.subject}>{i.subject}</option>
+                                                )
+                                            })
+                                          }
+                             
                             </select>
                         </div>
                     </div>
 
                     <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => {
+                                gradeStudent()
+                                document.getElementById('id01').style.display = 'none'
+                            }}>Save</button>
                         <button class="w3-button w3-right w3-white w3-border"
                             onClick={() => document.getElementById('id01').style.display = 'none'}>Close</button>
                     </div>

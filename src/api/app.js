@@ -8,7 +8,7 @@ var cors = require('cors')
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var loginRouter = require('./routes/login')
-var studentRouter = require('./routes/student')
+
 var teacherRouter = require('./routes/teacher')
 var announcementRouter = require('./routes/announcement')
 var scheduleRouter = require('./routes/schedule')
@@ -22,6 +22,8 @@ var getannouncementRouter = require('./routes/getAnnouncement')
 var openGradingRouter = require('./routes/term')
 var getTermRouter = require('./routes/getTerm')
 const getTeacherSchedule = require('./routes/getTeacherSchedule')()
+const studentRouter = require('./routes/student')()
+
 
 require('dotenv').config();
 const mongoose = require('mongoose');
@@ -56,7 +58,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 app.use('/login', loginRouter)
-app.use('/addstudent', studentRouter)
+app.use(studentRouter)
 app.use('/addadmin', addAdminRouter)
 app.use('/addteacher', teacherRouter)
 app.use('/addAnnouncement', announcementRouter)

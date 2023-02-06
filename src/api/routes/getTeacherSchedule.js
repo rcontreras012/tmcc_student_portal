@@ -42,6 +42,34 @@ module.exports = () => {
 
     });
 
+    router.post('/getteacherschedule', function (req, res, next) {
+
+
+        let sy = req.query.sy
+        let teacher_id = req.query.teacher_id
+
+        scheduleModel.find({ sy, teacher_id }, "", (err, list) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+
+
+                res.send({
+                    list,
+                    params: req.query
+                })
+
+                // Get all student info under this grade
+            }
+
+        })
+
+
+
+
+    });
+
     router.post('/getstudentlist', function (req, res, next) {
 
 
@@ -108,7 +136,7 @@ module.exports = () => {
         let gcode = req.query.gcode
         let secCode = req.query.seccode
         let sy = req.query.sy
-        let studentID = req.query.studentID
+        let LRNNumber = req.query.studentID
         let subject = req.query.subject
         let gradeVal = req.query.grade
         let selectedPeriod = req.query.selectedPeriod
@@ -126,7 +154,7 @@ module.exports = () => {
         //     secCode
         // })
 
-        gradeModel.find({ gcode, secCode, studentID, sy, subject }, '',  (err, grade) => {
+        gradeModel.find({ gcode, secCode, LRNNumber, sy, subject }, '',  (err, grade) => {
 
             if (err) return handleError(err)
             else {
@@ -138,7 +166,7 @@ module.exports = () => {
                         sy,
                         gcode,
                         secCode,
-                        studentID,
+                        LRNNumber,
                         first: gradeVal,
                         second: '',
                         third: '',

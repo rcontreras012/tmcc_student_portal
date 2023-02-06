@@ -1,12 +1,17 @@
 var express = require('express');
 var router = express.Router();
 const nodemailer = require("nodemailer");
-const StudentModel = require('../model/studentModel')
+const gradeModel = require('../model/gradeModel');
+const ScheduleModel = require('../model/ScheduleModel');
+const StudentModel = require('../model/studentModel');
+const studentRecordModel = require('../model/studentRecordModel');
 
 
 require('dotenv').config();
 /* GET users listing. */
-router.post('/', async function (req, res, next) {
+module.exports = () => {
+
+    router.post('/addstudent', async function (req, res, next) {
 
 
 
@@ -151,6 +156,100 @@ router.post('/', async function (req, res, next) {
 
 
 
-});
 
-module.exports = router;
+
+})
+
+    router.post('/getstudentrecord', function (req, res, next) {
+
+
+       
+        let schoolYear = req.query.sy.toString()
+        let LRNNumber = req.query.LRNNum.toString()
+
+        studentRecordModel.find({ LRNNumber, schoolYear }, "", (err, list) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+
+
+                res.send({
+                    user: list[0],
+                    params: req.query
+                })
+
+                // Get all student info under this grade
+            }
+
+        })
+
+
+
+
+    });
+
+    router.post('/getstudentschedule', function (req, res, next) {
+
+
+
+        let sy = req.query.sy
+        let gcode = req.query.gcode
+        let secCode = req.query.seccode
+
+        ScheduleModel.find({ gcode, secCode, sy }, "", (err, list) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+
+
+                res.send({
+                    sched: list,
+                    params: req.query
+                })
+
+                // Get all student info under this grade
+            }
+
+        })
+
+
+
+
+    });
+
+    router.post('/getstudentgrade', function (req, res, next) {
+
+
+
+        let sy = req.query.sy
+        let gcode = req.query.gcode
+        let secCode = req.query.seccode
+        let LRNNumber = req.query.LRNNumber
+
+        gradeModel.find({ gcode, secCode, sy, LRNNumber }, "", (err, list) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+
+
+                res.send({
+                    grade: list,
+                    params: req.query
+                })
+
+                // Get all student info under this grade
+            }
+
+        })
+
+
+
+
+    });
+
+    return router
+}
+

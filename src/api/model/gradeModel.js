@@ -9,10 +9,6 @@ const dataSchema = new mongoose.Schema({
         required: true,
         type: String
     },
-    studentID: {
-        required: true,
-        type: String
-    },
     sy: {
         required: true,
         type: String
@@ -35,6 +31,10 @@ const dataSchema = new mongoose.Schema({
     },
     subject:{
         type: true,
+        type: String
+    },
+    LRNNumber:{
+        require: true,
         type: String
     }
     

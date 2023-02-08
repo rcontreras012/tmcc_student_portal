@@ -1,6 +1,9 @@
 var express = require('express');
+const mapModel = require('../model/mapModel');
 var router = express.Router();
 const MapModel = require('../model/mapModel')
+const fs = require('fs');
+const { request } = require('https');
 /* GET users listing. */
 
 
@@ -10,30 +13,41 @@ const MapModel = require('../model/mapModel')
 module.exports = () => {
 
    
-    router.post('/saveMap', function (req, res, next) {
+    router.post('/saveMap',  function (req, res, next) {
 
 
-        let gcode = req.query.gcode
-        let image = req.query.image
-        let secCode = req.query.seccode
-        let name = req.query.name
+        let gcode = req.body.gcode
+        let image = req.body.image
+        let secCode = req.body.seccode
+        let name = req.body.name
 
 
+
+        // var bitmap = fs.readFile(image);
+        // // convert binary data to base64 encoded string
+        // let a = new Buffer(bitmap).toString('base64');
      
-        
-        
-        const newmap = new MapModel({
-            gcode,
-            image,
-            secCode,
-            name
-        })
-
-
+      
 
         try {
-            const dataToSave =  newmap.save();
-            res.status(200).json(dataToSave)
+            // const dataToSave =  newmap.save();
+
+            MapModel.updateOne({
+                gcode,
+            }, {
+                gcode: gcode,
+                image: image,
+                secCode: secCode,
+                name: name
+                
+            }, function (err, docs) {
+          
+                res.send({
+                    msg: "Success update",
+                    docs,
+                })
+            })
+          
         }
         catch (error) {
             res.status(400).json({ message: error.message })
@@ -45,6 +59,24 @@ module.exports = () => {
 
     });
 
+
+    router.post('/getMaps', (req, res, next) => {
+
+
+        mapModel.find().all().then(v => {
+
+            res.send({
+                result: v
+            })
+        })
+            .catch(err => {
+                res.status(500)
+                res.send({
+                    error: "Check server"
+                })
+            })
+
+    })
   
 
 

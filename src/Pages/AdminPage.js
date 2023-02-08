@@ -46,40 +46,55 @@ export const AdminPage = (props) => {
     })
 
 
+    useEffect(() => {
+        getAllMaps()
+    }, [])
+
+    const getAllMaps = () => {
+        axios.post(url + "getMaps", null, null).then(res => {
+            console.log(res.data.result)
+        })
+    }
 
     const saveMap = () => {
 
-       if(mapGcode != '' && mapSecCode != "" && mapName != "" && fileMap !=""){
-           axios.post(url + 'saveMap', null, {
-               params: {
-                   gcode: mapGcode,
-                   seccode: mapSecCode,
-                   image: fileMap,
-                   name: mapName
-               }
-           }).then(res => {
-               
+        var bodyFormData = new FormData();
+        bodyFormData.append('gcode', mapGcode);
+        bodyFormData.append('seccode', mapSecCode);
+        bodyFormData.append('image', fileMap);
+        bodyFormData.append('name', mapName);
 
-               setMapGcode('')
-               setMapName('')
-               setMapSecCode('')
-               setNewMap('')
-               setFileMap('')
-               document.getElementById('mapModal').style.display = 'none'
 
-               alert("Successfully added new map!")
-           })
-       }
-       else{
-        alert("Please fill out all fields")
-       }
-    }    
+
+        if (mapGcode != '' && mapSecCode != "" && mapName != "" && fileMap != "") {
+            axios({
+                method: "post",
+                url: url + "saveMap",
+                data: bodyFormData,
+                headers: { "Content-Type": "multipart/form-data" }
+            }).then(res => {
+
+
+                setMapGcode('')
+                setMapName('')
+                setMapSecCode('')
+                setNewMap('')
+                setFileMap('')
+                document.getElementById('mapModal').style.display = 'none'
+
+                alert("Successfully added new map!")
+            })
+        }
+        else {
+            alert("Please fill out all fields")
+        }
+    }
 
     const uploadMap = (file) => {
 
-        setFileMap(file[0])
+        // setFileMap(file[0])
         getBase64(file)
-      
+
     }
 
 
@@ -89,6 +104,7 @@ export const AdminPage = (props) => {
         reader.onload = function () {
 
             setNewMap(reader.result)
+            setFileMap(reader.result)
         };
         reader.onerror = function (error) {
 
@@ -192,7 +208,7 @@ export const AdminPage = (props) => {
 
     const getGradingTerm = () => {
 
-        
+
 
         axios.post(url + "getTerm", null, {
             params: {
@@ -201,11 +217,11 @@ export const AdminPage = (props) => {
         }).then(res => {
 
 
-            
+
 
             setOpenGrading(res.data.data)
         }).catch(err => {
-            
+
         })
 
     }
@@ -741,23 +757,33 @@ export const AdminPage = (props) => {
 
                         {
                             newMap != "" &&
-                            <div className='col-lg-12'>
+                            <div className='col-lg-12 d-flex justify-content-center' style={{marginTop:"20px"}}>
+                                
+                                    <i
+                                        onClick={() => {
+                                            setNewMap('')
+                                        }}
+                                        class="bi bi-trash" style={{ color: "red" }}></i>
+                               
                                 <img
-                                    style={{ height: "250px", width: "250px" }}
+                                    style={{ height: "550px", width: "550px" }}
                                     src={newMap} alt="Red dot" />
 
-                                <i
-                                    onClick={() => {
-                                        setNewMap('')
-                                    }}
-                                    class="bi bi-trash" style={{ color: "red" }}></i>
+                             
                             </div>
                         }
                     </div>
 
                     <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
-                            onClick={() => document.getElementById('mapModal').style.display = 'none'} style={{ width: "15%" }} >Close</button>
+                            onClick={() => {
+                                document.getElementById('mapModal').style.display = 'none'
+                                setMapGcode('')
+                                setMapName('')
+                                setMapSecCode('')
+                                setNewMap('')
+                                setFileMap('')
+                                }} style={{ width: "15%" }} >Close</button>
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
 

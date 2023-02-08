@@ -110,7 +110,7 @@ export const AuthPage = () => {
                     Forgot password?
                 </div>
 
-                <Button className='loginButton' onClick={() => logMe()} variant="primary" type="submit" className='w3-teal'>
+                <Button className='loginButton w3-teal' onClick={() => logMe()} variant="primary" type="submit">
                     Submit
                 </Button>
             </div>

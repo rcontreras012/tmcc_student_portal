@@ -1,15 +1,137 @@
-import React from 'react'
+import axios from 'axios';
+import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
 import { useSelector } from 'react-redux';
 import '../App.css';
-
+import { url } from '../Utils/url';
+import moment from 'moment'
 //let slideIndex = 1;
 
     export const StudentPage = (props) => {
+        const [announcementList, setAnnouncementList] = useState([])
         const user = useSelector(state => state.user.user)
+        const [currentRecord, setCurrentRecord] = useState('')
+        const [sched, setSched] = useState([])
+        const [grade, setGrade] = useState([])
 
-        console.log(user, "--> check")
     // const [slideIndex, setSlideIndex] = useState(1)
+
+
+    useEffect(() => {
+        getRecord()
+        getAnnouncement()
+    }, [])
+
+    useEffect(() => {
+        
+        if (currentRecord != "") {
+            getSched()
+            getGrade()
+        }
+    }, [currentRecord])
+
+        const getAnnouncement = () => {
+            axios.post(url + 'getannouncement', null, null).then(res => {
+                // 
+
+
+                // document.getElementById('id01').style.display = 'none'
+
+                setAnnouncementList(res.data.result)
+
+            }).catch(err => {
+
+            })
+
+
+        }
+
+    const getRecord = () => {
+        
+        axios.post(url + "getstudentrecord", null, {
+            params: {
+                sy: moment().format('YYYY'),
+                LRNNum: user.LRNNum
+
+            }
+        }).then(res => {
+            
+
+      
+            
+
+            setCurrentRecord(res.data.user)
+
+
+
+           
+        }).catch(err => {
+            
+        })
+        
+    }
+
+    const getSched = () => {
+        
+
+        axios.post(url + "getstudentschedule", null, {
+            params: {
+                sy: moment().format('YYYY'),
+                gcode: currentRecord.gradeCode,
+                seccode:currentRecord.secCode
+
+            }
+        }).then(res => {
+
+            // 
+
+            let v = res.data.sched
+            if(v.length != 0){
+              let result = v.sort((a, b) => {
+                    return a.order - b.order;
+                });
+                setSched(result)
+
+            }
+         
+
+
+
+
+        }).catch(err => {
+
+        })
+    }
+
+        const getGrade = () => {
+
+            axios.post(url + "getstudentgrade", null, {
+                params: {
+                    sy: moment().format('YYYY'),
+                    LRNNumber: user.LRNNum,
+                    gcode: currentRecord.gradeCode,
+                    seccode: currentRecord.secCode
+
+
+                }
+            }).then(res => {
+
+                console.log(res, "--> check mate")
+
+
+
+                // setCurrentRecord(res.data.user)
+
+                setGrade(res.data.grade)
+
+
+
+
+            }).catch(err => {
+
+            })
+
+        }
 
     return (
 
@@ -66,41 +188,18 @@ import '../App.css';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>7:30 - 8:30</td>
-                                                <td>MAPEH</td>
-                                                <td>M. CANETE</td>
-                                            </tr>
-                                            <tr>
-                                                <td>8:30 - 9:30</td>
-                                                <td>ENGLISH</td>
-                                                <td>E. RAMOS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10:00 - 11:00</td>
-                                                <td>MATHEMATICS</td>
-                                                <td>M. OCAMPO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>11:00 - 12:00</td>
-                                                <td>AP / ESP</td>
-                                                <td>R. DUAZO / J. CABUSAS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1:00 - 2:00</td>
-                                                <td>FILIPINO</td>
-                                                <td>K. COSTELO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2:00 - 3:00</td>
-                                                <td>TLE</td>
-                                                <td>G. DELA CRUZ</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3:30 - 4:30</td>
-                                                <td>SCIENCE</td>
-                                                <td>G. PERELLO</td>
-                                            </tr>
+                                          {
+                                            sched.map((i, k) => {
+
+                                                return(
+                                                    <tr>
+                                                        <td>{i.time}</td>
+                                                        <td>{i.subject}</td>
+                                                        <td>{i.teacher}</td>
+                                                    </tr>
+                                                )
+                                            })
+                                          }
                                         </tbody>
                                     </table>
                                 </div>
@@ -141,40 +240,23 @@ import '../App.css';
                             <div class="w3-content w3-display-container w3-margin-bottom">
 
                                 <Carousel>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
-                                        <Carousel.Caption>
-                                            <h3>First slide label</h3>
-                                            <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
+                                    {
+                                        announcementList.map((i, k) => {
 
-                                        <Carousel.Caption>
-                                            <h3>Second slide label</h3>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
-                                    <Carousel.Item>
-                                        <div
-                                            className="d-block w-100"
-                                            style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                        />
-
-                                        <Carousel.Caption>
-                                            <h3>Third slide label</h3>
-                                            <p>
-                                                Praesent commodo cursus magna, vel scelerisque nisl consectetur.
-                                            </p>
-                                        </Carousel.Caption>
-                                    </Carousel.Item>
+                                            return (
+                                                <Carousel.Item>
+                                                    <div
+                                                        className="d-block w-100"
+                                                        style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                                    />
+                                                    <Carousel.Caption>
+                                                        <h3>{i.announcement}</h3>
+                                                        <p>{i.DateAnnounce}</p>
+                                                    </Carousel.Caption>
+                                                </Carousel.Item>
+                                            )
+                                        })
+                                    }
                                 </Carousel>
 
                             </div>
@@ -199,30 +281,20 @@ import '../App.css';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>MAPEH</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ENGLISH</td>
-                                            </tr>
-                                            <tr>
-                                                <td>MATHEMATICS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>AP</td>
-                                            </tr>
-                                            <tr>
-                                                <td>ESP</td>
-                                            </tr>                                           
-                                            <tr>
-                                                <td>FILIPINO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>TLE</td>
-                                            </tr>
-                                            <tr>
-                                                <td>SCIENCE</td>
-                                            </tr>
+                                           {
+                                                grade.map((i, k) => {
+
+                                                    return(
+                                                        <tr>
+                                                            <td>{i.subject}</td>
+                                                            <td>{i.first}</td>
+                                                            <td>{i.second}</td>
+                                                            <td>{i.third}</td>
+                                                            <td>{i.fourth}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                           }
                                         </tbody>
                                     </table>
                                 </div>

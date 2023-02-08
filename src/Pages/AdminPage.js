@@ -27,7 +27,11 @@ export const AdminPage = (props) => {
     const [showAddTeacher, setShowAddTeacher] = useState(false)
     const [announcementList, setAnnouncementList] = useState([])
 
-
+    const [mapGcode, setMapGcode] = useState('')
+    const [mapSecCode, setMapSecCode] = useState('')
+    const [fileMap, setFileMap] = useState('')
+    const [newMap, setNewMap] = useState('')
+    const [mapName, setMapName] = useState('')
     const [announcement, setAnnouncement] = useState({
         desc: '',
         startDate: moment().format('YYYY-MM-DD')
@@ -41,12 +45,59 @@ export const AdminPage = (props) => {
         fourth: false
     })
 
-    
 
 
+    const saveMap = () => {
 
-    const fileSelect = (v,label) => {
-        
+       if(mapGcode != '' && mapSecCode != "" && mapName != "" && fileMap !=""){
+           axios.post(url + 'saveMap', null, {
+               params: {
+                   gcode: mapGcode,
+                   seccode: mapSecCode,
+                   image: fileMap,
+                   name: mapName
+               }
+           }).then(res => {
+               
+
+               setMapGcode('')
+               setMapName('')
+               setMapSecCode('')
+               setNewMap('')
+               setFileMap('')
+               document.getElementById('mapModal').style.display = 'none'
+
+               alert("Successfully added new map!")
+           })
+       }
+       else{
+        alert("Please fill out all fields")
+       }
+    }    
+
+    const uploadMap = (file) => {
+
+        setFileMap(file[0])
+        getBase64(file)
+      
+    }
+
+
+    const getBase64 = (file) => {
+        var reader = new FileReader();
+        reader.readAsDataURL(file[0]);
+        reader.onload = function () {
+
+            setNewMap(reader.result)
+        };
+        reader.onerror = function (error) {
+
+        };
+    }
+
+
+    const fileSelect = (v, label) => {
+
         const file = v[0]
 
         const reader = new FileReader();
@@ -57,12 +108,12 @@ export const AdminPage = (props) => {
             const worksheet = workbook.Sheets[sheetName];
             const json = xlsx.utils.sheet_to_json(worksheet);
 
-            if(label == "schedule"){
+            if (label == "schedule") {
                 setFile(json)
                 setFname(file.name)
             }
-            else if (label == "enrollee"){
-                
+            else if (label == "enrollee") {
+
                 setStudentFile(json)
                 setStudentFileName(file.name)
             }
@@ -76,7 +127,7 @@ export const AdminPage = (props) => {
     const importExcel = () => {
 
 
-        
+
         axios.post(url + "addschedule", null, {
             params: {
                 file: f
@@ -87,14 +138,14 @@ export const AdminPage = (props) => {
             setFile('')
             setFname('')
         }).catch(err => {
-            
+
         })
     }
 
     useEffect(() => {
         getAnnouncement()
-       
-    },[])
+
+    }, [])
 
     useEffect(() => {
         getGradingTerm()
@@ -111,49 +162,50 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
             // 
-            
-          
-            
+            document.getElementById('id01').style.display = 'none'
+            getAnnouncement()
+            setAnnouncement('')
+
 
         }).catch(err => {
-            
+
         })
 
     }
-    
+
 
     const getAnnouncement = () => {
         axios.post(url + 'getannouncement', null, null).then(res => {
             // 
-           
+
 
             // document.getElementById('id01').style.display = 'none'
 
             setAnnouncementList(res.data.result)
 
         }).catch(err => {
-            
+
         })
 
-        
+
     }
 
     const getGradingTerm = () => {
 
-        console.log('hello')
+        
 
         axios.post(url + "getTerm", null, {
-            params:{
+            params: {
                 sy: moment().format('YYYY')
             }
         }).then(res => {
 
 
-            console.log(res.data.data, "--> hello")
             
+
             setOpenGrading(res.data.data)
         }).catch(err => {
-            console.log(err, "--> ?")
+            
         })
 
     }
@@ -166,10 +218,10 @@ export const AdminPage = (props) => {
         // Check here
 
         axios.post(url + "opengrading", null, {
-            params:{
+            params: {
                 sy: moment().format("YYYY"),
                 first: v == 1 ? fv : grading.first,
-                second: v == 2  ? fv : grading.second,
+                second: v == 2 ? fv : grading.second,
                 third: v == 3 ? fv : grading.third,
                 fourth: v == 4 ? fv : grading.fourth
 
@@ -178,9 +230,9 @@ export const AdminPage = (props) => {
             // openGrading()
             getGradingTerm()
         }).catch(err => {
-            
+
         })
-    }    
+    }
 
     const importStudent = () => {
 
@@ -255,8 +307,18 @@ export const AdminPage = (props) => {
                         </div><br />
 
 
+                        <div className="w3-white w3-text-grey w3-card-4 ">
+                            <br />
+                            <div className="w3-container w3-padding-large">
+                                <button onClick={() => document.getElementById('mapModal').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Add Map</button>
+
+                            </div>
+                        </div><br />
+
                         {/*<!-- End Left Column -->*/}
                     </div>
+
+
 
 
                     {/*<!-- Right Column -->*/}
@@ -270,25 +332,25 @@ export const AdminPage = (props) => {
                             <div class="w3-content w3-display-container w3-margin-bottom">
 
                                 <Carousel>
-                                  {
-                                    announcementList.map((i, k ) => {
+                                    {
+                                        announcementList.map((i, k) => {
 
-                                        return (
-                                            <Carousel.Item>
-                                                <div
-                                                    className="d-block w-100"
-                                                    style={{ backgroundColor: "#c5c5c5", height: "300px" }}
-                                                />
-                                                <Carousel.Caption>
-                                                    <h3>{i.announcement}</h3>
-                                                    <p>{i.DateAnnounce}</p>
-                                                </Carousel.Caption>
-                                            </Carousel.Item>
-                                        )
-                                    })
-                                  }
-                                    
-                                    
+                                            return (
+                                                <Carousel.Item>
+                                                    <div
+                                                        className="d-block w-100"
+                                                        style={{ backgroundColor: "#c5c5c5", height: "300px" }}
+                                                    />
+                                                    <Carousel.Caption>
+                                                        <h3>{i.announcement}</h3>
+                                                        <p>{i.DateAnnounce}</p>
+                                                    </Carousel.Caption>
+                                                </Carousel.Item>
+                                            )
+                                        })
+                                    }
+
+
                                 </Carousel>
 
                             </div>
@@ -326,7 +388,11 @@ export const AdminPage = (props) => {
                                             Import Student List
                                         </h4>
 
-                                        <Dropzone onDrop={(v) => fileSelect(v, "enrollee")}>
+                                        <Dropzone
+                                            accept={{
+                                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
+                                            }}
+                                            onDrop={(v) => fileSelect(v, "enrollee")}>
                                             {({ getRootProps, getInputProps }) => (
                                                 <div className='dropzone' {...getRootProps()}>
                                                     <input {...getInputProps()} />
@@ -334,7 +400,7 @@ export const AdminPage = (props) => {
                                                 </div>
                                             )}
                                         </Dropzone>
-                                        
+
                                         {
                                             studentFileName != "" &&
                                             <aside>
@@ -348,14 +414,14 @@ export const AdminPage = (props) => {
                                                         <div className='col-lg-9'>
                                                             <i
                                                                 onClick={() => {
-                                                                        setStudentFileName('')
-                                                                        setStudentFile('')
+                                                                    setStudentFileName('')
+                                                                    setStudentFile('')
                                                                 }}
                                                                 class="bi bi-trash" style={{ color: "red" }}></i>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-12" style={{marginTop:"20px"}}>
+                                                    <div class="col-lg-12" style={{ marginTop: "20px" }}>
                                                         <button onClick={() => importStudent()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
                                                     </div>
 
@@ -374,12 +440,12 @@ export const AdminPage = (props) => {
                                     <div class="w3-padding-small">
                                         <button onClick={() => {
                                             setShowAddTeacher(true)
-                                        }} 
-                                        
-                                        class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Teacher</button>
+                                        }}
+
+                                            class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>New Teacher</button>
                                     </div>
 
-                                  
+
 
                                 </div>
                             </div>
@@ -408,7 +474,7 @@ export const AdminPage = (props) => {
                                             <td>
                                                 <label class="switch">
                                                     <input
-                                                        checked={grading.first} 
+                                                        checked={grading.first}
                                                         onChange={(v) => {
 
                                                             setOpenGrading({
@@ -428,7 +494,7 @@ export const AdminPage = (props) => {
                                             <td>2nd Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input 
+                                                    <input
                                                         checked={grading.second}
                                                         onChange={(v) => {
 
@@ -439,7 +505,7 @@ export const AdminPage = (props) => {
                                                             })
                                                             openGrading(2, grading.second ? false : true)
                                                         }}
-                                                    type="checkbox"></input>
+                                                        type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
@@ -448,7 +514,7 @@ export const AdminPage = (props) => {
                                             <td>3rd Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input 
+                                                    <input
                                                         checked={grading.third}
                                                         onChange={(v) => {
 
@@ -460,7 +526,7 @@ export const AdminPage = (props) => {
 
                                                             openGrading(3, grading.third ? false : true)
                                                         }}
-                                                    type="checkbox"></input>
+                                                        type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
@@ -469,7 +535,7 @@ export const AdminPage = (props) => {
                                             <td>4th Grading</td>
                                             <td>
                                                 <label class="switch">
-                                                    <input 
+                                                    <input
                                                         checked={grading.fourth}
                                                         onChange={(v) => {
 
@@ -480,26 +546,30 @@ export const AdminPage = (props) => {
                                                             })
                                                             openGrading(4, grading.fourth ? false : true)
                                                         }}
-                                                    type="checkbox"></input>
+                                                        type="checkbox"></input>
                                                     <span class="slider round"></span>
                                                 </label>
                                             </td>
                                         </tr>
                                     </tbody>
                                 </table>
-                                <br/>
-                                
+                                <br />
+
                             </div>
                             <br />
                             <h3>Student Schedule Management</h3>
                             <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
                                     <h3>Excel</h3>
-                                
+
                                 </div>
 
                                 <section className="container">
-                                    <Dropzone onDrop={(v) => fileSelect(v, "schedule")}>
+                                    <Dropzone
+                                        accept={{
+                                            'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
+                                        }}
+                                        onDrop={(v) => fileSelect(v, "schedule")}>
                                         {({ getRootProps, getInputProps }) => (
                                             <div className='dropzone' {...getRootProps()}>
                                                 <input {...getInputProps()} />
@@ -524,9 +594,9 @@ export const AdminPage = (props) => {
                                                     </div>
                                                 </div>
 
-                                                    <div class="col-lg-12">
-                                                        <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
-                                                    </div>
+                                                <div class="col-lg-12">
+                                                    <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                                </div>
 
                                             </div>
                                         </aside>
@@ -561,7 +631,7 @@ export const AdminPage = (props) => {
                             <h4>Announcement : </h4>
                         </div>
                         <div className='w3-rest'>
-                            <textarea 
+                            <textarea
                                 value={announcement.desc}
                                 onChange={(e) => {
                                     setAnnouncement({
@@ -580,9 +650,9 @@ export const AdminPage = (props) => {
                         <div className='w3-rest'>
                             <input
                                 onChange={(e) => {
-                                    
+
                                 }}
-                            class="w3-input w3-border" type="date" style={{ width: "70%" }} />
+                                class="w3-input w3-border" type="date" style={{ width: "70%" }} />
                         </div>
                     </div>
 
@@ -592,9 +662,109 @@ export const AdminPage = (props) => {
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
 
-                               createAnnouncement()
+                                createAnnouncement()
 
-                            }} style={{ width: "15%", marginRight: "5px"}} >Save</button>                        
+                            }} style={{ width: "15%", marginRight: "5px" }} >Save</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="mapModal" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>New Map</h2>
+                    </header>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>GCODE : </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <input
+                                value={mapGcode}
+                                onChange={(e) => {
+                                    setMapGcode(e.target.value)
+                                }}
+                                id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "30%" }}></input>
+                        </div>
+                    </div>
+
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>SEC CODE : </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <input
+                                value={mapSecCode}
+                                onChange={(e) => {
+                                    setMapSecCode(e.target.value)
+                                }}
+                                id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "30%" }}></input>
+                        </div>
+                    </div>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>MAP NAME : </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <input
+                                value={mapName}
+                                onChange={(e) => {
+                                    setMapName(e.target.value)
+                                }}
+                                id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "30%" }}></input>
+                        </div>
+                    </div>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4> Add Image: </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <Dropzone
+                                accept={{
+                                    'image/*': ['.png', '.gif', '.jpeg', '.jpg']
+
+                                }}
+                                onDrop={(v) => uploadMap(v)}>
+                                {({ getRootProps, getInputProps }) => (
+                                    <div className='dropzone' {...getRootProps()}>
+                                        <input {...getInputProps()} />
+                                        <p>Drag 'n' drop some files here, or click to select files</p>
+                                    </div>
+                                )}
+                            </Dropzone>
+                        </div>
+
+                        {
+                            newMap != "" &&
+                            <div className='col-lg-12'>
+                                <img
+                                    style={{ height: "250px", width: "250px" }}
+                                    src={newMap} alt="Red dot" />
+
+                                <i
+                                    onClick={() => {
+                                        setNewMap('')
+                                    }}
+                                    class="bi bi-trash" style={{ color: "red" }}></i>
+                            </div>
+                        }
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('mapModal').style.display = 'none'} style={{ width: "15%" }} >Close</button>
+                        <button class="w3-button w3-right w3-teal w3-border"
+                            onClick={() => {
+
+                                // createAnnouncement()
+                                saveMap()
+
+                            }} style={{ width: "15%", marginRight: "5px" }} >Save</button>
                     </div>
                 </div>
             </div>
@@ -606,60 +776,60 @@ export const AdminPage = (props) => {
                     </header>
 
                     <div className="w3-card w3-margin-bottom">
-                                <table className="w3-table w3-bordered" name="tblSched">
-                                    <thead>
+                        <table className="w3-table w3-bordered" name="tblSched">
+                            <thead>
 
-                                        <tr>
-                                            <th>Announcement</th>
-                                            <th>Status</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>No class</td>
-                                            <td>
-                                                <label class="switch">
-                                                    <input type="checkbox"></input>
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>1st Periodic Exam</td>
-                                            <td>
-                                                <label class="switch">
-                                                    <input type="checkbox"></input>
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Payments before the exam</td>
-                                            <td>
-                                                <label class="switch">
-                                                    <input type="checkbox"></input>
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                        <tr>
-                                            <td>Start of Enrollment</td>
-                                            <td>
-                                                <label class="switch">
-                                                    <input type="checkbox"></input>
-                                                    <span class="slider round"></span>
-                                                </label>
-                                            </td>
-                                        </tr>
-                                    </tbody>
-                                </table>
-                            </div>
+                                <tr>
+                                    <th>Announcement</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>No class</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox"></input>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>1st Periodic Exam</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox"></input>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Payments before the exam</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox"></input>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>Start of Enrollment</td>
+                                    <td>
+                                        <label class="switch">
+                                            <input type="checkbox"></input>
+                                            <span class="slider round"></span>
+                                        </label>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
 
                     <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
                             onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%" }} >Close</button>
                         <button class="w3-button w3-right w3-teal w3-border"
-                            onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%", marginRight: "5px"}} >Save</button>                        
+                            onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%", marginRight: "5px" }} >Save</button>
                     </div>
                 </div>
             </div>

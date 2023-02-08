@@ -23,6 +23,7 @@ var openGradingRouter = require('./routes/term')
 var getTermRouter = require('./routes/getTerm')
 const getTeacherSchedule = require('./routes/getTeacherSchedule')()
 const studentRouter = require('./routes/student')()
+const mapRouter = require('./routes/Map')()
 
 
 require('dotenv').config();
@@ -73,6 +74,7 @@ app.use('/getannouncement', getannouncementRouter)
 app.use('/opengrading', openGradingRouter)
 app.use('/getTerm', getTermRouter)
 app.use(getTeacherSchedule)
+app.use(mapRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

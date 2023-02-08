@@ -21,6 +21,7 @@ export const TeacherPage = (props) => {
     const [subject, setSubject] = useState('')
     const [selectedPeriod, setSelectedPeriod] = useState('')
     const [grade, setGrade] = useState(0)
+    const [teacherSched, setTeacherSched] = useState([])
 
     const [grading, setOpenGrading] = useState({
         sy: moment().format("YYYY"),
@@ -38,6 +39,7 @@ export const TeacherPage = (props) => {
         getGradeList()
         getSubject()
         getGradingTerm()
+        getTeacherSchedule()
     }, [])
 
     const getAnnouncement = () => {
@@ -76,12 +78,32 @@ export const TeacherPage = (props) => {
 
             
             
-
+            setGrade('')
    
         }).catch(err => {
             
         })
 
+    }
+
+    const getTeacherSchedule = () => {
+
+        axios.post(url + "getteacherschedule", null, {
+            params: {
+                sy: moment().format('YYYY'),
+                teacher_id: user.teacher_id_no
+
+            }
+        }).then(res => {
+
+
+
+            
+
+                setTeacherSched(res.data.list)
+        }).catch(err => {
+
+        })
     }
 
     const getGradingTerm = () => {
@@ -166,6 +188,8 @@ export const TeacherPage = (props) => {
         })
     }
 
+    
+    
 
   
     
@@ -204,15 +228,15 @@ export const TeacherPage = (props) => {
                                     style={{ width: "100%" }} />
 
                                 <div className="w3-display-bottomleft w3-container w3-text-black">
-                                    <h2>Teachers Name</h2>
+                                    <h2>{user.first_name} {user.last_name}</h2>
                                 </div>
                             </div>
                             <br />
                             <div className="w3-container">
-                                <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>Grade / Section</p>
-                                <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address</p>
-                                <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address</p>
-                                <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number</p>
+                                {/* <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>Grade / Section</p> */}
+                                <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address: {user.address}</p>
+                                <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address: {user.schoolEmail}</p>
+                                <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number: {user.contact_no}</p>
                                 <hr />
 
                                 <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>My Schedule</b></p>
@@ -227,41 +251,19 @@ export const TeacherPage = (props) => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <tr>
-                                                <td>7:30 - 8:30</td>
-                                                <td>MAPEH</td>
-                                                <td>M. CANETE</td>
-                                            </tr>
-                                            <tr>
-                                                <td>8:30 - 9:30</td>
-                                                <td>ENGLISH</td>
-                                                <td>E. RAMOS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>10:00 - 11:00</td>
-                                                <td>MATHEMATICS</td>
-                                                <td>M. OCAMPO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>11:00 - 12:00</td>
-                                                <td>AP / ESP</td>
-                                                <td>R. DUAZO / J. CABUSAS</td>
-                                            </tr>
-                                            <tr>
-                                                <td>1:00 - 2:00</td>
-                                                <td>FILIPINO</td>
-                                                <td>K. COSTELO</td>
-                                            </tr>
-                                            <tr>
-                                                <td>2:00 - 3:00</td>
-                                                <td>TLE</td>
-                                                <td>G. DELA CRUZ</td>
-                                            </tr>
-                                            <tr>
-                                                <td>3:30 - 4:30</td>
-                                                <td>SCIENCE</td>
-                                                <td>G. PERELLO</td>
-                                            </tr>
+                                            {
+                                                teacherSched.map((i, k) => {
+                                                    
+                                                    return (
+                                                        <tr>
+                                                            
+                                                            <td>{i.time}1</td>
+                                                            <td>{i.subject}</td>
+                                                            <td>{i.teacher}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -390,7 +392,7 @@ export const TeacherPage = (props) => {
                                                                 
                                                                 {
                                                                     
-                                                                    setStudentID(i.studentID)
+                                                                    setStudentID(i.LRNNumber)
                                                                 document.getElementById('id01').style.display = 'block'
                                                                 }
                                                                 
@@ -452,6 +454,7 @@ export const TeacherPage = (props) => {
                         </div>
                         <div className='w3-rest'>
                             <input 
+                                value={grade}
                                 onChange={(v) => setGrade(v.target.value)}
                                 class="w3-input w3-border" type="text" style={{ width: "60%" }} />
                         </div>

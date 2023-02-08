@@ -154,7 +154,7 @@ export const EnrollModal = (props) => {
                 <Button variant="secondary" onClick={props.onClose}>
                     Close
                 </Button>
-                <Button onClick={() => addStudent()} variant="primary">
+                <Button onClick={() => addStudent()} variant="primary" className='w3-teal'>
                     Save Changes
                 </Button>
             </Modal.Footer>
@@ -311,7 +311,7 @@ export const AddTeacherModal = (props) => {
                 <Button variant="secondary" onClick={props.onClose}>
                     Close
                 </Button>
-                <Button onClick={() => addStudent()} variant="primary">
+                <Button onClick={() => addStudent()} variant="primary" className='w3-teal'>
                     Save Changes
                 </Button>
             </Modal.Footer>

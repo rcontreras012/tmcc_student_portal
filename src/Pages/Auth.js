@@ -106,11 +106,11 @@ export const AuthPage = () => {
                     }} type="password" placeholder="Password" />
                 </Form.Group>
 
-                <div className='forgot' onClick={() => setForgot(true)}>
+                <div className='forgot w3-margin-bottom' onClick={() => setForgot(true)}>
                     Forgot password?
                 </div>
 
-                <Button className='loginButton' onClick={() => logMe()} variant="primary" type="submit">
+                <Button className='loginButton' onClick={() => logMe()} variant="primary" type="submit" className='w3-teal'>
                     Submit
                 </Button>
             </div>

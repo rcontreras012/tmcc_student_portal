@@ -273,19 +273,34 @@ export const TeacherPage = (props) => {
                                 <p className="w3-large w3-text-theme"><b><i
                                     className="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>School
                                     Map</b></p>
-                                <p>English</p>
-                                <div className="w3-light-grey w3-round-xlarge">
-                                    <div className="w3-round-xlarge w3-teal" style={{ height: "24px", width: "100%" }}></div>
+                                <div className="w3-card-2 w3-margin-bottom">
+                                    <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
+                                        <thead>
+                                            <tr>
+                                                <th>Grade</th>
+                                                <th>Section</th>
+                                                <th>Map links</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                teacherSched.map((i, k) => {
+
+                                                    return (
+                                                        <tr>
+
+                                                            <td>{i.time}1</td>
+                                                            <td>{i.subject}</td>
+                                                            <td>
+                                                                <button onClick={() => document.getElementById('id02').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}><i class="fa fa-globe" aria-hidden="true"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
-                                <p>Spanish</p>
-                                <div className="w3-light-grey w3-round-xlarge">
-                                    <div className="w3-round-xlarge w3-teal" style={{ height: "24px", width: "55%" }}></div>
-                                </div>
-                                <p>German</p>
-                                <div className="w3-light-grey w3-round-xlarge">
-                                    <div className="w3-round-xlarge w3-teal" style={{ height: "24px", width: "25%" }}></div>
-                                </div>
-                                <br />
                             </div>
                         </div><br />
 
@@ -485,13 +500,38 @@ export const TeacherPage = (props) => {
                     </div>
 
                     <div class="w3-container w3-light-grey w3-padding">
-                        <button class="w3-button w3-right w3-white w3-border"
+                    <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%" }}>Close</button>
+                        <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
                                 gradeStudent()
                                 document.getElementById('id01').style.display = 'none'
-                            }}>Save</button>
+                            }} style={{ width: "15%", marginRight: "5px" }}>Save</button>
+
+                    </div>
+                </div>
+            </div>
+
+            <div id="id02" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>School Map</h2>
+                    </header>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>Gcdoe</h4>
+                            <h5>Section</h5>
+                            <h5>Location Here</h5>
+                        </div>
+                        <div className='w3-rest'>
+                            <h5>Location Here Change to image</h5>
+                        </div>
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
-                            onClick={() => document.getElementById('id01').style.display = 'none'}>Close</button>
+                            onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%" }} >Close</button>
                     </div>
                 </div>
             </div>

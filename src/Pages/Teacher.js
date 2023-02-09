@@ -22,6 +22,9 @@ export const TeacherPage = (props) => {
     const [selectedPeriod, setSelectedPeriod] = useState('')
     const [grade, setGrade] = useState(0)
     const [teacherSched, setTeacherSched] = useState([])
+    const [mapImage, setMapImage] = useState('')
+
+    const [maps, setMaps] = useState([])
 
     const [grading, setOpenGrading] = useState({
         sy: moment().format("YYYY"),
@@ -32,7 +35,19 @@ export const TeacherPage = (props) => {
     })
 
 
-    
+    useEffect(() => {
+        getAllMaps()
+    }, [])
+
+    const getAllMaps = () => {
+        axios.post(url + "getMaps", null, null).then(res => {
+            console.log(res.data.result)
+
+            setMaps(res.data.result)
+        })
+    }
+
+
 
     useEffect(() => {
         getAnnouncement()
@@ -284,15 +299,19 @@ export const TeacherPage = (props) => {
                                         </thead>
                                         <tbody>
                                             {
-                                                teacherSched.map((i, k) => {
+                                                maps.map((i, k) => {
 
                                                     return (
                                                         <tr>
 
-                                                            <td>{i.time}1</td>
-                                                            <td>{i.subject}</td>
+                                                            <td>{i.gcode}1</td>
+                                                            <td>{i.name}</td>
                                                             <td>
-                                                                <button onClick={() => document.getElementById('id02').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}><i class="fa fa-globe" aria-hidden="true"></i></button>
+                                                                <button onClick={() => {
+                                                                    document.getElementById('id02').style.display = 'block'
+                                                                    setMapImage(i.image)
+
+                                                                }} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}><i class="fa fa-globe" aria-hidden="true"></i></button>
                                                             </td>
                                                         </tr>
                                                     )
@@ -519,13 +538,12 @@ export const TeacherPage = (props) => {
                     </header>
 
                     <div className='w3-row w3-margin-top w3-padding'>
-                        <div className='w3-quarter'>
-                            <h4>Gcdoe</h4>
-                            <h5>Section</h5>
-                            <h5>Location Here</h5>
-                        </div>
-                        <div className='w3-rest'>
-                            <h5>Location Here Change to image</h5>
+                      
+                        <div className='w3-rest w3-center'>
+                            <img
+                                style={{height:"500px", width:"600px"}}
+                                src={mapImage}
+                            />
                         </div>
                     </div>
 

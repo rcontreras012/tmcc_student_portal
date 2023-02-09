@@ -13,7 +13,8 @@ import moment from 'moment'
         const [currentRecord, setCurrentRecord] = useState('')
         const [sched, setSched] = useState([])
         const [grade, setGrade] = useState([])
-
+        const [maps, setMaps] = useState([])
+        const [mapImage, setMapImage] = useState('')
     // const [slideIndex, setSlideIndex] = useState(1)
 
 
@@ -21,6 +22,19 @@ import moment from 'moment'
         getRecord()
         getAnnouncement()
     }, [])
+
+        useEffect(() => {
+            getAllMaps()
+        }, [])
+
+        const getAllMaps = () => {
+            axios.post(url + "getMaps", null, null).then(res => {
+                console.log(res.data.result)
+
+                setMaps(res.data.result)
+            })
+        }
+
 
     useEffect(() => {
         
@@ -209,17 +223,37 @@ import moment from 'moment'
                                 <p className="w3-large w3-text-theme"><b><i
                                     className="fa fa-globe fa-fw w3-margin-right w3-text-teal"></i>School
                                     Map</b></p>
-                                <p>English</p>
-                                <div className="w3-light-grey w3-round-xlarge">
-                                    <div className="w3-round-xlarge w3-teal" style={{ height: "24px", width: "100%" }}></div>
-                                </div>
-                                <p>Spanish</p>
-                                <div className="w3-light-grey w3-round-xlarge">
-                                    <div className="w3-round-xlarge w3-teal" style={{ height: "24px", width: "55%" }}></div>
-                                </div>
-                                <p>German</p>
-                                <div className="w3-light-grey w3-round-xlarge">
-                                    <div className="w3-round-xlarge w3-teal" style={{ height: "24px", width: "25%" }}></div>
+                                <div className="w3-card-2 w3-margin-bottom">
+                                    <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
+                                        <thead>
+                                            <tr>
+                                                <th>Grade</th>
+                                                <th>Section</th>
+                                                <th>Map links</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                maps.map((i, k) => {
+
+                                                    return (
+                                                        <tr>
+
+                                                            <td>{i.gcode}1</td>
+                                                            <td>{i.name}</td>
+                                                            <td>
+                                                                <button onClick={() => {
+                                                                    document.getElementById('id02').style.display = 'block'
+                                                                    setMapImage(i.image)
+
+                                                                }} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}><i class="fa fa-globe" aria-hidden="true"></i></button>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
                                 </div>
                                 <br />
                             </div>
@@ -314,7 +348,28 @@ import moment from 'moment'
                 {/*<!-- End page content -->*/}
             </div>
 
+            <div id="id02" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>School Map</h2>
+                    </header>
 
+                    <div className='w3-row w3-margin-top w3-padding'>
+
+                        <div className='w3-rest w3-center'>
+                            <img
+                                style={{ height: "500px", width: "600px" }}
+                                src={mapImage}
+                            />
+                        </div>
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%" }} >Close</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
     )

@@ -110,7 +110,7 @@ export const TeacherPage = (props) => {
             }).then(res => {
                 document.getElementById('id01').style.display = 'none'
 
-                
+                alert('Successfully graded the student')
                 setGrade('')
 
             }).catch(err => {

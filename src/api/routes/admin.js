@@ -112,7 +112,7 @@ router.post('/', async function (req, res, next) {
             email,
             contact_no,
             teacher_id_no,
-            role: 2,
+            role: 1,
             password,
             schoolEmail: first_name + "." + last_name + "@tmcc.admin.com"
         })

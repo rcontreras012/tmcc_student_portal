@@ -19,47 +19,53 @@ export const EnrollModal = (props) => {
     const [success, setShowSuccess] = useState(false)
 
     const addStudent = () => {
-        axios.post(url + "addstudent", null, {
-            params: {
-                first_name: fname,
-                last_name: lname,
-                email: email,
-                address: address,
-                contact_no: contact,
-                lrnnumbers: lrn
-            }
-        }).then(res => {
 
-            setShowSuccess(true)
-            setTimeout(() => {
-                setFname('')
-                setLname('')
-                setShowSuccess(false)
-                setAdress('')
-                setEmail('')
-                setLRN('')
-                setContact('')
-                props.onClose()
+        if(fname == "" && lname == "" && email == "" && address == "" && contact == "" && lrn == ""){
+            alert("Please fill out all fields")
+        }
+        else{
+            axios.post(url + "addstudent", null, {
+                params: {
+                    first_name: fname,
+                    last_name: lname,
+                    email: email,
+                    address: address,
+                    contact_no: contact,
+                    lrnnumbers: lrn
+                }
+            }).then(res => {
 
-            }, 2000)
-
-        }).catch(err => {
-
-
-            if (err.response.status == 400) {
-                setError(err.response.data.error)
-                setShowError(true)
-
-
+                setShowSuccess(true)
                 setTimeout(() => {
-                    setShowError(false)
+                    setFname('')
+                    setLname('')
+                    setShowSuccess(false)
+                    setAdress('')
+                    setEmail('')
+                    setLRN('')
+                    setContact('')
+                    props.onClose()
+
                 }, 2000)
 
+            }).catch(err => {
 
-            }
+
+                if (err.response.status == 400) {
+                    setError(err.response.data.error)
+                    setShowError(true)
 
 
-        })
+                    setTimeout(() => {
+                        setShowError(false)
+                    }, 2000)
+
+
+                }
+
+
+            })
+        }
     }
 
 
@@ -176,47 +182,54 @@ export const AddTeacherModal = (props) => {
     const [success, setShowSuccess] = useState(false)
 
     const addStudent = () => {
-        axios.post(url + "addTeacher", null, {
-            params: {
-                first_name: fname,
-                last_name: lname,
-                email: email,
-                address: address,
-                contact_no: contact,
-                teachernum: lrn
-            }
-        }).then(res => {
 
-            setShowSuccess(true)
-            setTimeout(() => {
-                setFname('')
-                setLname('')
-                setShowSuccess(false)
-                setAdress('')
-                setEmail('')
-                setLRN('')
-                setContact('')
-                props.onClose()
+        if(fname == "" && lname == "" && email == "" && address == "" && contact == "" && lrn == "")
+        {
+            alert("Please fill out all fields")
+        }
+        else{
+            axios.post(url + "addTeacher", null, {
+                params: {
+                    first_name: fname,
+                    last_name: lname,
+                    email: email,
+                    address: address,
+                    contact_no: contact,
+                    teachernum: lrn
+                }
+            }).then(res => {
 
-            }, 2000)
-
-        }).catch(err => {
-
-
-            if (err.response.status == 400) {
-                setError(err.response.data.error)
-                setShowError(true)
-
-
+                setShowSuccess(true)
                 setTimeout(() => {
-                    setShowError(false)
+                    setFname('')
+                    setLname('')
+                    setShowSuccess(false)
+                    setAdress('')
+                    setEmail('')
+                    setLRN('')
+                    setContact('')
+                    props.onClose()
+
                 }, 2000)
 
+            }).catch(err => {
 
-            }
+
+                if (err.response.status == 400) {
+                    setError(err.response.data.error)
+                    setShowError(true)
 
 
-        })
+                    setTimeout(() => {
+                        setShowError(false)
+                    }, 2000)
+
+
+                }
+
+
+            })
+        }
     }
 
 

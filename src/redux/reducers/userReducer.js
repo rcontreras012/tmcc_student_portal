@@ -1,4 +1,4 @@
-import { LOGIN } from "../actionType";
+import { LOGIN, LOGOUT } from "../actionType";
 
 const initialState = {
     user: null,
@@ -15,6 +15,14 @@ export const AuthReducer = (state = initialState, action) => {
             return Object.assign({}, state, {
                 user: item,
                 signedIn: true
+            })
+
+
+        case LOGOUT:
+
+            return Object.assign({}, state, {
+                user: null,
+                signedIn: false
             })
 
         default:

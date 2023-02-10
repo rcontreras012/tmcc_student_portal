@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import '../App.css';
 import { AddTeacherModal, EnrollModal } from '../Components/Modal';
 import Button from 'react-bootstrap/Button';
@@ -10,6 +10,8 @@ import * as xlsx from 'xlsx'
 import { url } from '../Utils/url';
 import axios from 'axios'
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom';
+import { LOGOUT } from '../redux/actionType';
 //let slideIndex = 1;
 
 export const AdminPage = (props) => {
@@ -44,7 +46,23 @@ export const AdminPage = (props) => {
         third: false,
         fourth: false
     })
+    const navigate  = useNavigate()
+    const dispatch = useDispatch()
+    
+    
 
+    useEffect(() => {
+            if(user == null) {
+                alert("Permission denied")
+            }
+            else if(user.role != 1){
+
+             navigate('/', {replace: true})
+                dispatch({
+                    type: LOGOUT
+                })
+            }
+    }, [])
 
     useEffect(() => {
         getAllMaps()
@@ -52,7 +70,7 @@ export const AdminPage = (props) => {
 
     const getAllMaps = () => {
         axios.post(url + "getMaps", null, null).then(res => {
-            console.log(res.data.result)
+            
         })
     }
 
@@ -169,23 +187,29 @@ export const AdminPage = (props) => {
 
     const createAnnouncement = () => {
 
-        axios.post(url + 'addAnnouncement', null, {
-            params: {
-                announcement: announcement.desc,
-                is_active: true,
-                date_announce: announcement.startDate,
-                expired_date: announcement.startDate
-            }
-        }).then(res => {
-            // 
-            document.getElementById('id01').style.display = 'none'
-            getAnnouncement()
-            setAnnouncement('')
+        if(announcement.desc == "" ){
+            alert("Please fill out all fields")
+        }
+        else
+        {
+            axios.post(url + 'addAnnouncement', null, {
+                params: {
+                    announcement: announcement.desc,
+                    is_active: true,
+                    date_announce: announcement.startDate,
+                    expired_date: announcement.startDate
+                }
+            }).then(res => {
+                // 
+                document.getElementById('id01').style.display = 'none'
+                getAnnouncement()
+                setAnnouncement('')
 
 
-        }).catch(err => {
+            }).catch(err => {
 
-        })
+            })
+        }
 
     }
 
@@ -287,6 +311,13 @@ export const AdminPage = (props) => {
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
                         <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
+                        <a onClick={() => {
+                            dispatch({
+                                type: LOGOUT
+                            })
+                            navigate('/', { replace: true })
+                        }} className="w3-bar-item w3-button">Logout</a>
+                       
                     </div>
                 </div>
             </div>

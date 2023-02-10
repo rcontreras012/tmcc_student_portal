@@ -2,8 +2,10 @@ import axios from 'axios';
 import moment from 'moment';
 import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 import '../App.css';
+import { LOGOUT } from '../redux/actionType';
 import { url } from '../Utils/url';
 
 export const TeacherPage = (props) => {
@@ -33,7 +35,8 @@ export const TeacherPage = (props) => {
         third: false,
         fourth: false
     })
-
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
     useEffect(() => {
         getAllMaps()
@@ -41,13 +44,24 @@ export const TeacherPage = (props) => {
 
     const getAllMaps = () => {
         axios.post(url + "getMaps", null, null).then(res => {
-            console.log(res.data.result)
+            
 
             setMaps(res.data.result)
         })
     }
 
+    useEffect(() => {
+        if (user == null) {
+            alert("Permission denied")
+        }
+        else if (user.role != 2) {
 
+            navigate('/', { replace: true })
+            dispatch({
+                type: LOGOUT
+            })
+        }
+    }, [])
 
     useEffect(() => {
         getAnnouncement()
@@ -74,30 +88,39 @@ export const TeacherPage = (props) => {
     }
 
     const gradeStudent = () => {
+        console.log(studentID)
+
+        if(grade == 0 && subject == ""){
+            alert('Please fill out all fields')
+        }
+        else{
+
+            axios.post(url + "gradeStudent", null, {
+                params: {
+                    sy: moment().format('YYYY'),
+                    gcode,
+                    seccode,
+                    studentID,
+                    sy,
+                    selectedPeriod,
+                    subject,
+                    grade
+
+                }
+            }).then(res => {
+                document.getElementById('id01').style.display = 'none'
+
+                console.log(res, "--> OLOL")
+                setGrade('')
+
+            }).catch(err => {
+
+            })
+        }
 
         
 
-        axios.post(url + "gradeStudent", null, {
-            params: {
-                sy: moment().format('YYYY'),
-                gcode,
-                seccode,
-                studentID,
-                sy,
-                selectedPeriod,
-                subject,
-                grade
-
-            }
-        }).then(res => {
-
-            
-            
-            setGrade('')
-   
-        }).catch(err => {
-            
-        })
+      
 
     }
 
@@ -219,8 +242,15 @@ export const TeacherPage = (props) => {
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
                         <a href="#about" className="w3-bar-item w3-button">About</a>
-                        <a href="#menu" className="w3-bar-item w3-button">Menu</a>
-                        <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
+                        <a href="#menu" className="w3-bar-item w3-button">Contact Us</a>
+                        <a 
+                            onClick={() => {
+                                dispatch({
+                                    type: LOGOUT
+                                })
+                                navigate('/', {replace: true})
+                            }}
+                        className="w3-bar-item w3-button">Logout</a>
                     </div>
                 </div>
             </div>
@@ -524,7 +554,7 @@ export const TeacherPage = (props) => {
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
                                 gradeStudent()
-                                document.getElementById('id01').style.display = 'none'
+                      
                             }} style={{ width: "15%", marginRight: "5px" }}>Save</button>
 
                     </div>

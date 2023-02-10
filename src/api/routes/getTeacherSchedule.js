@@ -172,7 +172,8 @@ module.exports = () => {
                         third: '',
                         fourth :'',
                         subject: '',
-                        subject
+                        subject,
+                        studentID: LRNNumber
                     })
 
                     try {
@@ -196,7 +197,7 @@ module.exports = () => {
                         gradeModel.updateOne({
                             sy,
                             gcode,
-                            studentID,
+                            studentID: LRNNumber,
                             subject
                         }, {
                             first: gradeVal,

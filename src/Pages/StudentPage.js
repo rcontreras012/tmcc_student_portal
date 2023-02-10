@@ -1,10 +1,12 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react'
 import Carousel from 'react-bootstrap/Carousel';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import '../App.css';
 import { url } from '../Utils/url';
 import moment from 'moment'
+import { useNavigate } from 'react-router-dom';
+import { LOGOUT } from '../redux/actionType';
 //let slideIndex = 1;
 
     export const StudentPage = (props) => {
@@ -17,6 +19,8 @@ import moment from 'moment'
         const [mapImage, setMapImage] = useState('')
     // const [slideIndex, setSlideIndex] = useState(1)
 
+        const navigate = useNavigate()
+        const dispatch = useDispatch()
 
     useEffect(() => {
         getRecord()
@@ -34,6 +38,20 @@ import moment from 'moment'
                 setMaps(res.data.result)
             })
         }
+
+        useEffect(() => {
+            if (user == null) {
+                alert("Permission denied")
+            }
+            else if (user.role != 3) {
+
+                navigate('/', { replace: true })
+                dispatch({
+                    type: LOGOUT
+                })
+                
+            }
+        }, [])
 
 
     useEffect(() => {
@@ -158,6 +176,15 @@ import moment from 'moment'
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
                         <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
+                        <a 
+                            onClick={() => {
+                                dispatch({
+                                    type: LOGOUT
+                                })
+                                navigate('/', { replace: true })
+                            }}
+                        className="w3-bar-item w3-button">Logout</a>
+                    
                     </div>
                 </div>
             </div>

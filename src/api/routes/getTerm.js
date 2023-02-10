@@ -27,7 +27,8 @@ router.post('/', async function (req, res, next) {
 
                 res.send({
                     data: d[0],
-                    sy
+                    sy,
+                    data: d
                 })
             }
         })

@@ -21,33 +21,31 @@ router.post('/', async function (req, res, next) {
         second,
         third,
         fourth
-        
+
 
     })
 
     try {
-       
-    
 
 
-        termModel.find({sy} , "" , async (err, d) => {
 
-            if(err){
+
+        termModel.find({ sy }, "", async (err, d) => {
+
+            if (err) {
                 res.status(500)
                 res.send({
                     msg: "Something went wrong."
                 })
             }
-            else{
-                
-                if(d.length == 0){
+            else {
+
+                if (d.length == 0) {
 
                     term.save()
-                    res.send({
-                        "???": "!!!"
-                    })
+
                 }
-                else{
+                else {
                     const filter = { sy: sy };
                     const update = { sy: sy, first, second, third, fourth };
 
@@ -62,8 +60,8 @@ router.post('/', async function (req, res, next) {
             }
         })
 
-    
-     
+
+
 
     }
     catch (error) {

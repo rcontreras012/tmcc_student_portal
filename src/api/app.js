@@ -26,6 +26,7 @@ var getTermRouter = require('./routes/getTerm')
 const getTeacherSchedule = require('./routes/getTeacherSchedule')()
 const studentRouter = require('./routes/student')()
 const mapRouter = require('./routes/Map')()
+const addTermRouter = require('./routes/addTerm')
 
 
 require('dotenv').config();
@@ -74,6 +75,7 @@ app.use('/enrollstudent', enrollStudentRouter)
 app.use('/addsection', sectionRouter)
 app.use('/forgetpass', forgetRouter)
 app.use('/changepass', changePassRouter)
+app.use('/addTerm', addTermRouter)
 
 app.use('/gradelist', getScheduleRouter)
 app.use('/getannouncement', getannouncementRouter)

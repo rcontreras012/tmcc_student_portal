@@ -65,6 +65,7 @@ export const AdminPage = (props) => {
     }, [])
 
     useEffect(() => {
+        openGrading()
         getAllMaps()
     }, [])
 
@@ -240,10 +241,10 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
 
+            console.log(res, "--> CHECK!!")
 
 
-
-            setOpenGrading(res.data.data)
+            // setOpenGrading(res.data.data)
         }).catch(err => {
 
         })
@@ -268,6 +269,7 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
             // openGrading()
+            console.log('potek', res)
             getGradingTerm()
         }).catch(err => {
 

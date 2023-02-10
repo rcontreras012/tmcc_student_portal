@@ -38,7 +38,7 @@ module.exports = () => {
         })
      
 
-        MapModel.find({ gcode }, "", async (err, d) => {
+        MapModel.find({ name, gcode, secCode }, "", async (err, d) => {
 
             if (err) {
                 res.status(500)

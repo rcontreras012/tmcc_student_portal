@@ -26,35 +26,71 @@ module.exports = () => {
         // var bitmap = fs.readFile(image);
         // // convert binary data to base64 encoded string
         // let a = new Buffer(bitmap).toString('base64');
+
+        const createMap = new mapModel({
+
+           gcode,
+           image,
+           secCode,
+           name
+
+
+        })
      
-      
 
-        try {
-            // const dataToSave =  newmap.save();
+        MapModel.find({ gcode }, "", async (err, d) => {
 
-            MapModel.updateOne({
-                gcode,
-            }, {
-                gcode: gcode,
-                image: image,
-                secCode: secCode,
-                name: name
-                
-            }, function (err, docs) {
-          
+            if (err) {
+                res.status(500)
                 res.send({
-                    msg: "Success update",
-                    docs,
+                    msg: "Something went wrong."
                 })
-            })
-          
-        }
-        catch (error) {
-            res.status(400).json({ message: error.message })
-            res.send({
-                error: "something went wrong"
-            })
-        }
+            }
+            else {
+
+                if (d.length == 0) {
+
+                    createMap.save()
+                    res.send({
+                        "???": "!!!"
+                    })
+                }
+                else {
+
+                    try {
+                        // const dataToSave =  newmap.save();
+
+                        MapModel.updateOne({
+                            gcode,
+                        }, {
+                            gcode: gcode,
+                            image: image,
+                            secCode: secCode,
+                            name: name
+
+                        }, function (err, docs) {
+
+                            res.send({
+                                msg: "Success update",
+                                docs,
+                            })
+                        })
+
+                    }
+                    catch (error) {
+                        res.status(400).json({ message: error.message })
+                        res.send({
+                            error: "something went wrong"
+                        })
+                    }
+                   
+                }
+            }
+        })
+
+        
+
+      
 
 
     });

@@ -93,13 +93,13 @@ export const AdminPage = (props) => {
                 headers: { "Content-Type": "multipart/form-data" }
             }).then(res => {
 
-
-                setMapGcode('')
-                setMapName('')
-                setMapSecCode('')
-                setNewMap('')
-                setFileMap('')
-                document.getElementById('mapModal').style.display = 'none'
+                console.log(res, "--> AWIT")
+                // setMapGcode('')
+                // setMapName('')
+                // setMapSecCode('')
+                // setNewMap('')
+                // setFileMap('')
+                // document.getElementById('mapModal').style.display = 'none'
 
                 alert("Successfully added new map!")
             })

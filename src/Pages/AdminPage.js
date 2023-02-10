@@ -65,7 +65,8 @@ export const AdminPage = (props) => {
     }, [])
 
     useEffect(() => {
-        openGrading()
+      
+        getGradingTerm()
         getAllMaps()
     }, [])
 
@@ -243,8 +244,8 @@ export const AdminPage = (props) => {
 
             
 
-
-            // setOpenGrading(res.data.data)
+            openGrading()
+            setOpenGrading(res.data.data)
         }).catch(err => {
 
         })

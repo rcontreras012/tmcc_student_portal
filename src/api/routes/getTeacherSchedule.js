@@ -215,7 +215,8 @@ module.exports = () => {
                         gradeModel.updateOne({
                             sy,
                             gcode,
-                            studentID,
+                            studentID: LRNNumber,
+                            subject
 
                         }, {
                             second: gradeVal,
@@ -234,7 +235,7 @@ module.exports = () => {
                         gradeModel.updateOne({
                             sy,
                             gcode,
-                            studentID,
+                            studentID: LRNNumber,
                             subject
 
                         }, {
@@ -253,7 +254,7 @@ module.exports = () => {
                         gradeModel.updateOne({
                             sy,
                             gcode,
-                            studentID,
+                            studentID: LRNNumber,
                             subject
 
                         }, {

@@ -93,13 +93,13 @@ export const AdminPage = (props) => {
                 headers: { "Content-Type": "multipart/form-data" }
             }).then(res => {
 
-                console.log(res, "--> AWIT")
-                // setMapGcode('')
-                // setMapName('')
-                // setMapSecCode('')
-                // setNewMap('')
-                // setFileMap('')
-                // document.getElementById('mapModal').style.display = 'none'
+                
+                setMapGcode('')
+                setMapName('')
+                setMapSecCode('')
+                setNewMap('')
+                setFileMap('')
+                document.getElementById('mapModal').style.display = 'none'
 
                 alert("Successfully added new map!")
             })
@@ -241,7 +241,7 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
 
-            console.log(res, "--> CHECK!!")
+            
 
 
             // setOpenGrading(res.data.data)
@@ -269,7 +269,7 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
             // openGrading()
-            console.log('potek', res)
+            
             getGradingTerm()
         }).catch(err => {
 

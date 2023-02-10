@@ -14,8 +14,8 @@ export const AuthPage = () => {
 
     const dispatch = useDispatch()
     const navigate = useNavigate()
-    const [email, setEmail] = useState('Renz.R@tmcc.teacher.com')
-    const [password, setPassword] = useState('t!)X3sLvAvcWK')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
     const [showForgot, setForgot] = useState(false)
 
 

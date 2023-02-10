@@ -56,7 +56,9 @@ router.post('/', async function (req, res, next) {
 
 
                     res.send({
-                        msg: "Updated"
+                        msg: "Updateds",
+                        doc,
+                        query: first
                     })
                 }
             }

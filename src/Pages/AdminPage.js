@@ -65,8 +65,6 @@ export const AdminPage = (props) => {
     }, [])
 
     useEffect(() => {
-      
-        getGradingTerm()
         getAllMaps()
     }, [])
 
@@ -94,7 +92,7 @@ export const AdminPage = (props) => {
                 headers: { "Content-Type": "multipart/form-data" }
             }).then(res => {
 
-                
+
                 setMapGcode('')
                 setMapName('')
                 setMapSecCode('')
@@ -242,10 +240,10 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
 
+
             
 
-            openGrading()
-            setOpenGrading(res.data.data)
+            setOpenGrading(res.data.data[0])
         }).catch(err => {
 
         })
@@ -270,6 +268,7 @@ export const AdminPage = (props) => {
             }
         }).then(res => {
             // openGrading()
+
             
             getGradingTerm()
         }).catch(err => {

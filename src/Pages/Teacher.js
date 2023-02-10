@@ -88,7 +88,7 @@ export const TeacherPage = (props) => {
     }
 
     const gradeStudent = () => {
-        console.log(studentID)
+        
 
         if(grade == 0 && subject == ""){
             alert('Please fill out all fields')
@@ -110,7 +110,7 @@ export const TeacherPage = (props) => {
             }).then(res => {
                 document.getElementById('id01').style.display = 'none'
 
-                console.log(res, "--> OLOL")
+                
                 setGrade('')
 
             }).catch(err => {
@@ -155,9 +155,14 @@ export const TeacherPage = (props) => {
         }).then(res => {
 
 
-            
+        
 
-            setOpenGrading(res.data.data)
+            if(res.data.data.length != 0){
+                setOpenGrading({
+                    ...grading,
+                    ...res.data.data[0]
+                })
+            }
         }).catch(err => {
             
         })

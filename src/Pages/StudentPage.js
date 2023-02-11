@@ -165,6 +165,29 @@ import { LOGOUT } from '../redux/actionType';
 
         }
 
+
+        const getFinalGrade = (i) => {
+
+
+            if(i.fourth != "" && i.first != "" && i.second != "" && i.third != ""){
+
+                let first = parseInt(i.first)
+                let second = parseInt(i.second)
+                let third = parseInt(i.third)
+                let fourth = parseInt(i.fourth)
+
+
+                let finalGrade = (first + second + third + fourth) / 4
+
+
+                return finalGrade
+
+            }
+            else{
+                return ""
+            }
+        }
+
     return (
 
         <div className="w3-light-grey">
@@ -352,6 +375,8 @@ import { LOGOUT } from '../redux/actionType';
                                                             <td>{i.second}</td>
                                                             <td>{i.third}</td>
                                                             <td>{i.fourth}</td>
+
+                                                            <td>{getFinalGrade(i)}</td>
                                                         </tr>
                                                     )
                                                 })

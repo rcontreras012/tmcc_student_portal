@@ -33,7 +33,7 @@ import { LOGOUT } from '../redux/actionType';
 
         const getAllMaps = () => {
             axios.post(url + "getMaps", null, null).then(res => {
-                console.log(res.data.result)
+                
 
                 setMaps(res.data.result)
             })
@@ -45,10 +45,10 @@ import { LOGOUT } from '../redux/actionType';
             }
             else if (user.role != 3) {
 
-                navigate('/', { replace: true })
-                dispatch({
-                    type: LOGOUT
-                })
+                // navigate('/', { replace: true })
+                // dispatch({
+                //     type: LOGOUT
+                // })
                 
             }
         }, [])
@@ -148,7 +148,7 @@ import { LOGOUT } from '../redux/actionType';
                 }
             }).then(res => {
 
-                console.log(res, "--> check mate")
+                
 
 
 
@@ -184,7 +184,7 @@ import { LOGOUT } from '../redux/actionType';
 
             }
             else{
-                return ""
+                return 
             }
         }
 
@@ -278,7 +278,7 @@ import { LOGOUT } from '../redux/actionType';
                                         <thead>
                                             <tr>
                                                 <th>Grade</th>
-                                                <th>Section</th>
+                                                {/* <th>Section</th> */}
                                                 <th>Map links</th>
                                             </tr>
                                         </thead>
@@ -290,7 +290,7 @@ import { LOGOUT } from '../redux/actionType';
                                                         <tr>
 
                                                             <td>{i.gcode}1</td>
-                                                            <td>{i.name}</td>
+                                                            {/* <td>{i.name}</td> */}
                                                             <td>
                                                                 <button onClick={() => {
                                                                     document.getElementById('id02').style.display = 'block'

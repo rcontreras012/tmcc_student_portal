@@ -354,6 +354,8 @@ export const ForgotModal = (props) => {
                 email: inputText
             }
         }).then(res => {
+
+            
             
             if (res.data.failed) {
                 setSuccess({
@@ -395,7 +397,7 @@ export const ForgotModal = (props) => {
                     newpassword: newPass
                 }
             }).then(res => {
-                
+                console.log(res, '--? tang ina mo')
                 if (res.data.failed) {
                     setSuccess({
                         type: "danger",

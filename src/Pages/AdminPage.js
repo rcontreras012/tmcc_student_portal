@@ -445,7 +445,7 @@ export const AdminPage = (props) => {
                                             {({ getRootProps, getInputProps }) => (
                                                 <div className='dropzone' {...getRootProps()}>
                                                     <input {...getInputProps()} />
-                                                    <p>Drag 'n' drop some files here, or click to select files</p>
+                                                    <p>Drag 'n' drop excel files here, or click to select files</p>
                                                 </div>
                                             )}
                                         </Dropzone>
@@ -503,7 +503,7 @@ export const AdminPage = (props) => {
                         {/*<!-- Gradring Schedule -->*/}
                         <div className='w3-container w3-card w3-white w3-margin-bottom'>
                             <h2 className="w3-text-grey w3-padding-16"><i
-                                className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Schedule
+                                className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grades
                             </h2>
 
                             <h3>Grading Schedule Management</h3>
@@ -605,11 +605,22 @@ export const AdminPage = (props) => {
                                 <br />
 
                             </div>
-                            <br />
+
+                        </div>
+
+                        <div className='w3-container w3-card w3-white w3-margin-bottom'>
+                            <h2 className="w3-text-grey w3-padding-16"><i
+                                className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Schedule
+                            </h2>
+
+                       
+                            {/* <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large w3-margin-bottom" style={{ width: "100%" }}>Add Grading School Year</button> */}
+                      
+                            
                             <h3>Student Schedule Management</h3>
                             <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
-                                    <h3>Excel</h3>
+                                    <h3>Schedule</h3>
 
                                 </div>
 
@@ -622,7 +633,7 @@ export const AdminPage = (props) => {
                                         {({ getRootProps, getInputProps }) => (
                                             <div className='dropzone' {...getRootProps()}>
                                                 <input {...getInputProps()} />
-                                                <p>Drag 'n' drop some files here, or click to select files</p>
+                                                <p>Drag 'n' drop excel file here, or click to select files</p>
                                             </div>
                                         )}
                                     </Dropzone>

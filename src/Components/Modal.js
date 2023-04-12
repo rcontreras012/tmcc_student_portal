@@ -69,6 +69,24 @@ export const EnrollModal = (props) => {
     }
 
 
+    const preventSpecialChars = (v) => {
+
+        let match = v.replace(/[^A-Za-z]/ig, '')
+
+        return match
+        
+    }
+
+    const removeNonNumeric = (v) => {
+
+        let match = v.replace(/[^0-9]/ig, '')
+
+        return match
+
+    }
+
+
+
     return (
         <Modal show={props.show} onHide={props.onClose} >
 
@@ -97,7 +115,7 @@ export const EnrollModal = (props) => {
 
                         id="inputPassword5"
                         value={fname}
-                        onChange={(v) => setFname(v.target.value)}
+                        onChange={(v) => setFname(preventSpecialChars(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
@@ -107,7 +125,7 @@ export const EnrollModal = (props) => {
 
                         id="inputPassword5"
                         value={lname}
-                        onChange={(v) => setLname(v.target.value)}
+                        onChange={(v) => setLname(preventSpecialChars(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
@@ -137,10 +155,10 @@ export const EnrollModal = (props) => {
                 <div style={{ marginTop: "10px" }}>
                     <Form.Label htmlFor="inputPassword5">Contact</Form.Label>
                     <Form.Control
-
+                        maxLength={11}
                         id="inputPassword5"
                         value={contact}
-                        onChange={(v) => setContact(v.target.value)}
+                        onChange={(v) => setContact(removeNonNumeric(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
@@ -148,10 +166,10 @@ export const EnrollModal = (props) => {
                 <div style={{ marginTop: "10px" }}>
                     <Form.Label htmlFor="inputPassword5">LRN Number</Form.Label>
                     <Form.Control
-
+                        maxLength={11}
                         id="inputPassword5"
                         value={lrn}
-                        onChange={(v) => setLRN(v.target.value)}
+                        onChange={(v) => setLRN(removeNonNumeric(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
@@ -233,6 +251,25 @@ export const AddTeacherModal = (props) => {
     }
 
 
+
+    const preventSpecialChars = (v) => {
+
+        let match = v.replace(/[^A-Za-z]/ig, '')
+
+        return match
+
+    }
+
+    const removeNonNumeric = (v) => {
+
+        let match = v.replace(/[^0-9]/ig, '')
+
+        return match
+
+    }
+
+
+
     return (
         <Modal show={props.show} onHide={props.onClose} >
 
@@ -261,7 +298,7 @@ export const AddTeacherModal = (props) => {
 
                         id="inputPassword5"
                         value={fname}
-                        onChange={(v) => setFname(v.target.value)}
+                        onChange={(v) => setFname(preventSpecialChars(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
@@ -271,7 +308,7 @@ export const AddTeacherModal = (props) => {
 
                         id="inputPassword5"
                         value={lname}
-                        onChange={(v) => setLname(v.target.value)}
+                        onChange={(v) => setLname(preventSpecialChars(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
@@ -301,21 +338,21 @@ export const AddTeacherModal = (props) => {
                 <div style={{ marginTop: "10px" }}>
                     <Form.Label htmlFor="inputPassword5">Contact</Form.Label>
                     <Form.Control
-
+                        maxLength={11}
                         id="inputPassword5"
                         value={contact}
-                        onChange={(v) => setContact(v.target.value)}
+                        onChange={(v) => setContact(removeNonNumeric(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>
 
                 <div style={{ marginTop: "10px" }}>
-                    <Form.Label htmlFor="inputPassword5">Teacher ID Number</Form.Label>
+                    <Form.Label htmlFor="inputPassword5">Employee ID Number</Form.Label>
                     <Form.Control
 
                         id="inputPassword5"
                         value={lrn}
-                        onChange={(v) => setLRN(v.target.value)}
+                        onChange={(v) => setLRN(removeNonNumeric(v.target.value))}
                         aria-describedby="passwordHelpBlock"
                     />
                 </div>

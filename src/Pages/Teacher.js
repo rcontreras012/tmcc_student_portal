@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import '../App.css';
 import { LOGOUT } from '../redux/actionType';
 import { url } from '../Utils/url';
+import { Button } from 'react-bootstrap';
 
 export const TeacherPage = (props) => {
 
@@ -25,6 +26,10 @@ export const TeacherPage = (props) => {
     const [grade, setGrade] = useState(0)
     const [teacherSched, setTeacherSched] = useState([])
     const [mapImage, setMapImage] = useState('')
+    const [mapSize, setMapSize] = useState({
+        height: 500,
+        width: 500
+    })
 
     const [maps, setMaps] = useState([])
 
@@ -242,12 +247,12 @@ export const TeacherPage = (props) => {
 
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
-                <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
+                <div className=" w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
+                    <img style={{ height: "55px", width: "55px" }} src={require('../Utils/img/TMCNHS LOGO.png')} />
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
+                    
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
-                        <a href="#about" className="w3-bar-item w3-button">About</a>
-                        <a href="#menu" className="w3-bar-item w3-button">Contact Us</a>
                         <a 
                             onClick={() => {
                                 dispatch({
@@ -329,7 +334,7 @@ export const TeacherPage = (props) => {
                                             <tr>
                                                 <th>Grade</th>
                                                 <th>Section</th>
-                                                <th>Map links</th>
+                                                <th>Map location</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -573,10 +578,53 @@ export const TeacherPage = (props) => {
                     </header>
 
                     <div className='w3-row w3-margin-top w3-padding'>
+
+                        <div className='row' style={{marginBottom:"20px"}}>
+
+                            <Button 
+                                style={{
+                                    padding: "10px 10px",
+                                    maxWidth: "100px",
+                                    alignItems:"center",
+                                    justifyContent:"center",
+                                    display:"flex"
+                                }}
+                                onClick={() => {
+                                setMapSize({
+                                    ...mapSize,
+                                    height: mapSize.height + 30,
+                                    width: mapSize.width + 30
+                                })
+                            }}>
+                                Zoom In
+                            </Button>
+                            
+                            <Button
+                                class="btn btn-secondary"
+                                style={{
+                                    padding: "10px 10px",
+                                    maxWidth: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    display: "flex",
+                                    marginLeft:"20px"
+                                }}
+                                onClick={() => {
+                                    setMapSize({
+                                        ...mapSize,
+                                        height: mapSize.height - 30,
+                                        width: mapSize.width - 30
+                                    })
+                                }}
+                            >
+                                Zoom out
+                            </Button>
+
+                        </div>
                       
-                        <div className='w3-rest w3-center'>
+                        <div className='w3-rest w3-center' style={{overflow:"scroll"}}>
                             <img
-                                style={{height:"500px", width:"600px"}}
+                                style={{height: mapSize.height + "px", width:mapSize.width + "px"}}
                                 src={mapImage}
                             />
                         </div>

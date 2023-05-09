@@ -7,6 +7,7 @@ import { url } from '../Utils/url';
 import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 import { LOGOUT } from '../redux/actionType';
+import { Button } from 'react-bootstrap';
 //let slideIndex = 1;
 
     export const StudentPage = (props) => {
@@ -17,6 +18,10 @@ import { LOGOUT } from '../redux/actionType';
         const [grade, setGrade] = useState([])
         const [maps, setMaps] = useState([])
         const [mapImage, setMapImage] = useState('')
+        const [mapSize, setMapSize] = useState({
+            height: 500,
+            width: 500
+        })
     // const [slideIndex, setSlideIndex] = useState(1)
 
         const navigate = useNavigate()
@@ -194,11 +199,11 @@ import { LOGOUT } from '../redux/actionType';
 
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
-                <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
+                <div className="w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
+                    <img style={{ height: "55px", width: "55px" }} src={require('../Utils/img/TMCNHS LOGO.png')} />
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
-                        <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
                         <a 
                             onClick={() => {
                                 dispatch({
@@ -279,7 +284,7 @@ import { LOGOUT } from '../redux/actionType';
                                             <tr>
                                                 <th>Grade</th>
                                                 {/* <th>Section</th> */}
-                                                <th>Map links</th>
+                                                <th>Map location</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -408,9 +413,54 @@ import { LOGOUT } from '../redux/actionType';
 
                     <div className='w3-row w3-margin-top w3-padding'>
 
-                        <div className='w3-rest w3-center'>
+
+                        <div className='row' style={{ marginBottom: "20px" }}>
+
+                            <Button
+                                style={{
+                                    padding: "10px 10px",
+                                    maxWidth: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    display: "flex"
+                                }}
+                                onClick={() => {
+                                    setMapSize({
+                                        ...mapSize,
+                                        height: mapSize.height + 30,
+                                        width: mapSize.width + 30
+                                    })
+                                }}>
+                                Zoom In
+                            </Button>
+
+                            <Button
+                                class="btn btn-secondary"
+                                style={{
+                                    padding: "10px 10px",
+                                    maxWidth: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    display: "flex",
+                                    marginLeft: "20px"
+                                }}
+                                onClick={() => {
+                                    setMapSize({
+                                        ...mapSize,
+                                        height: mapSize.height - 30,
+                                        width: mapSize.width - 30
+                                    })
+                                }}
+                            >
+                                Zoom out
+                            </Button>
+
+                        </div>
+
+
+                        <div className='w3-rest w3-center' style={{overflow:"scroll"}}>
                             <img
-                                style={{ height: "500px", width: "600px" }}
+                                style={{ height: mapSize.height + "px", width: mapSize.width + "px" }}
                                 src={mapImage}
                             />
                         </div>

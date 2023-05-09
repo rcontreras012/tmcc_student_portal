@@ -312,7 +312,6 @@ export const AdminPage = (props) => {
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
-                        <a href="#contact" className="w3-bar-item w3-button">Contact Us</a>
                         <a onClick={() => {
                             dispatch({
                                 type: LOGOUT

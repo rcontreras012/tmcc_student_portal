@@ -113,7 +113,67 @@ module.exports = () => {
             })
 
     })
-  
+
+
+    router.post('/updateMap', (req, res, next) => {
+
+        
+        let gcode = req.body.gcode
+        let image = req.body.image
+        let secCode = req.body.seccode
+        let name = req.body.name
+
+        mapModel.find({ secCode, gcode }, "", (err, user) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+                let data = user[0]
+                mapModel.updateOne({ secCode, gcode },
+                    { name: name, image: image }, function (err, docs) {
+                        if (err) {
+                            
+                        }
+                        else {
+                            
+
+                            res.send({
+                                result: "success"
+                            })
+                     
+                        }
+                    });
+
+            }
+
+        });
+
+    })
+
+
+    router.post('/deleteMap', (req, res, next) => {
+
+        
+        let gcode = req.body.gcode
+        let image = req.body.image
+        let secCode = req.body.seccode
+        let name = req.body.name
+        
+
+        mapModel.deleteOne({ secCode, gcode }, (err, user) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+                res.send({
+                    result: "success"
+                })
+
+            }
+
+        });
+
+    })
 
 
 

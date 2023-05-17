@@ -421,8 +421,8 @@ export const TeacherPage = (props) => {
                                             <option value="G8">Grade 8</option>
                                             <option value="G9">Grade 9</option>
                                             <option value="G10">Grade 10</option>
-                                            <option value="G11">Grade 11</option>
-                                            <option value="G12">Grade 12</option>
+                                            {/* <option value="G11">Grade 11</option>
+                                            <option value="G12">Grade 12</option> */}
                                         </select>
                                     </div>
 

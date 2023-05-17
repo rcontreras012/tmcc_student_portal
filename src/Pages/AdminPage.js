@@ -29,15 +29,28 @@ export const AdminPage = (props) => {
     const [showAddTeacher, setShowAddTeacher] = useState(false)
     const [announcementList, setAnnouncementList] = useState([])
 
+    const [mapUpdate, setMapUpdaate] = useState(false)
+
+    const [announcementUpdate, setAnnouncementUpdate] = useState(false)
+    
     const [mapGcode, setMapGcode] = useState('')
     const [mapSecCode, setMapSecCode] = useState('')
     const [fileMap, setFileMap] = useState('')
     const [newMap, setNewMap] = useState('')
     const [mapName, setMapName] = useState('')
+    const [maps, setMaps] = useState([])
+    const [mapImage, setMapImage] = useState('')
+    const [mapSize, setMapSize] = useState({
+        height: 500,
+        width: 500
+    })
     const [announcement, setAnnouncement] = useState({
         desc: '',
-        startDate: moment().format('YYYY-MM-DD')
+        startDate: moment().format('YYYY-MM-DD'),
+        id: ''
     })
+
+  
 
     const [grading, setOpenGrading] = useState({
         sy: moment().format("YYYY"),
@@ -46,22 +59,22 @@ export const AdminPage = (props) => {
         third: false,
         fourth: false
     })
-    const navigate  = useNavigate()
+    const navigate = useNavigate()
     const dispatch = useDispatch()
-    
-    
+
+
 
     useEffect(() => {
-            if(user == null) {
-                alert("Permission denied")
-            }
-            else if(user.role != 1){
+        if (user == null) {
+            alert("Permission denied")
+        }
+        else if (user.role != 1) {
 
-             navigate('/', {replace: true})
-                dispatch({
-                    type: LOGOUT
-                })
-            }
+            navigate('/', { replace: true })
+            dispatch({
+                type: LOGOUT
+            })
+        }
     }, [])
 
     useEffect(() => {
@@ -70,8 +83,123 @@ export const AdminPage = (props) => {
 
     const getAllMaps = () => {
         axios.post(url + "getMaps", null, null).then(res => {
+
+
+            setMaps(res.data.result)
+        })
+    }
+
+    
+
+    useEffect(() => {
+        if (user == null) {
+            alert("Permission denied")
+        }
+        else if (user.role != 3) {
+
+            // navigate('/', { replace: true })
+            // dispatch({
+            //     type: LOGOUT
+            // })
+
+        }
+    }, [])
+
+    const updateAnnouncementApi = () => {
+
+        
+        axios.post(url + 'updateAnnouncement', null, {
+            params: {
+                announcement: announcement.desc,
+                is_active: true,
+                date_announce: announcement.startDate,
+                expired_date: announcement.startDate,
+                id: announcement.id
+            }
+        }).then(res => {
+            // 
+
+            
+            document.getElementById('id01').style.display = 'none'
+            getAnnouncement()
+            setAnnouncement({
+                ...announcement,
+                desc: '',
+                startDate: moment().format('YYYY-MM-DD'),
+                id: ''
+            })
+
+            alert("Announcement updated!")
+
+        }).catch(err => {
             
         })
+
+    }
+
+    const removeAnnouncementApi = (ids) => {
+
+        
+        axios.post(url + 'removeAnnouncement', null, {
+            params: {
+                announcement: announcement.desc,
+                is_active: true,
+                date_announce: announcement.startDate,
+                expired_date: announcement.startDate,
+                id: ids
+            }
+        }).then(res => {
+            // 
+
+            
+            document.getElementById('id01').style.display = 'none'
+            getAnnouncement()
+            // setAnnouncement({
+            //     ...announcement,
+            //     desc: '',
+            //     startDate: moment().format('YYYY-MM-DD'),
+            //     id: ''
+            // })
+
+            alert("Announcement updated!")
+
+        }).catch(err => {
+            
+        })
+
+    }
+
+    const deleteMap = () => {
+
+        var bodyFormData = new FormData();
+        bodyFormData.append('gcode', mapGcode);
+        bodyFormData.append('seccode', mapSecCode);
+        bodyFormData.append('image', fileMap);
+        bodyFormData.append('name', mapName);
+
+        axios({
+            method: "post",
+            url: url + "deleteMap",
+            data: bodyFormData,
+            headers: { "Content-Type": "multipart/form-data" }
+        }).then(res => {
+
+
+            document.getElementById('id005').style.display = 'none'
+            getAllMaps()
+
+            setMapGcode('')
+            setMapName('')
+            setMapSecCode('')
+            setNewMap('')
+            setFileMap('')
+
+
+            alert("Successfully removing map!")
+        }).catch(err => {
+            
+        })
+
     }
 
     const saveMap = () => {
@@ -85,28 +213,55 @@ export const AdminPage = (props) => {
 
 
         if (mapGcode != '' && mapSecCode != "" && mapName != "" && fileMap != "") {
-            axios({
-                method: "post",
-                url: url + "saveMap",
-                data: bodyFormData,
-                headers: { "Content-Type": "multipart/form-data" }
-            }).then(res => {
 
+            if(mapUpdate){
+                axios({
+                    method: "post",
+                    url: url + "updateMap",
+                    data: bodyFormData,
+                    headers: { "Content-Type": "multipart/form-data" }
+                }).then(res => {
 
-                setMapGcode('')
-                setMapName('')
-                setMapSecCode('')
-                setNewMap('')
-                setFileMap('')
-                document.getElementById('mapModal').style.display = 'none'
+                    
+                    document.getElementById('mapModal').style.display = 'none'
+                    getAllMaps()
 
-                alert("Successfully added new map!")
-            })
+                    setMapGcode('')
+                    setMapName('')
+                    setMapSecCode('')
+                    setNewMap('')
+                    setFileMap('')
+               
+
+                    alert(mapUpdate ? "Successfully update map!" : "Successfully added new map!")
+                })
+            }
+
+            else{
+                axios({
+                    method: "post",
+                    url: url + "saveMap",
+                    data: bodyFormData,
+                    headers: { "Content-Type": "multipart/form-data" }
+                }).then(res => {
+                    getAllMaps()
+
+                    setMapGcode('')
+                    setMapName('')
+                    setMapSecCode('')
+                    setNewMap('')
+                    setFileMap('')
+                    document.getElementById('mapModal').style.display = 'none'
+
+                    alert(mapUpdate ? "Successfully update map!" : "Successfully added new map!")
+                })
+            }
         }
         else {
             alert("Please fill out all fields")
         }
     }
+
 
     const uploadMap = (file) => {
 
@@ -114,6 +269,8 @@ export const AdminPage = (props) => {
         getBase64(file)
 
     }
+
+
 
 
     const getBase64 = (file) => {
@@ -187,11 +344,12 @@ export const AdminPage = (props) => {
 
     const createAnnouncement = () => {
 
-        if(announcement.desc == "" ){
+        
+        if (announcement.desc == "" && announcement.startDate != "") {
             alert("Please fill out all fields")
         }
-        else
-        {
+        else {
+            
             axios.post(url + 'addAnnouncement', null, {
                 params: {
                     announcement: announcement.desc,
@@ -201,13 +359,19 @@ export const AdminPage = (props) => {
                 }
             }).then(res => {
                 // 
+
+                
                 document.getElementById('id01').style.display = 'none'
                 getAnnouncement()
-                setAnnouncement('')
+                setAnnouncement({
+                    ...announcement,
+                    desc: '',
+                    startDate: moment().format('YYYY-MM-DD')
+                })
 
 
             }).catch(err => {
-
+                
             })
         }
 
@@ -241,7 +405,7 @@ export const AdminPage = (props) => {
         }).then(res => {
 
 
-            
+
 
             setOpenGrading(res.data.data[0])
         }).catch(err => {
@@ -269,7 +433,7 @@ export const AdminPage = (props) => {
         }).then(res => {
             // openGrading()
 
-            
+
             getGradingTerm()
         }).catch(err => {
 
@@ -318,7 +482,7 @@ export const AdminPage = (props) => {
                             })
                             navigate('/', { replace: true })
                         }} className="w3-bar-item w3-button">Logout</a>
-                       
+
                     </div>
                 </div>
             </div>
@@ -363,6 +527,80 @@ export const AdminPage = (props) => {
                             </div>
                         </div><br />
 
+                        <div className='w3-white w3-text-grey w3-card-4 '>
+                            <div className='w3-container w3-padding-large'>
+                                <h2>Map List</h2>
+                            </div>
+
+                            <br/>
+                                <div className="w3-card-2 w3-margin-bottom">
+                                    <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
+                                        <thead>
+                                            <tr>
+                                                <th>Map Name</th>
+                                                {/* <th>Section</th> */}
+                                                <th>Map location</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {
+                                                maps.map((i, k) => {
+
+                                                    return (
+                                                        <tr>
+
+                                                            <td>{i.name}</td>
+                                                            {/* <td>{i.name}</td> */}
+                                                            <td className='d-flex align-items-center'>
+                                                                <button onClick={() => {
+                                                                    document.getElementById('id04').style.display = 'block'
+                                                                    setMapImage(i.image)
+
+                                                                }} class="w3-button w3-teal w3-round-large " style={{ width: "30%" }}><i class="fa fa-globe" aria-hidden="true"></i></button>
+
+                                                                <button 
+                                                                    onClick={() => {
+
+                                                                        document.getElementById('mapModal').style.display = 'block'
+                                                                        setMapGcode(i.gcode)
+                                                                        setMapName(i.name)
+                                                                        setMapSecCode(i.secCode)
+                                                                        setFileMap(i.image)
+                                                                        setMapUpdaate(true)
+
+                                                                    }}
+                                                                    className='w3-button' style={{marginLeft: "15px"}}>
+                                                                    Edit
+                                                                </button>
+
+                                                                <button
+                                                                    onClick={() => {
+                                                                        document.getElementById('id005').style.display = 'block'
+                                                                      
+                                                                        setMapGcode(i.gcode)
+                                                                        setMapName(i.name)
+                                                                        setMapSecCode(i.secCode)
+                                                                        setFileMap(i.image)
+                                                                        setMapUpdaate(true)
+                                                                           
+
+                                                                        
+
+                                                                    }}
+                                                                    className='w3-button' style={{ marginLeft: "15px" }}>
+                                                                    Delete
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+                                        </tbody>
+                                    </table>
+                                </div>
+                            
+                        </div>
+
                         {/*<!-- End Left Column -->*/}
                     </div>
 
@@ -383,8 +621,44 @@ export const AdminPage = (props) => {
                                     {
                                         announcementList.map((i, k) => {
 
+                                        
+
                                             return (
                                                 <Carousel.Item>
+
+                                                    <div className='d-flex justify-content-center' style={{paddingBottom:"20px"}}>
+                                                        <div onClick={(e) => {
+                                                            document.getElementById('id01').style.display = 'block'
+                                                            setAnnouncementUpdate(true)
+                                                            setAnnouncement({
+                                                                ...announcement,
+                                                                desc: i.announcement,
+                                                                id: i._id
+                                                            })
+                                                        }}>
+                                                            <i class="bi bi-pencil-square"></i>   
+                                                            <span>Edit</span>
+                                                        </div>
+
+                                                        <div onClick={(e) => {
+                                                            
+                                                            setAnnouncement({
+                                                                ...announcement,
+                                                                desc: i.announcement,
+                                                                id: i._id
+                                                            })
+
+                                                            removeAnnouncementApi(i._id)   
+                                                            // setTimeout(() => {
+                                                            //     
+                                                            //     removeAnnouncementApi()   
+                                                            // },1000)
+                                                        }} 
+                                                        style={{ marginLeft: "20px" }}>
+                                                            <i class="bi bi-trash-fill" ></i>
+                                                            <spaan>Delete</spaan>
+                                                       </div>
+                                                    </div>
                                                     <div
                                                         className="d-block w-100"
                                                         style={{ backgroundColor: "#c5c5c5", height: "300px" }}
@@ -612,10 +886,10 @@ export const AdminPage = (props) => {
                                 className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Schedule
                             </h2>
 
-                       
+
                             {/* <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large w3-margin-bottom" style={{ width: "100%" }}>Add Grading School Year</button> */}
-                      
-                            
+
+
                             <h3>Student Schedule Management</h3>
                             <div className='w3-container w3-card w3-margin-bottom'>
                                 <div className='w3-row w3-center w3-margin-bottom'>
@@ -702,7 +976,7 @@ export const AdminPage = (props) => {
                         </div>
                     </div>
 
-                    <div className='w3-row w3-margin-top w3-padding'>
+                    {/* <div className='w3-row w3-margin-top w3-padding'>
                         <div className='w3-quarter'>
                             <h4>Start Date : </h4>
                         </div>
@@ -713,7 +987,7 @@ export const AdminPage = (props) => {
                                 }}
                                 class="w3-input w3-border" type="date" style={{ width: "70%" }} />
                         </div>
-                    </div>
+                    </div> */}
 
                     <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
@@ -721,7 +995,7 @@ export const AdminPage = (props) => {
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
 
-                                createAnnouncement()
+                              announcementUpdate ? updateAnnouncementApi() :  createAnnouncement()
 
                             }} style={{ width: "15%", marginRight: "5px" }} >Save</button>
                     </div>
@@ -800,19 +1074,19 @@ export const AdminPage = (props) => {
 
                         {
                             newMap != "" &&
-                            <div className='col-lg-12 d-flex justify-content-center' style={{marginTop:"20px"}}>
-                                
-                                    <i
-                                        onClick={() => {
-                                            setNewMap('')
-                                        }}
-                                        class="bi bi-trash" style={{ color: "red" }}></i>
-                               
+                            <div className='col-lg-12 d-flex justify-content-center' style={{ marginTop: "20px" }}>
+
+                                <i
+                                    onClick={() => {
+                                        setNewMap('')
+                                    }}
+                                    class="bi bi-trash" style={{ color: "red" }}></i>
+
                                 <img
                                     style={{ height: "550px", width: "550px" }}
                                     src={newMap} alt="Red dot" />
 
-                             
+
                             </div>
                         }
                     </div>
@@ -826,7 +1100,7 @@ export const AdminPage = (props) => {
                                 setMapSecCode('')
                                 setNewMap('')
                                 setFileMap('')
-                                }} style={{ width: "15%" }} >Close</button>
+                            }} style={{ width: "15%" }} >Close</button>
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
 
@@ -899,6 +1173,109 @@ export const AdminPage = (props) => {
                             onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%" }} >Close</button>
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => document.getElementById('id02').style.display = 'none'} style={{ width: "15%", marginRight: "5px" }} >Save</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="id04" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>School Map</h2>
+                    </header>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+
+
+                        <div className='row' style={{ marginBottom: "20px" }}>
+
+                            <Button
+                                style={{
+                                    padding: "10px 10px",
+                                    maxWidth: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    display: "flex"
+                                }}
+                                onClick={() => {
+                                    setMapSize({
+                                        ...mapSize,
+                                        height: mapSize.height + 30,
+                                        width: mapSize.width + 30
+                                    })
+                                }}>
+                                Zoom In
+                            </Button>
+
+                            <Button
+                                class="btn btn-secondary"
+                                style={{
+                                    padding: "10px 10px",
+                                    maxWidth: "100px",
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    display: "flex",
+                                    marginLeft: "20px"
+                                }}
+                                onClick={() => {
+                                    setMapSize({
+                                        ...mapSize,
+                                        height: mapSize.height - 30,
+                                        width: mapSize.width - 30
+                                    })
+                                }}
+                            >
+                                Zoom out
+                            </Button>
+
+                        </div>
+
+
+                        <div className='w3-rest w3-center' style={{ overflow: "scroll" }}>
+                            <img
+                                style={{ height: mapSize.height + "px", width: mapSize.width + "px" }}
+                                src={mapImage}
+                            />
+                        </div>
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => {
+                                document.getElementById('id04').style.display = 'none'
+                                setMapUpdaate(false)
+
+                            }} style={{ width: "15%" }} >Close</button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div id="id005" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>Warning!</h2>
+                    </header>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                            Are you sure you want to proceed?
+                    </div>
+
+                    <div class="w3-container w3-light-grey w3-padding">
+
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => {
+                                document.getElementById('id005').style.display = 'none'
+
+
+                            }} style={{ width: "15%" }} >Close</button>
+
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => {
+                                document.getElementById('id005').style.display = 'none'
+                                deleteMap()
+
+                            }} style={{ width: "15%", marginRight:"20px" }} >Yes</button>
                     </div>
                 </div>
             </div>

@@ -282,7 +282,7 @@ import { Button } from 'react-bootstrap';
                                     <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
                                         <thead>
                                             <tr>
-                                                <th>Grade</th>
+                                                <th>Map Name</th>
                                                 {/* <th>Section</th> */}
                                                 <th>Map location</th>
                                             </tr>
@@ -294,7 +294,7 @@ import { Button } from 'react-bootstrap';
                                                     return (
                                                         <tr>
 
-                                                            <td>{i.gcode}1</td>
+                                                            <td>{i.name}</td>
                                                             {/* <td>{i.name}</td> */}
                                                             <td>
                                                                 <button onClick={() => {

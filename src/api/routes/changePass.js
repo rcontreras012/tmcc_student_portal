@@ -7,159 +7,320 @@ const teacherModel = require('../model/teacherModel')
 const moment = require('moment');
 const nodemailer = require("nodemailer");
 /* GET users listing. */
-router.post('/', function (req, res, next) {
+
+module.exports = () => {
+
+    router.post('/changepass', function (req, res, next) {
 
 
-    let code = req.query.code
-    let newPass = req.query.newpassword
+        let code = req.query.code
+        let newPass = req.query.newpassword
 
 
 
-    // find all athletes who play tennis, selecting the 'name' and 'age' fields
-    passwordModel.find({ code }, "", (err, user) => {
-        if (err) return handleError(err);
-        // 'athletes' contains the list of athletes that match the criteria.
-        else {
-            if (user.length == 0) {
-                res.send({
-                    error: "Incorrect OTP code, please try again",
-                    student: true,
-                    failed: true
-                })
-            } else {
-                let email = user[0].email
+        // find all athletes who play tennis, selecting the 'name' and 'age' fields
+        passwordModel.find({ code }, "", (err, user) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+                if (user.length == 0) {
+                    res.send({
+                        error: "Incorrect OTP code, please try again",
+                        student: true,
+                        failed: true
+                    })
+                } else {
+                    let email = user[0].email
 
 
-                let isTeacher = email.match(/tmcc.teacher.com/gi)
-                let isAdmin = email.match(/tmcc.admin.com/gi)
-                let personal = email.match(/gmail.com/gi)
-
-                
+                    let isTeacher = email.match(/tmcc.teacher.com/gi)
+                    let isAdmin = email.match(/tmcc.admin.com/gi)
+                    let personal = email.match(/gmail.com/gi)
 
 
-                if(isTeacher != null){
-                    teacherModel.find({ email }, "", (err, user) => {
-                        if (err) return handleError(err);
-                        // 'athletes' contains the list of athletes that match the criteria.
-                        else {
-
-                            let data = user[0]
-
-                            // res.send({
-                            //    user: data
-                            // })
-
-                            teacherModel.updateOne({ schoolEmail: email },
-                                { password: newPass }, function (err, docs) {
-                                    if (err) {
-                                        console.log(err)
-                                    }
-                                    else {
-                                        console.log("Updated Docs : ", docs);
 
 
-                                        const transporter = nodemailer.createTransport({
-                                            service: 'gmail',
-                                            auth: {
-                                                user: process.env.EMAIL,
-                                                pass: process.env.PASS
-                                            }
-                                        });
+                    if (isTeacher != null) {
+                        teacherModel.find({ email }, "", (err, user) => {
+                            if (err) return handleError(err);
+                            // 'athletes' contains the list of athletes that match the criteria.
+                            else {
 
-                                        const mailOptions = {
-                                            from: 'tmcc@example.com',
-                                            to: email,
-                                            subject: 'TMCCC Student Portal Password',
-                                            html: `Hi teacher  your account password for TMCC Student Portal has been changed.
+                                let data = user[0]
+
+                                // res.send({
+                                //    user: data
+                                // })
+
+                                teacherModel.updateOne({ schoolEmail: email },
+                                    { password: newPass }, function (err, docs) {
+                                        if (err) {
+                                            console.log(err)
+                                        }
+                                        else {
+                                            console.log("Updated Docs : ", docs);
+
+
+                                            const transporter = nodemailer.createTransport({
+                                                service: 'gmail',
+                                                auth: {
+                                                    user: process.env.EMAIL,
+                                                    pass: process.env.PASS
+                                                }
+                                            });
+
+                                            const mailOptions = {
+                                                from: 'tmcc@example.com',
+                                                to: email,
+                                                subject: 'TMCCC Student Portal Password',
+                                                html: `Hi teacher  your account password for TMCC Student Portal has been changed.
                                  `
-                                        };
+                                            };
 
-                                        transporter.sendMail(mailOptions, function (error, info) {
-                                            if (error) {
-                                                console.log(error);
-                                            } else {
-                                                res.status(200)
-                                                res.send({
-                                                    pasok: docs,
-                                                    failed: false,
-                                                    teacher: "oo",
-                                                    email
-                                                })
-                                            }
-                                        });
-                                    }
-                                });
+                                            transporter.sendMail(mailOptions, function (error, info) {
+                                                if (error) {
+                                                    console.log(error);
+                                                } else {
+                                                    res.status(200)
+                                                    res.send({
+                                                        pasok: docs,
+                                                        failed: false,
+                                                        teacher: "oo",
+                                                        email
+                                                    })
+                                                }
+                                            });
+                                        }
+                                    });
 
-                        }
+                            }
 
-                    });
+                        });
 
-                }else{
-                    userModel.find({ email }, "", (err, user) => {
-                        if (err) return handleError(err);
-                        // 'athletes' contains the list of athletes that match the criteria.
-                        else {
+                    } else {
+                        userModel.find({ email }, "", (err, user) => {
+                            if (err) return handleError(err);
+                            // 'athletes' contains the list of athletes that match the criteria.
+                            else {
 
-                            let data = user[0]
+                                let data = user[0]
 
-                            // res.send({
-                            //    user: data
-                            // })
+                                // res.send({
+                                //    user: data
+                                // })
 
-                            userModel.updateOne({ email },
-                                { password: newPass }, function (err, docs) {
-                                    if (err) {
-                                        console.log(err)
-                                    }
-                                    else {
-                                        console.log("Updated Docs : ", docs);
+                                userModel.updateOne({ email },
+                                    { password: newPass }, function (err, docs) {
+                                        if (err) {
+                                            console.log(err)
+                                        }
+                                        else {
+                                            console.log("Updated Docs : ", docs);
 
 
-                                        const transporter = nodemailer.createTransport({
-                                            service: 'gmail',
-                                            auth: {
-                                                user: process.env.EMAIL,
-                                                pass: process.env.PASS
-                                            }
-                                        });
+                                            const transporter = nodemailer.createTransport({
+                                                service: 'gmail',
+                                                auth: {
+                                                    user: process.env.EMAIL,
+                                                    pass: process.env.PASS
+                                                }
+                                            });
 
-                                        const mailOptions = {
-                                            from: 'tmcc@example.com',
-                                            to: email,
-                                            subject: 'TMCCC Student Portal Password',
-                                            html: `Hi student  your account password for TMCC Student Portal has been changed.
+                                            const mailOptions = {
+                                                from: 'tmcc@example.com',
+                                                to: email,
+                                                subject: 'TMCCC Student Portal Password',
+                                                html: `Hi student  your account password for TMCC Student Portal has been changed.
                                  `
-                                        };
+                                            };
 
-                                        transporter.sendMail(mailOptions, function (error, info) {
-                                            if (error) {
-                                                console.log(error);
-                                            } else {
-                                                res.status(200)
-                                                res.send({
-                                                    pasok: docs,
-                                                    failed: false
-                                                })
-                                            }
-                                        });
-                                    }
-                                });
+                                            transporter.sendMail(mailOptions, function (error, info) {
+                                                if (error) {
+                                                    console.log(error);
+                                                } else {
+                                                    res.status(200)
+                                                    res.send({
+                                                        pasok: docs,
+                                                        failed: false
+                                                    })
+                                                }
+                                            });
+                                        }
+                                    });
 
-                        }
+                            }
 
-                    });
+                        });
+
+                    }
+
+
 
                 }
-
-
-
             }
-        }
+
+        });
+
+
 
     });
 
 
+    router.post('/updatePassword', function (req, res, next) {
 
-});
 
-module.exports = router;
+     
+        let email = req.query.email
+        let oldPass = req.query.oldpassword
+        let newPass = req.query.newpassword
+        let teacher = req.query.teacher
+
+        console.log(email, oldPass, newPass)
+
+
+
+        // find all athletes who play tennis, selecting the 'name' and 'age' fields
+
+
+                    let isTeacher = email.match(/tmcc.teacher.com/gi)
+                    let isAdmin = email.match(/tmcc.admin.com/gi)
+                    let personal = email.match(/gmail.com/gi)
+
+
+
+
+                    if (teacher != null) {
+                        teacherModel.find({ email }, "", (err, user) => {
+                            if (err) return handleError(err);
+                            // 'athletes' contains the list of athletes that match the criteria.
+                            else {
+
+                                let data = user[0]
+
+                                // res.send({
+                                //    user: data
+                                // })
+
+                                teacherModel.updateOne({ schoolEmail: email, password: oldPass },
+                                    { password: newPass }, function (err, docs) {
+                                        if (err) {
+                                            console.log(err)
+                                        }
+                                        else {
+                                            console.log("Updated Docs : ", docs);
+
+
+                                            const transporter = nodemailer.createTransport({
+                                                service: 'gmail',
+                                                auth: {
+                                                    user: process.env.EMAIL,
+                                                    pass: process.env.PASS
+                                                }
+                                            });
+
+                                            const mailOptions = {
+                                                from: 'tmcc@example.com',
+                                                to: email,
+                                                subject: 'TMCCC Student Portal Password',
+                                                html: `Hi teacher  your account password for TMCC Student Portal has been changed.
+                                 `
+                                            };
+
+                                            transporter.sendMail(mailOptions, function (error, info) {
+                                                if (error) {
+                                                    console.log(error);
+                                                } else {
+                                                    res.status(200)
+                                                    res.send({
+                                                        pasok: docs,
+                                                        failed: false,
+                                                        teacher: "oo",
+                                                        email
+                                                    })
+                                                }
+                                            });
+                                        }
+                                    });
+
+                            }
+
+                        });
+
+                    } else {
+                        userModel.find({ email, password: oldPass }, "", (err, user) => {
+                            if (err) return handleError(err);
+                            // 'athletes' contains the list of athletes that match the criteria.
+                            else {
+
+                                let data = user[0]
+
+                                console.log(data, "--> OLOL")
+                                // res.send({
+                                //    user: data
+                                // })
+
+                                if(data != undefined){
+                                    userModel.updateOne({ email, password: oldPass },
+                                        { password: newPass }, function (err, docs) {
+                                            if (err) {
+                                                console.log(err)
+                                            }
+                                            else {
+                                                console.log("Updated Docs : ", docs);
+
+
+                                                const transporter = nodemailer.createTransport({
+                                                    service: 'gmail',
+                                                    auth: {
+                                                        user: process.env.EMAIL,
+                                                        pass: process.env.PASS
+                                                    }
+                                                });
+
+                                                const mailOptions = {
+                                                    from: 'tmcc@example.com',
+                                                    to: email,
+                                                    subject: 'TMCCC Student Portal Password',
+                                                    html: `Hi student  your account password for TMCC Student Portal has been changed.
+                                 `
+                                                };
+
+                                                transporter.sendMail(mailOptions, function (error, info) {
+                                                    if (error) {
+                                                        console.log(error);
+                                                    } else {
+                                                        res.status(200)
+                                                        res.send({
+                                                            pasok: docs,
+                                                            failed: false
+                                                        })
+                                                    }
+                                                });
+                                            }
+                                        });
+                                }
+                                else{
+                                    res.send({
+                                        failed: true
+                                    })
+                                }
+
+                            }
+
+                        });
+
+                    }
+
+
+    
+
+
+
+    });
+
+
+    return router
+
+}
+
+

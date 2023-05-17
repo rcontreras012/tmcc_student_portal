@@ -434,7 +434,7 @@ export const ForgotModal = (props) => {
                     newpassword: newPass
                 }
             }).then(res => {
-                console.log(res, '--? tang ina mo')
+                
                 if (res.data.failed) {
                     setSuccess({
                         type: "danger",
@@ -547,6 +547,171 @@ export const ForgotModal = (props) => {
                             Change password
                         </Button>
                 }
+            </Modal.Footer>
+        </Modal>
+    )
+}
+
+
+export const UpdatePassModal = (props) => {
+
+    const [code, setCode] = useState('')
+    const [inputText, setInputText] = useState('')
+    const [success, setSuccess] = useState({
+        type: "success",
+        message: 'Successfully changing password you may now process login in.',
+        show: false
+    })
+    const [email, setEmail] = useState('')
+    const [oldPass, setOldPass] = useState('')
+    const [newPass, setNewPass] = useState('')
+    const [confirmPass, setConfirmPass] = useState('')
+    const [errorConfirm, setErrorConfirm] = useState('')
+
+
+
+    const changePass = () => {
+
+
+        if (newPass != confirmPass) {
+            setErrorConfirm(true)
+        }
+        else {
+            axios.post(url + 'updatePassword', '', {
+                params: {
+                    code: inputText,
+                    newpassword: newPass,
+                    email: email,
+                    oldpassword: oldPass,
+                    teacher: props.teacher
+                }
+            }).then(res => {
+                
+                if (res.data.failed) {
+                    setSuccess({
+                        type: "danger",
+                        message: "Something went wrong",
+                        show: true
+                    })
+                }
+                else if (!res.data.failed) {
+                    setSuccess({
+                        type: "success",
+                        message: "Successfully changing password.",
+                        show: true
+                    })
+                    setOldPass('')
+                    setInputText('')
+                    setNewPass('')
+                    setConfirmPass('')
+                    setEmail('')
+
+                   setTimeout(() => {
+                       props.success()
+                       setSuccess({
+                           type: "success",
+                           message: "Successfully changing password you may now process login in.",
+                           show: false
+                       })
+                   }, 2000)
+                }
+            })
+                .catch(err => {
+                    
+                })
+        }
+
+    }
+
+    return (
+        <Modal show={props.show} onHide={props.onClose} >
+
+            {
+                success.show && <Alert key={"success"} variant={success.type}>
+                    {success.message}
+                </Alert>
+
+            }
+
+            <Modal.Header closeButton>
+                <Modal.Title>Change Password</Modal.Title>
+            </Modal.Header>
+
+
+            <Modal.Body>
+
+                <div>
+                    <Form.Label htmlFor="inputPassword5">{ "Email address"}</Form.Label>
+                    <Form.Control
+
+                        value={email}
+                        onChange={(v) => setEmail(v.target.value)}
+
+                    />
+                </div>
+
+            
+                    <div>
+                    <div style={{ marginTop: "20px" }}>
+                        <Form.Label htmlFor="inputPassword5">Old password</Form.Label>
+                        <Form.Control
+
+                            value={oldPass}
+                            type="password"
+                            onChange={(v) => setOldPass(v.target.value)}
+
+                        />
+                    </div>
+
+                        <div style={{ marginTop: "20px" }}>
+                            <Form.Label htmlFor="inputPassword5">New password</Form.Label>
+                            <Form.Control
+
+                                value={newPass}
+                                type="password"
+                                onChange={(v) => setNewPass(v.target.value)}
+
+                            />
+                        </div>
+
+                        <div style={{ marginTop: "20px" }}>
+                            <Form.Label htmlFor="inputPassword5">Confirm new password</Form.Label>
+                            <Form.Control
+                                type="password"
+                                value={confirmPass}
+                                onChange={(v) => {
+                                    setConfirmPass(v.target.value)
+                                    if (v.target.value == newPass) {
+                                        setErrorConfirm(false)
+
+                                    }
+                                    else {
+                                        setErrorConfirm(true)
+                                    }
+
+                                }}
+
+                            />
+                            {
+                                errorConfirm &&
+                                <div style={{ color: "red", fontSize: "13px" }}>
+                                    Password does not match
+                                </div>
+                            }
+                        </div>
+                    </div>
+                
+
+            </Modal.Body>
+            <Modal.Footer>
+                <Button variant="secondary" onClick={props.onClose}>
+                    Close
+                </Button>
+             
+                        <Button onClick={() => { changePass() }} variant="primary">
+                            Change password
+                        </Button>
+                
             </Modal.Footer>
         </Modal>
     )

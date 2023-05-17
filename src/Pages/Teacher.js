@@ -8,6 +8,7 @@ import '../App.css';
 import { LOGOUT } from '../redux/actionType';
 import { url } from '../Utils/url';
 import { Button } from 'react-bootstrap';
+import { UpdatePassModal } from '../Components/Modal';
 
 export const TeacherPage = (props) => {
 
@@ -30,6 +31,8 @@ export const TeacherPage = (props) => {
         height: 500,
         width: 500
     })
+
+    const [showForgot, setForgot] = useState(false)
 
     const [maps, setMaps] = useState([])
 
@@ -245,6 +248,16 @@ export const TeacherPage = (props) => {
 
         <div className="w3-light-grey">
 
+            <UpdatePassModal
+            teacher={true}
+                onClose={() => setForgot(false)}
+                show={showForgot}
+                success={() => {
+                    console.log('not called?')
+                    setForgot(false)
+                }}
+            />
+
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
                 <div className=" w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
@@ -261,6 +274,15 @@ export const TeacherPage = (props) => {
                                 navigate('/', {replace: true})
                             }}
                         className="w3-bar-item w3-button">Logout</a>
+                    </div>
+
+                    <div className="w3-right w3-hide-small">
+                        <a
+                            onClick={() => {
+                                setForgot(true)
+                            }}
+                            className="w3-bar-item w3-button">Change password</a>
+
                     </div>
                 </div>
             </div>

@@ -8,6 +8,7 @@ import moment from 'moment'
 import { useNavigate } from 'react-router-dom';
 import { LOGOUT } from '../redux/actionType';
 import { Button } from 'react-bootstrap';
+import { ForgotModal, UpdatePassModal } from '../Components/Modal';
 //let slideIndex = 1;
 
     export const StudentPage = (props) => {
@@ -18,6 +19,7 @@ import { Button } from 'react-bootstrap';
         const [grade, setGrade] = useState([])
         const [maps, setMaps] = useState([])
         const [mapImage, setMapImage] = useState('')
+        const [showForgot, setForgot] = useState(false)
         const [mapSize, setMapSize] = useState({
             height: 500,
             width: 500
@@ -197,21 +199,40 @@ import { Button } from 'react-bootstrap';
 
         <div className="w3-light-grey">
 
+            <UpdatePassModal
+                teacher={false}
+                onClose={() => setForgot(false)}
+                show={showForgot}
+                success={() => {
+                    console.log('not called?')
+                    setForgot(false)
+                }}
+            />
+
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
                 <div className="w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
                     <img style={{ height: "55px", width: "55px" }} src={require('../Utils/img/TMCNHS LOGO.png')} />
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
+
                     <div className="w3-right w3-hide-small">
-                        <a 
+                        <a
                             onClick={() => {
                                 dispatch({
                                     type: LOGOUT
                                 })
                                 navigate('/', { replace: true })
                             }}
-                        className="w3-bar-item w3-button">Logout</a>
+                            className="w3-bar-item w3-button">Logout</a>
+
+                    </div>
+                    <div className="w3-right w3-hide-small">
+                        <a 
+                            onClick={() => {
+                               setForgot(true)
+                            }}
+                        className="w3-bar-item w3-button">Change password</a>
                     
                     </div>
                 </div>

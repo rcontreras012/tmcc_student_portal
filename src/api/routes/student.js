@@ -172,10 +172,10 @@ module.exports = () => {
             // 'athletes' contains the list of athletes that match the criteria.
             else {
 
-
+                console.log(list, "--> check")
 
                 res.send({
-                    user: list[0],
+                    user: list.length == 0 ? [] : list[0],
                     params: req.query
                 })
 

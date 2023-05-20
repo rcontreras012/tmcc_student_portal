@@ -29,6 +29,8 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
         const navigate = useNavigate()
         const dispatch = useDispatch()
 
+        console.log(currentRecord)
+
     useEffect(() => {
         getRecord()
         getAnnouncement()
@@ -95,7 +97,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
             }
         }).then(res => {
             
-
+            console.log('get record', res)
       
             
 

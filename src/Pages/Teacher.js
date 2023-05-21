@@ -428,7 +428,7 @@ export const TeacherPage = (props) => {
                                 <i className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grading</h2>
                             <div className="w3-container">
 
-                                <h3>Subject: <label id='SubName'>Subject Name Here</label> </h3>
+                                {/* <h3>Subject: <label id='SubName'>Subject Name Here</label> </h3> */}
 
                                 <br />
 

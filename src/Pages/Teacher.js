@@ -142,7 +142,7 @@ export const TeacherPage = (props) => {
             }
         }).then(res => {
 
-
+            console.log(res, "--> AWIT?")
 
             
 

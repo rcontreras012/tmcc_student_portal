@@ -175,7 +175,7 @@ module.exports = () => {
         let newPass = req.query.newpassword
         let teacher = req.query.teacher
 
-        console.log(teacher, "--> awit")
+        console.log(teacher == "true", "--> awit")
 
 
 
@@ -189,7 +189,7 @@ module.exports = () => {
 
 
 
-                    if (teacher == true) {
+                    if (teacher == "true") {
                         console.log('dito??')
                         teacherModel.find({ email }, "", (err, user) => {
                             if (err) return handleError(err);

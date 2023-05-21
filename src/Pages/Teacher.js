@@ -366,7 +366,7 @@ export const TeacherPage = (props) => {
                                                     return (
                                                         <tr>
 
-                                                            <td>{i.gcode}1</td>
+                                                            <td>{i.gcode}</td>
                                                             <td>{i.name}</td>
                                                             <td>
                                                                 <button onClick={() => {

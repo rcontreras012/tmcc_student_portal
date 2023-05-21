@@ -315,7 +315,7 @@ export const AdminPage = (props) => {
     }
 
 
-    const importExcel = () => {
+    const importExcel = (e) => {
 
 
 
@@ -331,6 +331,8 @@ export const AdminPage = (props) => {
         }).catch(err => {
 
         })
+
+        e.preventDefault()
     }
 
     useEffect(() => {
@@ -928,7 +930,7 @@ export const AdminPage = (props) => {
                                                 </div>
 
                                                 <div class="col-lg-12">
-                                                    <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                                    <button onClick={(e) => importExcel(e)} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
                                                 </div>
 
                                             </div>

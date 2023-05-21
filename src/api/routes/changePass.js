@@ -55,10 +55,10 @@ module.exports = () => {
                                 teacherModel.updateOne({ schoolEmail: email },
                                     { password: newPass }, function (err, docs) {
                                         if (err) {
-                                            console.log(err)
+                                            
                                         }
                                         else {
-                                            console.log("Updated Docs : ", docs);
+                                            
 
 
                                             const transporter = nodemailer.createTransport({
@@ -79,7 +79,7 @@ module.exports = () => {
 
                                             transporter.sendMail(mailOptions, function (error, info) {
                                                 if (error) {
-                                                    console.log(error);
+                                                    
                                                 } else {
                                                     res.status(200)
                                                     res.send({
@@ -112,10 +112,10 @@ module.exports = () => {
                                 userModel.updateOne({ email },
                                     { password: newPass }, function (err, docs) {
                                         if (err) {
-                                            console.log(err)
+                                            
                                         }
                                         else {
-                                            console.log("Updated Docs : ", docs);
+                                            
 
 
                                             const transporter = nodemailer.createTransport({
@@ -136,7 +136,7 @@ module.exports = () => {
 
                                             transporter.sendMail(mailOptions, function (error, info) {
                                                 if (error) {
-                                                    console.log(error);
+                                                    
                                                 } else {
                                                     res.status(200)
                                                     res.send({
@@ -175,7 +175,7 @@ module.exports = () => {
         let newPass = req.query.newpassword
         let teacher = req.query.teacher
 
-        console.log(email, oldPass, newPass)
+        console.log(teacher, "--> awit")
 
 
 
@@ -189,7 +189,8 @@ module.exports = () => {
 
 
 
-                    if (teacher != null) {
+                    if (teacher == true) {
+                        console.log('dito??')
                         teacherModel.find({ email }, "", (err, user) => {
                             if (err) return handleError(err);
                             // 'athletes' contains the list of athletes that match the criteria.
@@ -204,10 +205,10 @@ module.exports = () => {
                                 teacherModel.updateOne({ schoolEmail: email, password: oldPass },
                                     { password: newPass }, function (err, docs) {
                                         if (err) {
-                                            console.log(err)
+                                            
                                         }
                                         else {
-                                            console.log("Updated Docs : ", docs);
+                                            
 
 
                                             const transporter = nodemailer.createTransport({
@@ -228,7 +229,7 @@ module.exports = () => {
 
                                             transporter.sendMail(mailOptions, function (error, info) {
                                                 if (error) {
-                                                    console.log(error);
+                                                    
                                                 } else {
                                                     res.status(200)
                                                     res.send({
@@ -248,13 +249,17 @@ module.exports = () => {
 
                     } else {
                         userModel.find({ email, password: oldPass }, "", (err, user) => {
-                            if (err) return handleError(err);
+                            if (err){
+                                console.log(err)
+                                return handleError(err);
+                            }
                             // 'athletes' contains the list of athletes that match the criteria.
                             else {
 
                                 let data = user[0]
 
-                                console.log(data, "--> OLOL")
+                                console.log(data, "--> check this")
+                                
                                 // res.send({
                                 //    user: data
                                 // })
@@ -263,10 +268,10 @@ module.exports = () => {
                                     userModel.updateOne({ email, password: oldPass },
                                         { password: newPass }, function (err, docs) {
                                             if (err) {
-                                                console.log(err)
+                                                
                                             }
                                             else {
-                                                console.log("Updated Docs : ", docs);
+                                                
 
 
                                                 const transporter = nodemailer.createTransport({
@@ -287,7 +292,7 @@ module.exports = () => {
 
                                                 transporter.sendMail(mailOptions, function (error, info) {
                                                     if (error) {
-                                                        console.log(error);
+                                                        
                                                     } else {
                                                         res.status(200)
                                                         res.send({

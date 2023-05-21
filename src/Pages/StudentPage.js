@@ -29,7 +29,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
         const navigate = useNavigate()
         const dispatch = useDispatch()
 
-        console.log(currentRecord)
+        
 
     useEffect(() => {
         getRecord()
@@ -97,7 +97,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
             }
         }).then(res => {
             
-            console.log('get record', res)
+            
       
             
 
@@ -206,7 +206,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                 onClose={() => setForgot(false)}
                 show={showForgot}
                 success={() => {
-                    console.log('not called?')
+                    
                     setForgot(false)
                 }}
             />
@@ -268,7 +268,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                 <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address: {user.schoolEmail}</p>
                                 <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number: {user.contact_no}</p>
 
-                                <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Subjects</b></p>
+                                <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Schedule</b></p>
 
                                 <div className="w3-card-2">
                                     <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">

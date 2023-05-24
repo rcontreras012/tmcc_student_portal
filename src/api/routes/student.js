@@ -85,7 +85,7 @@ module.exports = () => {
         const mailOptions = {
             from: 'tmcc@example.com',
             to: email,
-            subject: 'TMCCC Student Portal Account Creation',
+            subject: 'TMCNHS Student Portal Account Creation',
             html: `Hi student <b>${first_name} ${last_name}</b> your account for TMCC Student Portal has been created.
 
             <br>

@@ -72,7 +72,7 @@ module.exports = () => {
                                             const mailOptions = {
                                                 from: 'tmcc@example.com',
                                                 to: email,
-                                                subject: 'TMCCC Student Portal Password',
+                                                subject: 'TMCNHS Student Portal Password',
                                                 html: `Hi teacher  your account password for TMCC Student Portal has been changed.
                                  `
                                             };
@@ -129,7 +129,7 @@ module.exports = () => {
                                             const mailOptions = {
                                                 from: 'tmcc@example.com',
                                                 to: email,
-                                                subject: 'TMCCC Student Portal Password',
+                                                subject: 'TMCNHS Student Portal Password',
                                                 html: `Hi student  your account password for TMCC Student Portal has been changed.
                                  `
                                             };
@@ -222,7 +222,7 @@ module.exports = () => {
                                             const mailOptions = {
                                                 from: 'tmcc@example.com',
                                                 to: email,
-                                                subject: 'TMCCC Student Portal Password',
+                                                subject: 'TMCNHS Student Portal Password',
                                                 html: `Hi teacher  your account password for TMCC Student Portal has been changed.
                                  `
                                             };
@@ -285,7 +285,7 @@ module.exports = () => {
                                                 const mailOptions = {
                                                     from: 'tmcc@example.com',
                                                     to: email,
-                                                    subject: 'TMCCC Student Portal Password',
+                                                    subject: 'TMCNHS Student Portal Password',
                                                     html: `Hi student  your account password for TMCC Student Portal has been changed.
                                  `
                                                 };

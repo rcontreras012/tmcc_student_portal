@@ -107,7 +107,7 @@ module.exports = () => {
         let sy = req.query.sy
         let teacher_id = req.query.teacher_id
 
-        scheduleModel.find({ sy, teacher_id }, "", (err, list) => {
+        scheduleModel.find({ sy, teacher_id, secCode }, "", (err, list) => {
             if (err) return handleError(err);
             // 'athletes' contains the list of athletes that match the criteria.
             else {

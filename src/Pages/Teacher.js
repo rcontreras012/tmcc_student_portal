@@ -142,7 +142,7 @@ export const TeacherPage = (props) => {
             }
         }).then(res => {
 
-            console.log(res, "--> AWIT?")
+            
 
             
 
@@ -212,6 +212,8 @@ export const TeacherPage = (props) => {
 
             
 
+            
+
             // setStudentList(res.data.list)
             setSubjectList(res.data.list)
 
@@ -253,7 +255,7 @@ export const TeacherPage = (props) => {
                 onClose={() => setForgot(false)}
                 show={showForgot}
                 success={() => {
-                    console.log('not called?')
+                    
                     setForgot(false)
                 }}
             />
@@ -324,6 +326,7 @@ export const TeacherPage = (props) => {
                                             <tr>
                                                 <th>Time</th>
                                                 <th>Subjects</th>
+                                                <th>Section</th>
                                                 <th>Teacher</th>
                                             </tr>
                                         </thead>
@@ -334,8 +337,9 @@ export const TeacherPage = (props) => {
                                                     return (
                                                         <tr>
                                                             
-                                                            <td>{i.time}1</td>
+                                                            <td>{i.time}</td>
                                                             <td>{i.subject}</td>
+                                                            <td>{i.secCode}</td>
                                                             <td>{i.teacher}</td>
                                                         </tr>
                                                     )

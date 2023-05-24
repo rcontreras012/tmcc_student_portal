@@ -29,7 +29,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
         const navigate = useNavigate()
         const dispatch = useDispatch()
 
-        
+        console.log(user)
 
     useEffect(() => {
         getRecord()
@@ -263,7 +263,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                             </div>
                             <br/>
                             <div className="w3-container">
-                                <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>ID No: {user.id}</p>
+                                <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>ID No: {user.LRNNum}</p>
                                 <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address: {user.address}</p>
                                 <p><i className="fa fa-envelope fa-fw w3-margin-right w3-large w3-text-teal"></i>Email Address: {user.schoolEmail}</p>
                                 <p><i className="fa fa-phone fa-fw w3-margin-right w3-large w3-text-teal"></i>Contact Number: {user.contact_no}</p>
@@ -276,6 +276,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                             <tr>
                                                 <th>Time</th>
                                                 <th>Subjects</th>
+                                                <th>Section</th>
                                                 <th>Teacher</th>
                                             </tr>
                                         </thead>
@@ -287,6 +288,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                                     <tr>
                                                         <td>{i.time}</td>
                                                         <td>{i.subject}</td>
+                                                        <td>{i.secCode}</td>
                                                         <td>{i.teacher}</td>
                                                     </tr>
                                                 )

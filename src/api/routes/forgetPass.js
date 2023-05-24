@@ -57,7 +57,7 @@ router.post('/', function (req, res, next) {
                     const mailOptions = {
                         from: 'tmcc@example.com',
                         to: user[0].email,
-                        subject: 'TMCCC Student Portal Forget Password',
+                        subject: 'TMCNHS Student Portal Forget Password',
                         html: `Hi teacher  your account password for TMCC Student Portal has been reset.
                                 <br>
                                 <br>
@@ -161,7 +161,7 @@ router.post('/', function (req, res, next) {
                     const mailOptions = {
                         from: 'tmcc@example.com',
                         to: schoolEmail,
-                        subject: 'TMCCC Student Portal Forget Password',
+                        subject: 'TMCNHS Student Portal Forget Password',
                         html: `Hi student  your account password for TMCC Student Portal has been reset.
                                 <br>
                                 <br>

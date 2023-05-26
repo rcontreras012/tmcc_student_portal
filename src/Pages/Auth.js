@@ -81,6 +81,7 @@ export const AuthPage = () => {
 
 
             <div className='appname'>
+                <img src={require("../Utilz/img/TMCNHS LOGO.png")}>
                 Trece Martires National Highschool
             </div>
 

@@ -359,7 +359,7 @@ export const TeacherPage = (props) => {
                                         <thead>
                                             <tr>
                                                 <th>Grade</th>
-                                                <th>Section</th>
+                                                
                                                 <th>Map location</th>
                                             </tr>
                                         </thead>
@@ -370,7 +370,7 @@ export const TeacherPage = (props) => {
                                                     return (
                                                         <tr>
 
-                                                            <td>{i.gcode}</td>
+                                                            
                                                             <td>{i.name}</td>
                                                             <td>
                                                                 <button onClick={() => {

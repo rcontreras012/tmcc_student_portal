@@ -144,7 +144,7 @@ export const TeacherPage = (props) => {
 
             
 
-            
+                console.log(res, "--> check me now")
 
                 setTeacherSched(res.data.list)
         }).catch(err => {

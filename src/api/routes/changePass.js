@@ -175,7 +175,7 @@ module.exports = () => {
         let newPass = req.query.newpassword
         let teacher = req.query.teacher
 
-        console.log(teacher == "true", "--> awit")
+        
 
 
 
@@ -190,7 +190,7 @@ module.exports = () => {
 
 
                     if (teacher == "true") {
-                        console.log('dito??')
+                        
                         teacherModel.find({ email }, "", (err, user) => {
                             if (err) return handleError(err);
                             // 'athletes' contains the list of athletes that match the criteria.
@@ -250,7 +250,7 @@ module.exports = () => {
                     } else {
                         userModel.find({ email, password: oldPass }, "", (err, user) => {
                             if (err){
-                                console.log(err)
+                                
                                 return handleError(err);
                             }
                             // 'athletes' contains the list of athletes that match the criteria.
@@ -258,7 +258,7 @@ module.exports = () => {
 
                                 let data = user[0]
 
-                                console.log(data, "--> check this")
+                                
                                 
                                 // res.send({
                                 //    user: data

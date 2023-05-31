@@ -16,7 +16,7 @@ export const TeacherPage = (props) => {
     const user = useSelector(state => state.user.user)
     const [gradeList, setGradeList] = useState([])
     const [gcode, setGcode] = useState(0)
-    const  [seccode, setSecCode] = useState('')
+    const [seccode, setSecCode] = useState('')
     const [sy, setSy] = useState(moment().format('YYYY'))
     const [sectionList, setSectionList] = useState([])
     const [studentList, setStudentList] = useState([])
@@ -27,11 +27,30 @@ export const TeacherPage = (props) => {
     const [grade, setGrade] = useState(0)
     const [teacherSched, setTeacherSched] = useState([])
     const [mapImage, setMapImage] = useState('')
+    const [quarterGrade, setQuarterGrading] = useState({
+        first: 0,
+        second: 0,
+        third: 0,
+        fourth: 0
+    })
     const [mapSize, setMapSize] = useState({
         height: 500,
         width: 500
     })
-
+    const [selectedStudent, setSelectedStudent] = useState({
+        sy: '',
+        LRNNumber: '',
+        gcode: '',
+        seccode: ''
+    })
+    const [selectedSched, setSelectedSched] = useState({
+        time: "",
+        subject: "",
+        secCode: "",
+        teacher: "",
+        gcode: '',
+        sy: ''
+    })
     const [showForgot, setForgot] = useState(false)
 
     const [maps, setMaps] = useState([])
@@ -52,7 +71,7 @@ export const TeacherPage = (props) => {
 
     const getAllMaps = () => {
         axios.post(url + "getMaps", null, null).then(res => {
-            
+
 
             setMaps(res.data.result)
         })
@@ -95,40 +114,98 @@ export const TeacherPage = (props) => {
 
     }
 
-    const gradeStudent = () => {
-        
+    const getGrade = (i) => {
 
-        if(grade == 0 && subject == ""){
-            alert('Please fill out all fields')
-        }
-        else{
+
+
+        axios.post(url + "getstudentgradeOne", null, {
+            params: {
+                sy: moment().format('YYYY'),
+                LRNNumber: i.LRNNumber,
+                gcode: i.gradeCode,
+                seccode: i.secCode,
+                subject: selectedSched.subject
+
+
+            }
+        }).then(res => {
+
+
+
+
+
+
+            if (res.data.grade.length == 0) {
+                // alert('no grade available')
+                setQuarterGrading({
+                    first: 0,
+                    second: 0,
+                    third: 0,
+                    fourth: 0
+                })
+            }
+            else{
+                
+                let d = res.data.grade[0]
+                setQuarterGrading({
+                    first: d.first,
+                    second: d.second,
+                    third: d.third,
+                    fourth: d.fourth
+                })
+            }
+
+
+
+
+
+        }).catch(err => {
+
+        })
+
+    }
+
+    const gradeStudent = () => {
+        console.log('fuck?')
+
+        // if (grade == 0 && subject == "") {
+        //     alert('Please fill out all fields')
+        // }
+        // else {
+
+            // sy: 2023,
+            //     LRNNumber: i.LRNNumber,
+            //         gcode: i.gradeCode,
+            //             seccode: i.secCode
 
             axios.post(url + "gradeStudent", null, {
                 params: {
                     sy: moment().format('YYYY'),
-                    gcode,
-                    seccode,
-                    studentID,
-                    sy,
-                    selectedPeriod,
-                    subject,
-                    grade
+                    gcode: selectedStudent.gcode,
+                    seccode: selectedStudent.seccode,
+                    studentID: selectedStudent.LRNNumber,
+                    sy: 2023,
+                    subject: selectedSched.subject,
+                    first: quarterGrade.first,
+                    second: quarterGrade.second,
+                    third: quarterGrade.third,
+                    fourth: quarterGrade.fourth
 
                 }
             }).then(res => {
                 document.getElementById('id01').style.display = 'none'
-
+                console.log(res, "--> whu")
                 alert('Successfully graded the student')
                 setGrade('')
 
             }).catch(err => {
-
+                console.log(err, "--> LOLS")
             })
-        }
-
         
 
-      
+
+
+
 
     }
 
@@ -142,11 +219,11 @@ export const TeacherPage = (props) => {
             }
         }).then(res => {
 
-            
 
-                console.log(res, "--> check me now")
 
-                setTeacherSched(res.data.list)
+
+
+            setTeacherSched(res.data.list)
         }).catch(err => {
 
         })
@@ -163,22 +240,22 @@ export const TeacherPage = (props) => {
         }).then(res => {
 
 
-        
 
-            if(res.data.data.length != 0){
+
+            if (res.data.data.length != 0) {
                 setOpenGrading({
                     ...grading,
                     ...res.data.data[0]
                 })
             }
         }).catch(err => {
-            
+
         })
 
     }
 
     const getGradeList = () => {
-        
+
         axios.post(url + 'getteachersection', null, {
             params: {
                 gcode: gcode,
@@ -189,12 +266,12 @@ export const TeacherPage = (props) => {
         }).then(res => {
             // 
 
-            
+
 
             setSectionList(res.data.list)
-      
+
         }).catch(err => {
-            
+
         })
 
     }
@@ -210,9 +287,9 @@ export const TeacherPage = (props) => {
         }).then(res => {
             // 
 
-            
 
-            
+
+
 
             // setStudentList(res.data.list)
             setSubjectList(res.data.list)
@@ -222,7 +299,7 @@ export const TeacherPage = (props) => {
         })
     }
 
- 
+
     const getStudentList = () => {
         axios.post(url + 'getstudentlist', null, {
             params: {
@@ -241,21 +318,40 @@ export const TeacherPage = (props) => {
         })
     }
 
-    
-    
 
-  
-    
+    const getStudentListBySched = (g, s) => {
+        axios.post(url + 'getstudentlist', null, {
+            params: {
+                gcode: g,
+                seccode: s,
+            }
+        }).then(res => {
+            //  
+
+
+
+
+            setStudentList(res.data.list)
+            getSubject()
+
+        }).catch(err => {
+
+        })
+    }
+
+
+
+
     return (
 
         <div className="w3-light-grey">
 
             <UpdatePassModal
-            teacher={true}
+                teacher={true}
                 onClose={() => setForgot(false)}
                 show={showForgot}
                 success={() => {
-                    
+
                     setForgot(false)
                 }}
             />
@@ -265,17 +361,17 @@ export const TeacherPage = (props) => {
                 <div className=" w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
                     <img style={{ height: "55px", width: "55px" }} src={require('../Utils/img/TMCNHS LOGO.png')} />
                     <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
-                    
+
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
-                        <a 
+                        <a
                             onClick={() => {
                                 dispatch({
                                     type: LOGOUT
                                 })
-                                navigate('/', {replace: true})
+                                navigate('/', { replace: true })
                             }}
-                        className="w3-bar-item w3-button">Logout</a>
+                            className="w3-bar-item w3-button">Logout</a>
                     </div>
 
                     <div className="w3-right w3-hide-small">
@@ -333,10 +429,21 @@ export const TeacherPage = (props) => {
                                         <tbody>
                                             {
                                                 teacherSched.map((i, k) => {
-                                                    
+
                                                     return (
-                                                        <tr>
-                                                            
+                                                        <tr onClick={() => {
+                                                            // document.getElementById('id03').style.display = 'block'
+                                                            setSelectedSched({
+                                                                time: i.time,
+                                                                subject: i.subject,
+                                                                secCode: i.secCode,
+                                                                teacher: i.teacher,
+                                                                gcode: i.gcode,
+                                                                sy: i.sy
+                                                            })
+                                                            getStudentListBySched(i.gcode, i.secCode)
+                                                        }}>
+
                                                             <td>{i.time}</td>
                                                             <td>{i.subject}</td>
                                                             <td>{i.secCode}</td>
@@ -436,7 +543,7 @@ export const TeacherPage = (props) => {
 
                                 <br />
 
-                                <div className='w3-row'>
+                                {/* <div className='w3-row'>
 
                                     <div className='w3-half' style={{ width: "48%", marginRight: "5px" }}>
                                         <select 
@@ -447,8 +554,6 @@ export const TeacherPage = (props) => {
                                             <option value="G8">Grade 8</option>
                                             <option value="G9">Grade 9</option>
                                             <option value="G10">Grade 10</option>
-                                            {/* <option value="G11">Grade 11</option>
-                                            <option value="G12">Grade 12</option> */}
                                         </select>
                                     </div>
 
@@ -464,13 +569,13 @@ export const TeacherPage = (props) => {
                                         </select>
                                     </div>
 
-                                </div>
+                                </div> */}
 
                                 <br />
 
-                                <button 
+                                {/* <button 
                                 onClick={() => getStudentList()}
-                                className='w3-button w3-teal w3-round-large w3-margin-bottom'>Proceed</button>                                            
+                                className='w3-button w3-teal w3-round-large w3-margin-bottom'>Proceed</button>                                             */}
                                 <div className="w3-card">
                                     <table className="w3-table w3-bordered" name="tblSched">
                                         <thead>
@@ -481,28 +586,35 @@ export const TeacherPage = (props) => {
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          {
-                                            studentList.map((i, k) => {
+                                            {
+                                                studentList.map((i, k) => {
 
-                                                return(
-                                                    <tr>
-                                                        <td>{i.name}</td>
-                                                        <td>
-                                                            <button onClick={() => 
-                                                                
-                                                                {
-                                                                    
+                                                    return (
+                                                        <tr>
+                                                            <td>{i.name}</td>
+                                                            <td>
+                                                                <button onClick={() => {
+
                                                                     setStudentID(i.LRNNumber)
-                                                                document.getElementById('id01').style.display = 'block'
+
+                                                                    setSelectedStudent({
+                                                                        sy: 2023,
+                                                                        LRNNumber: i.LRNNumber,
+                                                                        gcode: i.gradeCode,
+                                                                        seccode: i.secCode
+                                                                    })
+
+                                                                    getGrade(i)
+                                                                    document.getElementById('id01').style.display = 'block'
                                                                 }
-                                                                
+
                                                                 } class="w3-button w3-teal w3-round-large">Add Grade</button>
-                                                        </td>
-                                                    </tr>
-                                                )
-                                            })
-                                          }
-                                            
+                                                            </td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
+
                                         </tbody>
                                     </table>
                                 </div>
@@ -532,19 +644,68 @@ export const TeacherPage = (props) => {
 
                     <div className='w3-row w3-margin-top w3-padding'>
                         <div className='w3-quarter'>
-                            <h4>Grading Period : </h4>                         
+                            <h4>{selectedSched.subject}</h4>
+                        </div>
+
+                        <div className='d-flex'>
+                            <div>
+                                1st
+
+                                <input
+                                    value={quarterGrade.first}
+                                    onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ first: v.target.value } })}
+                                    class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+
+                            </div>
+
+                            <div>
+                                2nd
+
+                                <input
+                                    value={quarterGrade.second}
+                                    onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ second: v.target.value } })}
+                                    class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+
+                            </div>
+
+                            <div>
+                                3rd
+
+                                <input
+                                    value={quarterGrade.third}
+                                    onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ third: v.target.value } })}
+                                    class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+
+                            </div>
+
+                            <div>
+                                4th
+
+                                <input
+                                    value={quarterGrade.fourth}
+                                    onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ fourth: v.target.value } })}
+                                    class="w3-input w3-border" type="text" style={{ width: "60%" }} />
+
+                            </div>
+                        </div>
+
+                    </div>
+
+                    {/* <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>Grading Period : </h4>
                         </div>
                         <div className='w3-rest'>
-                            <select 
+                            <select
                                 onChange={(v) => setSelectedPeriod(v.target.value)}
                                 class="w3-select w3-border" name="option" style={{ width: "60%" }}>
-                                <option 
+                                <option
                                     value="" disabled selected>Choose your grading period</option>
                                 <option disabled={grading.first ? false : true} value="1">1st</option>
                                 <option disabled={grading.second ? false : true} value="2">2nd</option>
                                 <option disabled={grading.third ? false : true} value="3">3rd</option>
                                 <option disabled={grading.fourth ? false : true} value="4">4th</option>
-                            </select>                            
+                            </select>
                         </div>
                     </div>
 
@@ -553,7 +714,7 @@ export const TeacherPage = (props) => {
                             <h4>Grade: </h4>
                         </div>
                         <div className='w3-rest'>
-                            <input 
+                            <input
                                 value={grade}
                                 onChange={(v) => setGrade(v.target.value)}
                                 class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -565,32 +726,32 @@ export const TeacherPage = (props) => {
                             <h4>Subject: </h4>
                         </div>
                         <div className='w3-rest'>
-                            <select 
+                            <select
 
                                 onChange={(v) => setSubject(v.target.value)}
                                 class="w3-select w3-border" name="option" style={{ width: "60%" }}>
-                                <option 
+                                <option
                                     value="" disabled selected>Choose your subject</option>
-                                          {
-                                            subjectList.map((i, k) => {
+                                {
+                                    subjectList.map((i, k) => {
 
-                                                return(
-                                                    <option value={i.subject}>{i.subject}</option>
-                                                )
-                                            })
-                                          }
-                             
+                                        return (
+                                            <option value={i.subject}>{i.subject}</option>
+                                        )
+                                    })
+                                }
+
                             </select>
                         </div>
-                    </div>
+                    </div> */}
 
                     <div class="w3-container w3-light-grey w3-padding">
-                    <button class="w3-button w3-right w3-white w3-border"
+                        <button class="w3-button w3-right w3-white w3-border"
                             onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%" }}>Close</button>
                         <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
                                 gradeStudent()
-                      
+
                             }} style={{ width: "15%", marginRight: "5px" }}>Save</button>
 
                     </div>
@@ -605,26 +766,26 @@ export const TeacherPage = (props) => {
 
                     <div className='w3-row w3-margin-top w3-padding'>
 
-                        <div className='row' style={{marginBottom:"20px"}}>
+                        <div className='row' style={{ marginBottom: "20px" }}>
 
-                            <Button 
+                            <Button
                                 style={{
                                     padding: "10px 10px",
                                     maxWidth: "100px",
-                                    alignItems:"center",
-                                    justifyContent:"center",
-                                    display:"flex"
+                                    alignItems: "center",
+                                    justifyContent: "center",
+                                    display: "flex"
                                 }}
                                 onClick={() => {
-                                setMapSize({
-                                    ...mapSize,
-                                    height: mapSize.height + 30,
-                                    width: mapSize.width + 30
-                                })
-                            }}>
+                                    setMapSize({
+                                        ...mapSize,
+                                        height: mapSize.height + 30,
+                                        width: mapSize.width + 30
+                                    })
+                                }}>
                                 Zoom In
                             </Button>
-                            
+
                             <Button
                                 class="btn btn-secondary"
                                 style={{
@@ -633,7 +794,7 @@ export const TeacherPage = (props) => {
                                     alignItems: "center",
                                     justifyContent: "center",
                                     display: "flex",
-                                    marginLeft:"20px"
+                                    marginLeft: "20px"
                                 }}
                                 onClick={() => {
                                     setMapSize({
@@ -647,10 +808,10 @@ export const TeacherPage = (props) => {
                             </Button>
 
                         </div>
-                      
-                        <div className='w3-rest w3-center' style={{overflow:"scroll"}}>
+
+                        <div className='w3-rest w3-center' style={{ overflow: "scroll" }}>
                             <img
-                                style={{height: mapSize.height + "px", width:mapSize.width + "px"}}
+                                style={{ height: mapSize.height + "px", width: mapSize.width + "px" }}
                                 src={mapImage}
                             />
                         </div>
@@ -662,6 +823,36 @@ export const TeacherPage = (props) => {
                     </div>
                 </div>
             </div>
+
+            <div id="id03" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>Student List</h2>
+                    </header>
+
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <h3>
+                            {selectedSched.subject}
+                        </h3>
+
+
+                    </div>
+
+
+                    {/* <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%" }}>Close</button>
+                        <button class="w3-button w3-right w3-teal w3-border"
+                            onClick={() => {
+                                gradeStudent()
+
+                            }} style={{ width: "15%", marginRight: "5px" }}>Save</button>
+
+                    </div> */}
+                </div>
+            </div>
+
             {/*<!-- End Modal content -->*/}
         </div>
 

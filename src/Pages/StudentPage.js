@@ -11,84 +11,92 @@ import { Button } from 'react-bootstrap';
 import { ForgotModal, UpdatePassModal } from '../Components/Modal';
 //let slideIndex = 1;
 
-    export const StudentPage = (props) => {
-        const [announcementList, setAnnouncementList] = useState([])
-        const user = useSelector(state => state.user.user)
-        const [currentRecord, setCurrentRecord] = useState('')
-        const [sched, setSched] = useState([])
-        const [grade, setGrade] = useState([])
-        const [maps, setMaps] = useState([])
-        const [mapImage, setMapImage] = useState('')
-        const [showForgot, setForgot] = useState(false)
-        const [mapSize, setMapSize] = useState({
-            height: 500,
-            width: 500
-        })
+export const StudentPage = (props) => {
+    const [announcementList, setAnnouncementList] = useState([])
+    const user = useSelector(state => state.user.user)
+    const [currentRecord, setCurrentRecord] = useState('')
+    const [sched, setSched] = useState([])
+    const [grade, setGrade] = useState([])
+    const [maps, setMaps] = useState([])
+    const [mapImage, setMapImage] = useState('')
+    const [showForgot, setForgot] = useState(false)
+    const [mapSize, setMapSize] = useState({
+        height: 500,
+        width: 500
+    })
+    const [fGrade, setFinalGrade] = useState(0)
+    const [genralAvg, setGeneralAve] = useState({
+        first: [],
+        second: [],
+        third: [],
+        fourth: [],
+        final: []
+    })
     // const [slideIndex, setSlideIndex] = useState(1)
 
-        const navigate = useNavigate()
-        const dispatch = useDispatch()
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-        console.log(user)
+
 
     useEffect(() => {
         getRecord()
         getAnnouncement()
     }, [])
 
-        useEffect(() => {
-            getAllMaps()
-        }, [])
+    useEffect(() => {
+        getAllMaps()
+    }, [])
 
-        const getAllMaps = () => {
-            axios.post(url + "getMaps", null, null).then(res => {
-                
+    const getAllMaps = () => {
+        axios.post(url + "getMaps", null, null).then(res => {
 
-                setMaps(res.data.result)
-            })
+
+            setMaps(res.data.result)
+        })
+    }
+
+    useEffect(() => {
+        if (user == null) {
+            alert("Permission denied")
         }
+        else if (user.role != 3) {
 
-        useEffect(() => {
-            if (user == null) {
-                alert("Permission denied")
-            }
-            else if (user.role != 3) {
+            // navigate('/', { replace: true })
+            // dispatch({
+            //     type: LOGOUT
+            // })
 
-                // navigate('/', { replace: true })
-                // dispatch({
-                //     type: LOGOUT
-                // })
-                
-            }
-        }, [])
+        }
+    }, [])
 
 
     useEffect(() => {
-        
+
         if (currentRecord != "") {
             getSched()
             getGrade()
         }
     }, [currentRecord])
 
-        const getAnnouncement = () => {
-            axios.post(url + 'getannouncement', null, null).then(res => {
-                // 
+    const getAnnouncement = () => {
+        axios.post(url + 'getannouncement', null, null).then(res => {
+            // 
 
 
-                // document.getElementById('id01').style.display = 'none'
+            // document.getElementById('id01').style.display = 'none'
 
-                setAnnouncementList(res.data.result)
+            setAnnouncementList(res.data.result)
 
-            }).catch(err => {
+        }).catch(err => {
 
-            })
+        })
 
 
-        }
+    }
 
     const getRecord = () => {
-        
+
         axios.post(url + "getstudentrecord", null, {
             params: {
                 sy: moment().format('YYYY'),
@@ -96,30 +104,30 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
 
             }
         }).then(res => {
-            
-            
-      
-            
+
+
+
+
 
             setCurrentRecord(res.data.user)
 
 
 
-           
+
         }).catch(err => {
-            
+
         })
-        
+
     }
 
     const getSched = () => {
-        
+
 
         axios.post(url + "getstudentschedule", null, {
             params: {
                 sy: moment().format('YYYY'),
                 gcode: currentRecord.gradeCode,
-                seccode:currentRecord.secCode
+                seccode: currentRecord.secCode
 
             }
         }).then(res => {
@@ -127,14 +135,14 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
             // 
 
             let v = res.data.sched
-            if(v.length != 0){
-              let result = v.sort((a, b) => {
+            if (v.length != 0) {
+                let result = v.sort((a, b) => {
                     return a.order - b.order;
                 });
                 setSched(result)
 
             }
-         
+
 
 
 
@@ -144,58 +152,105 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
         })
     }
 
-        const getGrade = () => {
+    const getGrade = () => {
 
-            axios.post(url + "getstudentgrade", null, {
-                params: {
-                    sy: moment().format('YYYY'),
-                    LRNNumber: user.LRNNum,
-                    gcode: currentRecord.gradeCode,
-                    seccode: currentRecord.secCode
-
-
-                }
-            }).then(res => {
-
-                
+        axios.post(url + "getstudentgrade", null, {
+            params: {
+                sy: moment().format('YYYY'),
+                LRNNumber: user.LRNNum,
+                gcode: currentRecord.gradeCode,
+                seccode: currentRecord.secCode
 
 
-
-                // setCurrentRecord(res.data.user)
-
-                setGrade(res.data.grade)
+            }
+        }).then(res => {
 
 
 
 
-            }).catch(err => {
 
+            // setCurrentRecord(res.data.user)
+
+            setGrade(res.data.grade)
+            let d = res.data.grade
+
+            let a = d.map((i, k) => {
+
+                genralAvg.first.push(i['first'])
+                genralAvg.second.push(i['second'])
+                genralAvg.third.push(i['third'])
+                genralAvg.fourth.push(i['fourth'])
             })
 
+
+
+
+
+        }).catch(err => {
+
+        })
+
+    }
+
+    
+    const getFinalGrade = (i) => {
+
+
+        if (i.fourth != "" && i.first != "" && i.second != "" && i.third != "") {
+
+            let first = parseInt(i.first)
+            let second = parseInt(i.second)
+            let third = parseInt(i.third)
+            let fourth = parseInt(i.fourth)
+
+
+            let finalGrade = (first + second + third + fourth) / 4
+
+            // setFinalGrade(finalGrade)
+            // genralAvg.final.push(finalGrade)
+            
+            return finalGrade
+
         }
+     
+    }
+
+  
+    const getFinalGenaralGrade = (i) => {
+
+        let a = genralAvg.first.concat(genralAvg.second).concat(genralAvg.third).concat(genralAvg.fourth)
+
+        
+        let num = []
+
+        a.map((i, k) => {
+
+            num.push(parseInt(i))
+        })
+
+        let finale = num.reduce((a, b) => a + b, 0)
 
 
-        const getFinalGrade = (i) => {
+        return finale / num.length
 
+    }
 
-            if(i.fourth != "" && i.first != "" && i.second != "" && i.third != ""){
+    const getGenaralGrade = (i) => {
 
-                let first = parseInt(i.first)
-                let second = parseInt(i.second)
-                let third = parseInt(i.third)
-                let fourth = parseInt(i.fourth)
+    
+        let num = []
 
+        i.map((i,k) => {
 
-                let finalGrade = (first + second + third + fourth) / 4
+            num.push(parseInt(i))
+        })
 
+        let finale = num.reduce((a, b) => a + b, 0)
+        
 
-                return finalGrade
-
-            }
-            else{
-                return 
-            }
-        }
+        return finale / num.length
+       
+    }
 
     return (
 
@@ -206,7 +261,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                 onClose={() => setForgot(false)}
                 show={showForgot}
                 success={() => {
-                    
+
                     setForgot(false)
                 }}
             />
@@ -230,12 +285,12 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
 
                     </div>
                     <div className="w3-right w3-hide-small">
-                        <a 
+                        <a
                             onClick={() => {
-                               setForgot(true)
+                                setForgot(true)
                             }}
-                        className="w3-bar-item w3-button">Change password</a>
-                    
+                            className="w3-bar-item w3-button">Change password</a>
+
                     </div>
                 </div>
             </div>
@@ -261,7 +316,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                     <h2>{user.first_name} {user.last_name}</h2>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                             <div className="w3-container">
                                 <p><i className="fa fa-certificate fa-fw w3-margin-right w3-large w3-text-teal"></i>ID No: {user.LRNNum}</p>
                                 <p><i className="fa fa-home fa-fw w3-margin-right w3-large w3-text-teal"></i>Home Address: {user.address}</p>
@@ -281,19 +336,19 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                          {
-                                            sched.map((i, k) => {
+                                            {
+                                                sched.map((i, k) => {
 
-                                                return(
-                                                    <tr>
-                                                        <td>{i.time}</td>
-                                                        <td>{i.subject}</td>
-                                                        <td>{i.secCode}</td>
-                                                        <td>{i.teacher}</td>
-                                                    </tr>
-                                                )
-                                            })
-                                          }
+                                                    return (
+                                                        <tr>
+                                                            <td>{i.time}</td>
+                                                            <td>{i.subject}</td>
+                                                            <td>{i.secCode}</td>
+                                                            <td>{i.teacher}</td>
+                                                        </tr>
+                                                    )
+                                                })
+                                            }
                                         </tbody>
                                     </table>
                                 </div>
@@ -395,10 +450,14 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                             </tr>
                                         </thead>
                                         <tbody>
-                                           {
+
+                                            {
+
                                                 grade.map((i, k) => {
 
-                                                    return(
+
+
+                                                    return (
                                                         <tr>
                                                             <td>{i.subject}</td>
                                                             <td>{i.first}</td>
@@ -410,12 +469,22 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                                                         </tr>
                                                     )
                                                 })
-                                           }
+                                            }
+
+                                            <tr>
+                                                <td>General Average</td>
+                                                <td>{getGenaralGrade(genralAvg.first)}</td>
+                                                <td>{getGenaralGrade(genralAvg.second)}</td>
+                                                <td>{getGenaralGrade(genralAvg.third)}</td>
+                                                <td>{getGenaralGrade(genralAvg.fourth)}</td>
+
+                                                <td>{getFinalGenaralGrade()}</td>
+                                            </tr>
                                         </tbody>
                                     </table>
                                 </div>
                             </div>
-                            <br/>
+                            <br />
                         </div>
 
 
@@ -483,7 +552,7 @@ import { ForgotModal, UpdatePassModal } from '../Components/Modal';
                         </div>
 
 
-                        <div className='w3-rest w3-center' style={{overflow:"scroll"}}>
+                        <div className='w3-rest w3-center' style={{ overflow: "scroll" }}>
                             <img
                                 style={{ height: mapSize.height + "px", width: mapSize.width + "px" }}
                                 src={mapImage}

@@ -27,6 +27,7 @@ const getTeacherSchedule = require('./routes/getTeacherSchedule')()
 const studentRouter = require('./routes/student')()
 const mapRouter = require('./routes/Map')()
 const announcementRouterGlobal = require('./routes/announcement')()
+const manageSyRouter = require('./routes/manageSy')()
 const addTermRouter = require('./routes/addTerm')
 
 
@@ -85,6 +86,7 @@ app.use('/getTerm', getTermRouter)
 app.use(announcementRouterGlobal)
 app.use(getTeacherSchedule)
 app.use(mapRouter)
+app.use(manageSyRouter)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

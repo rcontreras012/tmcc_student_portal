@@ -250,6 +250,37 @@ module.exports = () => {
 
     });
 
+    router.post('/getstudentgradeOne', function (req, res, next) {
+
+
+
+        let sy = req.query.sy
+        let gcode = req.query.gcode
+        let secCode = req.query.seccode
+        let LRNNumber = req.query.LRNNumber
+
+        gradeModel.find({ gcode, secCode, sy, LRNNumber }, "", (err, list) => {
+            if (err) return handleError(err);
+            // 'athletes' contains the list of athletes that match the criteria.
+            else {
+
+
+
+                res.send({
+                    grade: list,
+                    params: req.query
+                })
+
+                // Get all student info under this grade
+            }
+
+        })
+
+
+
+
+    });
+
     return router
 }
 

@@ -75,8 +75,9 @@ module.exports = () => {
 
         let gradeCode = req.query.gcode
         let secCode = req.query.seccode
+        let schoolYear = req.query.sy
 
-        studentRecordModel.find({ secCode, gradeCode }, "", (err, list) => {
+        studentRecordModel.find({ secCode, gradeCode, schoolYear }, "", (err, list) => {
             if (err) return handleError(err);
             // 'athletes' contains the list of athletes that match the criteria.
             else {
@@ -138,8 +139,8 @@ module.exports = () => {
         let sy = req.query.sy
         let LRNNumber = req.query.studentID
         let subject = req.query.subject
-        let gradeVal = req.query.grade
-        let selectedPeriod = req.query.selectedPeriod
+        // let gradeVal = req.query.grade
+        // let selectedPeriod = req.query.selectedPeriod
         let first = req.query.first
         let second = req.query.second
         let third = req.query.third
@@ -156,29 +157,54 @@ module.exports = () => {
 
         gradeModel.find({ gcode, secCode, LRNNumber, sy, subject }, '',  (err, grade) => {
 
+           
             if (err) return handleError(err)
-            else {
-              
+            else{
 
-                if(grade.length == 0){
+                if(grade.length != 0){
+                    
+                    gradeModel.updateOne({
+                        sy,
+                        gcode,
+                        secCode,
+                        LRNNumber,
+                        subject,
+                        }, {
+                        first: first,
+                        second: second,
+                        third: third,
+                        fourth: fourth,
+                        }, function (error, docs){
+                            if(!error){
+                                res.status(200)
+                                res.send({
+                                    msg: 'success'
+                                })
+                            }
+                            else{
+                                
+                            }
+                        })
+                }
 
+                else{
                     const gradeSave = new gradeModel({
                         sy,
                         gcode,
                         secCode,
                         LRNNumber,
-                        first: gradeVal,
-                        second: '',
-                        third: '',
-                        fourth :'',
-                        subject: '',
+                        first: first,
+                        second: second,
+                        third: third,
+                        fourth: fourth,
                         subject,
                         studentID: LRNNumber
                     })
 
                     try {
-                        const dataToSave =  gradeSave.save();
+                        const dataToSave = gradeSave.save();
                         res.status(200).json(dataToSave)
+                       
                     }
                     catch (error) {
                         res.status(400).json({ message: error.message })
@@ -186,91 +212,122 @@ module.exports = () => {
                             error: "something went wrong"
                         })
                     }
-
                 }
+            }
+            // else {
+              
 
-                else{
+            //     if(grade.length == 0){
+
+            //         const gradeSave = new gradeModel({
+            //             sy,
+            //             gcode,
+            //             secCode,
+            //             LRNNumber,
+            //             first: gradeVal,
+            //             second: '',
+            //             third: '',
+            //             fourth :'',
+            //             subject: '',
+            //             subject,
+            //             studentID: LRNNumber
+            //         })
+
+            //         try {
+            //             const dataToSave =  gradeSave.save();
+            //             res.status(200).json(dataToSave)
+            //         }
+            //         catch (error) {
+            //             res.status(400).json({ message: error.message })
+            //             res.send({
+            //                 error: "something went wrong"
+            //             })
+            //         }
+
+            //     }
+
+            //     else{
                  
 
 
-                    if(selectedPeriod == 1){
-                        gradeModel.updateOne({
-                            sy,
-                            gcode,
-                            studentID: LRNNumber,
-                            subject
-                        }, {
-                            first: gradeVal,
-                            subject: subject
-                        }, function (err, docs){
-                            console.log("updated grade")
-                            res.send({
-                                msg: "Success update",
-                                docs,
-                                subject
-                            })
-                        })
-                    }
-                    else if (selectedPeriod == 2) {
-                        gradeModel.updateOne({
-                            sy,
-                            gcode,
-                            studentID: LRNNumber,
-                            subject
+            //         if(selectedPeriod == 1){
+            //             gradeModel.updateOne({
+            //                 sy,
+            //                 gcode,
+            //                 studentID: LRNNumber,
+            //                 subject
+            //             }, {
+            //                 first: gradeVal,
+            //                 subject: subject
+            //             }, function (err, docs){
+            //                 
+            //                 res.send({
+            //                     msg: "Success update",
+            //                     docs,
+            //                     subject
+            //                 })
+            //             })
+            //         }
+            //         else if (selectedPeriod == 2) {
+            //             gradeModel.updateOne({
+            //                 sy,
+            //                 gcode,
+            //                 studentID: LRNNumber,
+            //                 subject
 
-                        }, {
-                            second: gradeVal,
-                            subject: subject
-                        }, function (err, docs) {
-                            console.log("updated grade")
-                            res.send({
-                                msg: "Success update",
-                                docs,
-                                gradeVal
-                            })
-                        })
-                    }
+            //             }, {
+            //                 second: gradeVal,
+            //                 subject: subject
+            //             }, function (err, docs) {
+            //                 
+            //                 res.send({
+            //                     msg: "Success update",
+            //                     docs,
+            //                     gradeVal
+            //                 })
+            //             })
+            //         }
 
-                    else if (selectedPeriod == 3) {
-                        gradeModel.updateOne({
-                            sy,
-                            gcode,
-                            studentID: LRNNumber,
-                            subject
+            //         else if (selectedPeriod == 3) {
+            //             gradeModel.updateOne({
+            //                 sy,
+            //                 gcode,
+            //                 studentID: LRNNumber,
+            //                 subject
 
-                        }, {
-                            third: gradeVal,
-                            subject: subject
-                        }, function (err, docs) {
-                            console.log("updated grade")
-                            res.send({
-                                msg: "Success update",
-                                docs,
-                                gradeVal
-                            })
-                        })
-                    }
-                    else if (selectedPeriod == 4) {
-                        gradeModel.updateOne({
-                            sy,
-                            gcode,
-                            studentID: LRNNumber,
-                            subject
+            //             }, {
+            //                 third: gradeVal,
+            //                 subject: subject
+            //             }, function (err, docs) {
+            //                 
+            //                 res.send({
+            //                     msg: "Success update",
+            //                     docs,
+            //                     gradeVal
+            //                 })
+            //             })
+            //         }
+            //         else if (selectedPeriod == 4) {
+            //             gradeModel.updateOne({
+            //                 sy,
+            //                 gcode,
+            //                 studentID: LRNNumber,
+            //                 subject
 
-                        }, {
-                            fourth: gradeVal,
-                            subject: subject
-                        }, function (err, docs) {
-                            console.log("updated grade")
-                            res.send({
-                                msg: "Success update",
-                                docs,
-                                gradeVal
-                            })
-                        })
-                    }
-                }
-            }
+            //             }, {
+            //                 fourth: gradeVal,
+            //                 subject: subject
+            //             }, function (err, docs) {
+            //                 
+            //                 res.send({
+            //                     msg: "Success update",
+            //                     docs,
+            //                     gradeVal
+            //                 })
+            //             })
+            //         }
+            //     }
+            // }
         })
 
 

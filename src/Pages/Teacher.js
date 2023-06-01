@@ -451,6 +451,7 @@ export const TeacherPage = (props) => {
                                                 <th>Subjects</th>
                                                 <th>Section</th>
                                                 <th>Teacher</th>
+                                                <th></th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -458,23 +459,27 @@ export const TeacherPage = (props) => {
                                                 teacherSched.map((i, k) => {
 
                                                     return (
-                                                        <tr onClick={() => {
-                                                            // document.getElementById('id03').style.display = 'block'
-                                                            setSelectedSched({
-                                                                time: i.time,
-                                                                subject: i.subject,
-                                                                secCode: i.secCode,
-                                                                teacher: i.teacher,
-                                                                gcode: i.gcode,
-                                                                sy: i.sy
-                                                            })
-                                                            getStudentListBySched(i.gcode, i.secCode)
-                                                        }}>
+                                                        <tr >
 
                                                             <td>{i.time}</td>
                                                             <td>{i.subject}</td>
                                                             <td>{i.secCode}</td>
                                                             <td>{i.teacher}</td>
+                                                            <td><button 
+                                                                className='w3-button w3-teal '
+                                                                onClick={() => {
+                                                                    // document.getElementById('id03').style.display = 'block'
+                                                                    setSelectedSched({
+                                                                        time: i.time,
+                                                                        subject: i.subject,
+                                                                        secCode: i.secCode,
+                                                                        teacher: i.teacher,
+                                                                        gcode: i.gcode,
+                                                                        sy: i.sy
+                                                                    })
+                                                                    getStudentListBySched(i.gcode, i.secCode)
+                                                                }}
+                                                            >View student</button></td>
                                                         </tr>
                                                     )
                                                 })

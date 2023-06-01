@@ -28,7 +28,7 @@ export const AdminPage = (props) => {
 
     const [showAddTeacher, setShowAddTeacher] = useState(false)
     const [announcementList, setAnnouncementList] = useState([])
-
+    const [sy, setSy] = useState('')
     const [mapUpdate, setMapUpdaate] = useState(false)
 
     const [announcementUpdate, setAnnouncementUpdate] = useState(false)
@@ -418,6 +418,28 @@ export const AdminPage = (props) => {
 
 
 
+    const saveSy = () => {
+
+        
+
+        axios.post(url + "saveSy", null, {
+            params: {
+                sy: sy
+            }
+        }).then(res => {
+            
+            setSy('')
+            document.getElementById('id06').style.display = 'none'
+            alert('Done adding school year')
+
+            // setOpenGrading(res.data.data[0])
+        }).catch(err => {
+            
+            document.getElementById('id06').style.display = 'none'
+        })
+
+    }
+
 
     const openGrading = (v, fv) => {
 
@@ -525,6 +547,14 @@ export const AdminPage = (props) => {
                             <br />
                             <div className="w3-container w3-padding-large">
                                 <button onClick={() => document.getElementById('mapModal').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Add Map</button>
+
+                            </div>
+                        </div><br />
+
+                        <div className="w3-white w3-text-grey w3-card-4 ">
+                            <br />
+                            <div className="w3-container w3-padding-large">
+                                <button onClick={() => document.getElementById('id06').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Add School Year</button>
 
                             </div>
                         </div><br />
@@ -978,18 +1008,7 @@ export const AdminPage = (props) => {
                         </div>
                     </div>
 
-                    {/* <div className='w3-row w3-margin-top w3-padding'>
-                        <div className='w3-quarter'>
-                            <h4>Start Date : </h4>
-                        </div>
-                        <div className='w3-rest'>
-                            <input
-                                onChange={(e) => {
 
-                                }}
-                                class="w3-input w3-border" type="date" style={{ width: "70%" }} />
-                        </div>
-                    </div> */}
 
                     <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
@@ -1278,6 +1297,43 @@ export const AdminPage = (props) => {
                                 deleteMap()
 
                             }} style={{ width: "15%", marginRight:"20px" }} >Yes</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="id06" class="w3-modal">
+                <div class="w3-modal-content w3-card-4 w3-animate-zoom">
+                    <header class="w3-container w3-teal">
+                        <h2>Add School Year</h2>
+                    </header>
+
+                    <div className='w3-row w3-margin-top w3-padding'>
+                        <div className='w3-quarter'>
+                            <h4>School Year : </h4>
+                        </div>
+                        <div className='w3-rest'>
+                            <input
+                                type='number'
+                                value={sy}
+                                onChange={(e) => {
+                                  setSy(e.target.value)
+                                }}
+                                id="w3review" name="w3review" rows="4" cols="50" class="w3-input w3-border" style={{ width: "70%" }}></input>
+                        </div>
+                    </div>
+
+
+
+                    <div class="w3-container w3-light-grey w3-padding">
+                        <button class="w3-button w3-right w3-white w3-border"
+                            onClick={() => document.getElementById('id06').style.display = 'none'} style={{ width: "15%" }} >Close</button>
+                        <button class="w3-button w3-right w3-teal w3-border"
+                            onClick={() => {
+
+                                saveSy()
+
+
+                            }} style={{ width: "15%", marginRight: "5px" }} >Save</button>
                     </div>
                 </div>
             </div>

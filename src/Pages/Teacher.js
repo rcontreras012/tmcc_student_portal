@@ -62,6 +62,7 @@ export const TeacherPage = (props) => {
         third: false,
         fourth: false
     })
+    const [syList, setSyList] = useState([])
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
@@ -91,6 +92,7 @@ export const TeacherPage = (props) => {
     }, [])
 
     useEffect(() => {
+        getSyList()
         getAnnouncement()
         getGradeList()
         getSubject()
@@ -120,7 +122,7 @@ export const TeacherPage = (props) => {
 
         axios.post(url + "getstudentgradeOne", null, {
             params: {
-                sy: moment().format('YYYY'),
+                sy: sy,
                 LRNNumber: i.LRNNumber,
                 gcode: i.gradeCode,
                 seccode: i.secCode,
@@ -166,7 +168,7 @@ export const TeacherPage = (props) => {
     }
 
     const gradeStudent = () => {
-        console.log('fuck?')
+        
 
         // if (grade == 0 && subject == "") {
         //     alert('Please fill out all fields')
@@ -180,7 +182,7 @@ export const TeacherPage = (props) => {
 
             axios.post(url + "gradeStudent", null, {
                 params: {
-                    sy: moment().format('YYYY'),
+                    sy:  sy,
                     gcode: selectedStudent.gcode,
                     seccode: selectedStudent.seccode,
                     studentID: selectedStudent.LRNNumber,
@@ -194,12 +196,12 @@ export const TeacherPage = (props) => {
                 }
             }).then(res => {
                 document.getElementById('id01').style.display = 'none'
-                console.log(res, "--> whu")
+                
                 alert('Successfully graded the student')
                 setGrade('')
 
             }).catch(err => {
-                console.log(err, "--> LOLS")
+                
             })
         
 
@@ -299,12 +301,27 @@ export const TeacherPage = (props) => {
         })
     }
 
+    const getSyList = () => {
+
+        axios.post(url + 'getSy', null, null).then(res => {
+            // 
+
+
+            
+            setSyList(res.data.result)
+
+        }).catch(err => {
+
+        })
+    }
+
 
     const getStudentList = () => {
         axios.post(url + 'getstudentlist', null, {
             params: {
                 gcode: gcode,
                 seccode,
+                sy
             }
         }).then(res => {
             // 
@@ -324,6 +341,7 @@ export const TeacherPage = (props) => {
             params: {
                 gcode: g,
                 seccode: s,
+                sy
             }
         }).then(res => {
             //  
@@ -416,7 +434,16 @@ export const TeacherPage = (props) => {
 
                                 <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>My Schedule</b></p>
 
-                                <div className="w3-card-2">
+                                <select onChange={(v) => setSy(v.target.value)} class="form-select" aria-label="Default select example">
+                                    <option  selected>School Year</option>
+                                    {
+                                        syList.map((i, k) => {
+                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear}</option>
+                                        })
+                                    }
+                                </select>
+
+                                <div className="w3-card-2" style={{marginTop: "20px"}}>
                                     <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
                                         <thead>
                                             <tr>
@@ -598,7 +625,7 @@ export const TeacherPage = (props) => {
                                                                     setStudentID(i.LRNNumber)
 
                                                                     setSelectedStudent({
-                                                                        sy: 2023,
+                                                                        sy: sy,
                                                                         LRNNumber: i.LRNNumber,
                                                                         gcode: i.gradeCode,
                                                                         seccode: i.secCode
@@ -639,6 +666,7 @@ export const TeacherPage = (props) => {
             <div id="id01" class="w3-modal">
                 <div class="w3-modal-content w3-card-4 w3-animate-zoom">
                     <header class="w3-container w3-teal">
+                        <h1>School Year: {sy}</h1>
                         <h2>Add Grade</h2>
                     </header>
 

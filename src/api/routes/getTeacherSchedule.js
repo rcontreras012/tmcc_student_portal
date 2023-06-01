@@ -75,8 +75,9 @@ module.exports = () => {
 
         let gradeCode = req.query.gcode
         let secCode = req.query.seccode
+        let schoolYear = req.query.sy
 
-        studentRecordModel.find({ secCode, gradeCode }, "", (err, list) => {
+        studentRecordModel.find({ secCode, gradeCode, schoolYear }, "", (err, list) => {
             if (err) return handleError(err);
             // 'athletes' contains the list of athletes that match the criteria.
             else {

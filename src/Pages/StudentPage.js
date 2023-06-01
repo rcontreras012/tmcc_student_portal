@@ -32,6 +32,8 @@ export const StudentPage = (props) => {
         fourth: [],
         final: []
     })
+    const [sy, setSy]= useState(moment().format('YYYY'))
+    const [syList, setSyList] = useState([])
     // const [slideIndex, setSlideIndex] = useState(1)
 
     const navigate = useNavigate()
@@ -40,13 +42,28 @@ export const StudentPage = (props) => {
 
 
     useEffect(() => {
+        
         getRecord()
         getAnnouncement()
-    }, [])
-
-    useEffect(() => {
+        getSyList()
         getAllMaps()
-    }, [])
+    }, [sy])
+
+ 
+
+    const getSyList = () => {
+
+        axios.post(url + 'getSy', null, null).then(res => {
+            // 
+
+
+
+            setSyList(res.data.result)
+
+        }).catch(err => {
+
+        })
+    }
 
     const getAllMaps = () => {
         axios.post(url + "getMaps", null, null).then(res => {
@@ -77,7 +94,7 @@ export const StudentPage = (props) => {
             getSched()
             getGrade()
         }
-    }, [currentRecord])
+    }, [currentRecord, sy])
 
     const getAnnouncement = () => {
         axios.post(url + 'getannouncement', null, null).then(res => {
@@ -99,14 +116,14 @@ export const StudentPage = (props) => {
 
         axios.post(url + "getstudentrecord", null, {
             params: {
-                sy: moment().format('YYYY'),
+                sy: sy,
                 LRNNum: user.LRNNum
 
             }
         }).then(res => {
 
 
-
+            
 
 
             setCurrentRecord(res.data.user)
@@ -120,12 +137,13 @@ export const StudentPage = (props) => {
 
     }
 
+    
     const getSched = () => {
 
 
         axios.post(url + "getstudentschedule", null, {
             params: {
-                sy: moment().format('YYYY'),
+                sy: sy,
                 gcode: currentRecord.gradeCode,
                 seccode: currentRecord.secCode
 
@@ -135,12 +153,17 @@ export const StudentPage = (props) => {
             // 
 
             let v = res.data.sched
+
+            console.log(v, "--> lols")
             if (v.length != 0) {
                 let result = v.sort((a, b) => {
                     return a.order - b.order;
                 });
                 setSched(result)
 
+            }
+            else{
+                setSched([])
             }
 
 
@@ -156,7 +179,7 @@ export const StudentPage = (props) => {
 
         axios.post(url + "getstudentgrade", null, {
             params: {
-                sy: moment().format('YYYY'),
+                sy: sy,
                 LRNNumber: user.LRNNum,
                 gcode: currentRecord.gradeCode,
                 seccode: currentRecord.secCode
@@ -170,6 +193,8 @@ export const StudentPage = (props) => {
 
 
             // setCurrentRecord(res.data.user)
+
+            
 
             setGrade(res.data.grade)
             let d = res.data.grade
@@ -325,6 +350,15 @@ export const StudentPage = (props) => {
 
                                 <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>Schedule</b></p>
 
+                                <select onChange={(v) => setSy(v.target.value)} class="form-select" aria-label="Default select example">
+                                    <option selected>School Year</option>
+                                    {
+                                        syList.map((i, k) => {
+                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear}</option>
+                                        })
+                                    }
+                                </select>
+
                                 <div className="w3-card-2">
                                     <table className="w3-table w3-bordered w3-hoverable w3-small" name="tblSched">
                                         <thead>
@@ -471,15 +505,20 @@ export const StudentPage = (props) => {
                                                 })
                                             }
 
-                                            <tr>
-                                                <td>General Average</td>
-                                                <td>{getGenaralGrade(genralAvg.first)}</td>
-                                                <td>{getGenaralGrade(genralAvg.second)}</td>
-                                                <td>{getGenaralGrade(genralAvg.third)}</td>
-                                                <td>{getGenaralGrade(genralAvg.fourth)}</td>
-
-                                                <td>{getFinalGenaralGrade()}</td>
-                                            </tr>
+                                            {
+                                                grade.length != 0 && <tr>
+                                                    <td>General Average</td>
+                                                    {/* <td>{getGenaralGrade(genralAvg.first)}</td>
+                                                    <td>{getGenaralGrade(genralAvg.second)}</td>
+                                                    <td>{getGenaralGrade(genralAvg.third)}</td>
+                                                    <td>{getGenaralGrade(genralAvg.fourth)}</td> */}
+                                                    <td/>
+                                                    <td />
+                                                    <td />
+                                                    <td />
+                                                    <td>{getFinalGenaralGrade()}</td>
+                                                </tr>
+                                            }
                                         </tbody>
                                     </table>
                                 </div>

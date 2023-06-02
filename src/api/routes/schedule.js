@@ -11,15 +11,15 @@ router.post('/', async function (req, res, next) {
 
     await file.map((i, index) => {
        
-
-        ScheduleModel.find({ gcode: i.Gcode, secCode: i.SecCode, subject: i.SchedSubject, teacher_id: i.T_iD }, '', (err, sched) => {
-            
+        
+        ScheduleModel.find({ gcode: i.Gcode, secCode: i.SecCode, subject: i.SchedSubject, sy: i.sy }, '', (err, sched) => {
+          
             if (!err) {
-
+                
                 if (sched.length != 0) {
 
                     
-                    ScheduleModel.updateOne({ gcode: i.Gcode, secCode: i.SecCode, subject: i.SchedSubject, teacher_id: i.T_iD }, {
+                    ScheduleModel.updateOne({ gcode: i.Gcode, secCode: i.SecCode, subject: i.SchedSubject }, {
                         gcode: i.Gcode,
                         secCode: i.SecCode,
                         subject: i.SchedSubject,
@@ -29,7 +29,7 @@ router.post('/', async function (req, res, next) {
                         teacher_id: i.T_iD,
                         sy: i.sy
                     }, function (error, docs) {
-
+                        console.log(docs, "--> HMM")
                         if (!error) {
                             res.status(200)
 
@@ -47,7 +47,7 @@ router.post('/', async function (req, res, next) {
                         teacher_id: i.T_iD,
                         sy: i.sy
                     })
-                    
+
                     try {
                         
                         const dataToSave = schedule.save();

@@ -10,16 +10,7 @@ router.post('/', async function (req, res, next) {
 
 
     await file.map((i, index) => {
-        const schedule = new ScheduleModel({
-            gcode: i.Gcode,
-            secCode: i.SecCode,
-            subject: i.SchedSubject,
-            teacher: i.SchedTeacher,
-            time: i.SchedTime,
-            order: i.SchedOrder,
-            teacher_id: i.T_iD,
-            sy: i.sy
-        })
+       
 
         ScheduleModel.find({ gcode: i.Gcode, secCode: i.SecCode, subject: i.SchedSubject, teacher_id: i.T_iD }, '', (err, sched) => {
             
@@ -46,6 +37,16 @@ router.post('/', async function (req, res, next) {
                     })
                 }
                 else {
+                    const schedule = new ScheduleModel({
+                        gcode: i.Gcode,
+                        secCode: i.SecCode,
+                        subject: i.SchedSubject,
+                        teacher: i.SchedTeacher,
+                        time: i.SchedTime,
+                        order: i.SchedOrder,
+                        teacher_id: i.T_iD,
+                        sy: i.sy
+                    })
                     
                     try {
                         

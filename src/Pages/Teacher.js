@@ -92,13 +92,14 @@ export const TeacherPage = (props) => {
     }, [])
 
     useEffect(() => {
+        console.log('called?')
         getSyList()
         getAnnouncement()
         getGradeList()
         getSubject()
         getGradingTerm()
         getTeacherSchedule()
-    }, [])
+    }, [sy])
 
     const getAnnouncement = () => {
         axios.post(url + 'getannouncement', null, null).then(res => {
@@ -215,7 +216,7 @@ export const TeacherPage = (props) => {
 
         axios.post(url + "getteacherschedule", null, {
             params: {
-                sy: moment().format('YYYY'),
+                sy: sy,
                 teacher_id: user.teacher_id_no
 
             }
@@ -223,7 +224,7 @@ export const TeacherPage = (props) => {
 
 
 
-
+            console.log(res.data, "--> aawit")
 
             setTeacherSched(res.data.list)
         }).catch(err => {

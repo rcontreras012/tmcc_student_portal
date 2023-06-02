@@ -28,7 +28,7 @@ export const AdminPage = (props) => {
 
     const [showAddTeacher, setShowAddTeacher] = useState(false)
     const [announcementList, setAnnouncementList] = useState([])
-    const [sy, setSy] = useState('')
+    const [sy, setSy] = useState(moment().format('YYYY'))
     const [mapUpdate, setMapUpdaate] = useState(false)
 
     const [announcementUpdate, setAnnouncementUpdate] = useState(false)
@@ -40,6 +40,7 @@ export const AdminPage = (props) => {
     const [mapName, setMapName] = useState('')
     const [maps, setMaps] = useState([])
     const [mapImage, setMapImage] = useState('')
+    const [syList, setSyList] = useState([])
     const [mapSize, setMapSize] = useState({
         height: 500,
         width: 500
@@ -77,7 +78,22 @@ export const AdminPage = (props) => {
         }
     }, [])
 
+    const getSyList = () => {
+
+        axios.post(url + 'getSy', null, null).then(res => {
+            // 
+
+
+
+            setSyList(res.data.result)
+
+        }).catch(err => {
+
+        })
+    }
+
     useEffect(() => {
+        getSyList()
         getAllMaps()
     }, [])
 
@@ -342,7 +358,7 @@ export const AdminPage = (props) => {
 
     useEffect(() => {
         getGradingTerm()
-    }, [])
+    }, [sy])
 
     const createAnnouncement = () => {
 
@@ -395,6 +411,7 @@ export const AdminPage = (props) => {
 
 
     }
+    console.log(sy)
 
     const getGradingTerm = () => {
 
@@ -402,14 +419,27 @@ export const AdminPage = (props) => {
 
         axios.post(url + "getTerm", null, {
             params: {
-                sy: moment().format('YYYY')
+                sy: sy
             }
         }).then(res => {
 
 
+            console.log(res, "--> FCK")
 
+        
 
-            setOpenGrading(res.data.data[0])
+            if(res.data.data.length == 0){
+                setOpenGrading({
+                    first: false,
+                    second: false,
+                    third: false,
+                    fourth: false,
+                    sy: sy
+                })
+            }
+            else{
+                setOpenGrading(res.data.data[0])
+            }
         }).catch(err => {
 
         })
@@ -447,7 +477,7 @@ export const AdminPage = (props) => {
 
         axios.post(url + "opengrading", null, {
             params: {
-                sy: moment().format("YYYY"),
+                sy: sy,
                 first: v == 1 ? fv : grading.first,
                 second: v == 2 ? fv : grading.second,
                 third: v == 3 ? fv : grading.third,
@@ -552,6 +582,23 @@ export const AdminPage = (props) => {
                         </div><br />
 
                         <div className="w3-white w3-text-grey w3-card-4 ">
+
+
+                            <div className='w3-container w3-padding-large'>
+                                <h2>School Year: </h2>
+                            </div>
+
+
+                         <div className='d-flex col-lg-12 align-items-center justify-content-center'>
+                                <select style={{padding: "10px 10px"}} className='col-lg-10' onChange={(v) => setSy(v.target.value)} class="form-select" aria-label="Default select example">
+                                    <option selected>School Year</option>
+                                    {
+                                        syList.map((i, k) => {
+                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear}</option>
+                                        })
+                                    }
+                                </select>
+                         </div>
                             <br />
                             <div className="w3-container w3-padding-large">
                                 <button onClick={() => document.getElementById('id06').style.display = 'block'} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Add School Year</button>

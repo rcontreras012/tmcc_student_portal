@@ -92,7 +92,7 @@ export const TeacherPage = (props) => {
     }, [])
 
     useEffect(() => {
-        console.log('called?')
+        
         getSyList()
         getAnnouncement()
         getGradeList()
@@ -224,7 +224,7 @@ export const TeacherPage = (props) => {
 
 
 
-            console.log(res.data, "--> aawit")
+            
 
             setTeacherSched(res.data.list)
         }).catch(err => {
@@ -232,23 +232,38 @@ export const TeacherPage = (props) => {
         })
     }
 
+    
+
+   
     const getGradingTerm = () => {
 
 
 
         axios.post(url + "getTerm", null, {
             params: {
-                sy: moment().format('YYYY')
+                sy: sy
             }
         }).then(res => {
 
+            
 
-
-
+            
             if (res.data.data.length != 0) {
                 setOpenGrading({
-                    ...grading,
-                    ...res.data.data[0]
+                    sy: sy,
+                    first: res.data.data[0].first,
+                    second: res.data.data[0].second,
+                     third: res.data.data[0].third,
+                    fourth: res.data.data[0].fourth,
+                })
+            }
+            else{
+                setOpenGrading({
+                    sy: sy,
+                    first: false,
+                    second: false,
+                    third: false,
+                    fourth: false,
                 })
             }
         }).catch(err => {
@@ -680,12 +695,15 @@ export const TeacherPage = (props) => {
                         <div className='w3-quarter'>
                             <h4>{selectedSched.subject}</h4>
                         </div>
-
+                        {
+                            
+                        }
                         <div className='d-flex'>
                             <div>
                                 1st
 
                                 <input
+                                    disabled={grading.first ? false: true}
                                     value={quarterGrade.first}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ first: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -696,6 +714,7 @@ export const TeacherPage = (props) => {
                                 2nd
 
                                 <input
+                                    disabled={grading.second ? false : true}
                                     value={quarterGrade.second}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ second: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -706,6 +725,7 @@ export const TeacherPage = (props) => {
                                 3rd
 
                                 <input
+                                    disabled={grading.third ? false : true}
                                     value={quarterGrade.third}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ third: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -716,6 +736,7 @@ export const TeacherPage = (props) => {
                                 4th
 
                                 <input
+                                    disabled={grading.fourth ? false : true}
                                     value={quarterGrade.fourth}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ fourth: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />

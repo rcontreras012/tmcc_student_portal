@@ -187,7 +187,6 @@ export const TeacherPage = (props) => {
                     gcode: selectedStudent.gcode,
                     seccode: selectedStudent.seccode,
                     studentID: selectedStudent.LRNNumber,
-                    sy: 2023,
                     subject: selectedSched.subject,
                     first: quarterGrade.first,
                     second: quarterGrade.second,

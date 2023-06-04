@@ -154,7 +154,7 @@ export const StudentPage = (props) => {
 
             let v = res.data.sched
 
-            console.log(v, "--> lols")
+            
             if (v.length != 0) {
                 let result = v.sort((a, b) => {
                     return a.order - b.order;
@@ -240,11 +240,36 @@ export const StudentPage = (props) => {
      
     }
 
+    const quarterGeneralGraade = (item) => {
+        let num = []
+
+        item.map((i, k) => {
+
+            num.push(parseInt(i))
+        })
+
+        let finale = num.reduce((a, b) => a + b, 0)
+
+        
+
+        num.some((e) => {
+           if ( e == 0 ){
+               finale = 0
+                return 0
+           }
+        })
+
+        
+
+        if (finale == 0) return ''
+        else return finale / num.length
+    }
   
     const getFinalGenaralGrade = (i) => {
 
         let a = genralAvg.first.concat(genralAvg.second).concat(genralAvg.third).concat(genralAvg.fourth)
 
+        
         
         let num = []
 
@@ -255,8 +280,19 @@ export const StudentPage = (props) => {
 
         let finale = num.reduce((a, b) => a + b, 0)
 
+        num.some((e) => {
+            if (e == 0) {
+                finale = 0
+                return 0
+            }
+            else{
+                
+            }
+        })
 
-        return finale / num.length
+
+        if(finale == 0) return ''
+        else return finale / num.length
 
     }
 
@@ -499,11 +535,14 @@ export const StudentPage = (props) => {
                                                             <td>{i.third}</td>
                                                             <td>{i.fourth}</td>
 
-                                                            <td>{getFinalGrade(i)}</td>
+                                                           {
+                                                                i.first != 0 && i.second != 0 && i.third != 0 && i.fourth != 0 && <td>{getFinalGrade(i)}</td>
+                                                           }
                                                         </tr>
                                                     )
                                                 })
                                             }
+                                            {}
 
                                             {
                                                 grade.length != 0 && <tr>
@@ -512,10 +551,10 @@ export const StudentPage = (props) => {
                                                     <td>{getGenaralGrade(genralAvg.second)}</td>
                                                     <td>{getGenaralGrade(genralAvg.third)}</td>
                                                     <td>{getGenaralGrade(genralAvg.fourth)}</td> */}
-                                                    <td/>
-                                                    <td />
-                                                    <td />
-                                                    <td />
+                                                    <td>{quarterGeneralGraade(genralAvg.first)}</td>
+                                                    <td>{quarterGeneralGraade(genralAvg.second)}</td>
+                                                    <td>{quarterGeneralGraade(genralAvg.third)}</td>
+                                                    <td>{quarterGeneralGraade(genralAvg.fourth)}</td>
                                                     <td>{getFinalGenaralGrade()}</td>
                                                 </tr>
                                             }

@@ -262,7 +262,7 @@ export const StudentPage = (props) => {
         
 
         if (finale == 0) return ''
-        else return finale / num.length
+        else return Math.round(finale / num.length)
     }
   
     const getFinalGenaralGrade = (i) => {
@@ -292,7 +292,7 @@ export const StudentPage = (props) => {
 
 
         if(finale == 0) return ''
-        else return finale / num.length
+        else return Math.round(finale / num.length)
 
     }
 

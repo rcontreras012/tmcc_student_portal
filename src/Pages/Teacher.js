@@ -184,7 +184,7 @@ export const TeacherPage = (props) => {
 
 
 
-
+            console.log(res, "--> AWIT SIR")
 
 
             if (res.data.grade.length == 0) {

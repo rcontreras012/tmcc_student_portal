@@ -139,7 +139,7 @@ module.exports = () => {
         await file.map((i, index) => {
 
 
-            gradeModel.find({ gcode: i.Gcode, secCode: i.SecCode, subject: i.subject, sy: i.sy, LRNNumber: i.LRNNumber, first: i.first, second: i.second, third: i.third, fourth: i.fourth }, '', (err, sched) => {
+            gradeModel.find({ gcode: i.Gcode, secCode: i.SecCode, subject: i.subject, sy: i.sy, LRNNumber: i.LRNNumber}, '', (err, sched) => {
 
                 if (!err) {
                  

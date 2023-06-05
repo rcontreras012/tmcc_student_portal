@@ -8,10 +8,14 @@ import '../App.css';
 import { LOGOUT } from '../redux/actionType';
 import { url } from '../Utils/url';
 import { Button } from 'react-bootstrap';
+import * as xlsx from 'xlsx'
 import { UpdatePassModal } from '../Components/Modal';
+import Dropzone from 'react-dropzone';
 
 export const TeacherPage = (props) => {
-
+    const [studentFileName, setStudentFileName] = useState('')
+    const [studentFile, setStudentFile] = useState('')
+    
     const [announcementList, setAnnouncementList] = useState([])
     const user = useSelector(state => state.user.user)
     const [gradeList, setGradeList] = useState([])
@@ -100,6 +104,51 @@ export const TeacherPage = (props) => {
         getGradingTerm()
         getTeacherSchedule()
     }, [sy])
+
+
+    const fileSelect = (v, label) => {
+
+        const file = v[0]
+
+        const reader = new FileReader();
+        reader.onload = (e) => {
+            const data = e.target.result;
+            const workbook = xlsx.read(data, { type: "array" });
+            const sheetName = workbook.SheetNames[0];
+            const worksheet = workbook.Sheets[sheetName];
+            const json = xlsx.utils.sheet_to_json(worksheet);
+
+       
+
+                setStudentFile(json)
+                setStudentFileName(file.name)
+            
+        };
+
+        reader.readAsArrayBuffer(file);
+
+    }
+
+    const importStudent = () => {
+    
+
+
+        axios.post(url + "importGrade", null, {
+            params: {
+                file: studentFile
+            }
+        }).then(res => {
+
+            alert("Importing student success")
+            // setStudentFile('')
+            // setStudentFileName('')
+        }).catch(err => {
+
+        })
+    }
+
+
+
 
     const getAnnouncement = () => {
         axios.post(url + 'getannouncement', null, null).then(res => {
@@ -584,6 +633,66 @@ export const TeacherPage = (props) => {
                         <div className="w3-container w3-card w3-white">
                             <h2 className="w3-text-grey w3-padding-16">
                                 <i className="fa fa-certificate fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grading</h2>
+
+                                <div>
+                                    Import Excel File instead
+                                </div>
+
+                            <div className='w3-container w3-card w3-margin-bottom'>
+                                <div className='w3-row w3-center w3-margin-bottom'>
+                                
+
+                                    <div class="col-xl-12 w3-padding-small">
+                                        <h4>
+                                            Import Student Grade
+                                        </h4>
+
+                                        <Dropzone
+                                            accept={{
+                                                'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet': ['.xlsx']
+                                            }}
+                                            onDrop={(v) => fileSelect(v, "enrollee")}>
+                                            {({ getRootProps, getInputProps }) => (
+                                                <div className='dropzone' {...getRootProps()}>
+                                                    <input {...getInputProps()} />
+                                                    <p>Drag 'n' drop excel files here, or click to select files</p>
+                                                </div>
+                                            )}
+                                        </Dropzone>
+
+                                        {
+                                            studentFileName != "" &&
+                                            <aside>
+                                                <h4>Files</h4>
+                                                <div className='col-lg-12'>
+                                                    <div className='row'>
+                                                        <div className='col-lg-3'>
+                                                            {studentFileName}
+                                                        </div>
+
+                                                        <div className='col-lg-9'>
+                                                            <i
+                                                                onClick={() => {
+                                                                    setStudentFileName('')
+                                                                    setStudentFile('')
+                                                                }}
+                                                                class="bi bi-trash" style={{ color: "red" }}></i>
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-12" style={{ marginTop: "20px" }}>
+                                                        <button onClick={() => importStudent()} class="w3-button w3-teal w3-round-large " style={{ width: "100%" }}>Import</button>
+                                                    </div>
+
+                                                </div>
+                                            </aside>
+                                        }
+
+                                    </div>
+
+                                </div>
+                            </div>
+
                             <div className="w3-container">
 
                                 {/* <h3>Subject: <label id='SubName'>Subject Name Here</label> </h3> */}
@@ -656,7 +765,10 @@ export const TeacherPage = (props) => {
                                                                 }
 
                                                                 } class="w3-button w3-teal w3-round-large">Add Grade</button>
+                                                                
                                                             </td>
+
+                                                       
                                                         </tr>
                                                     )
                                                 })

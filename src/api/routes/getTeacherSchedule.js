@@ -130,6 +130,68 @@ module.exports = () => {
 
     });
 
+    router.post('/importGrade', async function (req, res, next) {
+
+        let file = req.query.file
+
+
+
+        await file.map((i, index) => {
+
+
+            gradeModel.find({ gcode: i.Gcode, secCode: i.SecCode, subject: i.subject, sy: i.sy, LRNNumber: i.LRNNumber, first: i.first, second: i.second, third: i.third, fourth: i.fourth }, '', (err, sched) => {
+
+                if (!err) {
+                 
+                    if (sched.length != 0) {
+
+                        
+                        gradeModel.updateOne({ gcode: i.Gcode, secCode: i.SecCode, subject: i.subject, sy: i.sy, LRNNumber: i.LRNNumber}, {
+                            gcode: i.Gcode, secCode: i.SecCode, subject: i.subject, sy: i.sy, LRNNumber: i.LRNNumber, first: i.first, second: i.second, third: i.third, fourth: i.fourth
+                        }, function (error, docs) {
+                            
+                            if (!error) {
+                                res.status(200)
+
+                            }
+                        })
+                    }
+                    else {
+                        const schedule = new gradeModel({
+                            gcode: i.Gcode, secCode: i.SecCode, subject: i.subject, sy: i.sy, LRNNumber: i.LRNNumber, first: i.first, second: i.second, third: i.third, fourth: i.fourth
+                        })
+
+                        try {
+
+                            const dataToSave = schedule.save();
+                            res.status(200).json(dataToSave)
+                        }
+                        catch (error) {
+                            // res.status(400).json({ message: error.message })
+                            // res.send({
+                            //     error: "something went wrong"
+                            // })
+                        }
+                    }
+                }
+                else {
+
+                }
+
+            })
+
+
+
+        })
+
+        res.send({
+            msg: "success"
+        })
+
+
+
+    });
+
 
     router.post('/gradeStudent', async function (req, res, next) {
 

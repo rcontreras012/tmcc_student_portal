@@ -140,8 +140,8 @@ export const TeacherPage = (props) => {
         }).then(res => {
 
             alert("Importing student success")
-            // setStudentFile('')
-            // setStudentFileName('')
+            setStudentFile('')
+            setStudentFileName('')
         }).catch(err => {
 
         })
@@ -442,7 +442,7 @@ export const TeacherPage = (props) => {
             <div className="w3-top">
                 <div className=" w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
                     <img style={{ height: "55px", width: "55px" }} src={require('../Utils/img/TMCNHS LOGO.png')} />
-                    <a href="#home" className="w3-bar-item w3-button">Trece Martires National Highschool</a>
+                    <a href="#home" className="w3-bar-item w3-button">Trece Martires City National Highschool</a>
 
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
@@ -798,7 +798,7 @@ export const TeacherPage = (props) => {
             <div id="id01" class="w3-modal">
                 <div class="w3-modal-content w3-card-4 w3-animate-zoom">
                     <header class="w3-container w3-teal">
-                        <h1>School Year: {sy}</h1>
+                        <h1>School Year: {sy} - {parseInt(sy) + 1}</h1>
                         <h2>Add Grade</h2>
                     </header>
 

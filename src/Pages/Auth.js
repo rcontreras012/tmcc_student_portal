@@ -83,7 +83,7 @@ export const AuthPage = () => {
             <div className='appname'>
                 <img style={{ height: "150px", width: "150px"
                            }} src={require("../Utils/img/TMCNHS LOGO.png")}/>
-                Trece Martires National Highschool
+                Trece Martires City National High School
             </div>
 
 

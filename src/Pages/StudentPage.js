@@ -331,7 +331,7 @@ export const StudentPage = (props) => {
             <div className="w3-top">
                 <div className="w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
                     <img style={{ height: "55px", width: "55px" }} src={require('../Utils/img/TMCNHS LOGO.png')} />
-                    <a href="#home" className="w3-bar-item w3-button">Trece Martires City National Highschool</a>
+                    <a href="#home" className="w3-bar-item w3-button">Trece Martires City National High School</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
 
                     <div className="w3-right w3-hide-small">

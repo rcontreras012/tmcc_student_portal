@@ -42,14 +42,20 @@ export const StudentPage = (props) => {
 
 
     useEffect(() => {
-        
+        setGeneralAve({
+            first: [],
+            second: [],
+            third: [],
+            fourth: [],
+            final: []
+        })
         getRecord()
         getAnnouncement()
         getSyList()
         getAllMaps()
     }, [sy])
 
- 
+    console.log(grade)
 
     const getSyList = () => {
 
@@ -177,6 +183,7 @@ export const StudentPage = (props) => {
 
     const getGrade = () => {
 
+
         axios.post(url + "getstudentgrade", null, {
             params: {
                 sy: sy,
@@ -248,7 +255,7 @@ export const StudentPage = (props) => {
    
         item.map((i, k) => {
             
-            num.push(parseInt(i))
+          if(i != undefined)  num.push(parseInt(i))
         })
 
         let finale = num.reduce((a, b) => a + b, 0)
@@ -270,6 +277,8 @@ export const StudentPage = (props) => {
   
     const getFinalGenaralGrade = (i) => {
 
+
+
         let a = genralAvg.first.concat(genralAvg.second).concat(genralAvg.third).concat(genralAvg.fourth)
 
         
@@ -278,24 +287,43 @@ export const StudentPage = (props) => {
 
         a.map((i, k) => {
 
-            num.push(parseInt(i))
+            
+           num.push(parseInt(i))
+        //   else {
+            
+        //       num.push(0)
+        //   }
         })
 
+        
+
+
+        
         let finale = num.reduce((a, b) => a + b, 0)
 
-        num.some((e) => {
-            if (e == 0) {
-                finale = 0
-                return 0
-            }
-            else{
+        // let aa =  num.some((e) => {
+        //     if (e == 0 || e == undefined) {
+        //         finale = 0
+        //         return true
+        //     }
+        //     else{
                 
-            }
-        })
+        //         return false
+        //     }
+        // })
+
+        
+
+        
+        if(num.some(e => isNaN(e))) return ''
+        else{
+            if (finale == 0) return ''
+            else return Math.round(finale / num.length)
+        }
+        
+        
 
 
-        if (finale == 0 || isNaN(finale)) return ''
-        else return Math.round(finale / num.length)
 
     }
 

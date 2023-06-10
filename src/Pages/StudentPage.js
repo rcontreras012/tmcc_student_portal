@@ -233,8 +233,10 @@ export const StudentPage = (props) => {
 
             // setFinalGrade(finalGrade)
             // genralAvg.final.push(finalGrade)
-            
-            return finalGrade
+
+
+            if(isNaN(finalGrade)) return ''
+            else return finalGrade
 
         }
      
@@ -243,8 +245,9 @@ export const StudentPage = (props) => {
     const quarterGeneralGraade = (item) => {
         let num = []
 
+   
         item.map((i, k) => {
-
+            
             num.push(parseInt(i))
         })
 
@@ -261,7 +264,7 @@ export const StudentPage = (props) => {
 
         
 
-        if (finale == 0) return ''
+        if (finale == 0 || isNaN(finale)) return ''
         else return Math.round(finale / num.length)
     }
   
@@ -291,7 +294,7 @@ export const StudentPage = (props) => {
         })
 
 
-        if(finale == 0) return ''
+        if (finale == 0 || isNaN(finale)) return ''
         else return Math.round(finale / num.length)
 
     }
@@ -390,7 +393,7 @@ export const StudentPage = (props) => {
                                     <option selected>School Year</option>
                                     {
                                         syList.map((i, k) => {
-                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear}</option>
+                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear+ "-" + (parseInt(i.schoolYear) + 1)}</option>
                                         })
                                     }
                                 </select>

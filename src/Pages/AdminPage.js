@@ -527,7 +527,7 @@ export const AdminPage = (props) => {
             {/* <!-- Navbar (sit on top) --> */}
             <div className="w3-top">
                 <div className="w3-bar w3-white w3-padding w3-card" style={{ letterSpacing: "4px" }}>
-                    <a href="#home" className="w3-bar-item w3-button">Trece Martires City National High School</a>
+                    <a href="#home" className="w3-bar-item w3-button">Trece Martires City National Highschool</a>
                     {/* <!-- Right-sided navbar links. Hide them on small screens --> */}
                     <div className="w3-right w3-hide-small">
                         <a onClick={() => {
@@ -853,13 +853,13 @@ export const AdminPage = (props) => {
                         </div>
 
                         {/*<!-- Gradring Schedule -->*/}
-                        <div className='w3-container w3-card w3-white w3-margin-bottom'>
+                        {/* <div className='w3-container w3-card w3-white w3-margin-bottom'>
                             <h2 className="w3-text-grey w3-padding-16"><i
                                 className="fa fa-calendar fa-fw w3-margin-right w3-xxlarge w3-text-teal"></i>Grades
                             </h2>
 
                             <h3>Grading Schedule Management</h3>
-                            {/* <button onClick={() => importExcel()} class="w3-button w3-teal w3-round-large w3-margin-bottom" style={{ width: "100%" }}>Add Grading School Year</button> */}
+                         
                             <div className="w3-card w3-margin-bottom">
                                 <table className="w3-table w3-bordered" name="tblSched">
                                     <thead>
@@ -958,7 +958,7 @@ export const AdminPage = (props) => {
 
                             </div>
 
-                        </div>
+                        </div> */}
 
                         <div className='w3-container w3-card w3-white w3-margin-bottom'>
                             <h2 className="w3-text-grey w3-padding-16"><i

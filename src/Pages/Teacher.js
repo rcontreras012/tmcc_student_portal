@@ -498,11 +498,11 @@ export const TeacherPage = (props) => {
 
                                 <p className="w3-large"><b><i className="fa fa-asterisk fa-fw w3-margin-right w3-text-teal"></i>My Schedule</b></p>
 
-                                <select onChange={(v) => setSy(v.target.value)} class="form-select" aria-label="Default select example">
+                                <select  onChange={(v) => setSy(v.target.value)} class="form-select" aria-label="Default select example">
                                     <option  selected>School Year</option>
                                     {
                                         syList.map((i, k) => {
-                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear}</option>
+                                            return <option selected={i.schoolYear == sy ? true : false} value={i.schoolYear}>{i.schoolYear + "-" + (parseFloat(i.schoolYear) + 1)}</option>
                                         })
                                     }
                                 </select>
@@ -764,7 +764,7 @@ export const TeacherPage = (props) => {
                                                                     document.getElementById('id01').style.display = 'block'
                                                                 }
 
-                                                                } class="w3-button w3-teal w3-round-large">Add Grade</button>
+                                                                } class="w3-button w3-teal w3-round-large">View Grade</button>
                                                                 
                                                             </td>
 
@@ -799,7 +799,7 @@ export const TeacherPage = (props) => {
                 <div class="w3-modal-content w3-card-4 w3-animate-zoom">
                     <header class="w3-container w3-teal">
                         <h1>School Year: {sy} - {parseInt(sy) + 1}</h1>
-                        <h2>Add Grade</h2>
+                        <h2>View Grade</h2>
                     </header>
 
                     <div className='w3-row w3-margin-top w3-padding'>
@@ -814,7 +814,8 @@ export const TeacherPage = (props) => {
                                 1st
 
                                 <input
-                                    disabled={grading.first ? false: true}
+                                    disabled={true}
+                                    // disabled={grading.first ? false: true}
                                     value={quarterGrade.first}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ first: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -825,7 +826,8 @@ export const TeacherPage = (props) => {
                                 2nd
 
                                 <input
-                                    disabled={grading.second ? false : true}
+                                    disabled={true}
+                                    // disabled={grading.second ? false : true}
                                     value={quarterGrade.second}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ second: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -836,7 +838,8 @@ export const TeacherPage = (props) => {
                                 3rd
 
                                 <input
-                                    disabled={grading.third ? false : true}
+                                    disabled={true}
+                                    // disabled={grading.third ? false : true}
                                     value={quarterGrade.third}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ third: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -847,7 +850,8 @@ export const TeacherPage = (props) => {
                                 4th
 
                                 <input
-                                    disabled={grading.fourth ? false : true}
+                                    disabled={true}
+                                    // disabled={grading.fourth ? false : true}
                                     value={quarterGrade.fourth}
                                     onChange={(v) => setQuarterGrading({ ...quarterGrade, ...{ fourth: v.target.value } })}
                                     class="w3-input w3-border" type="text" style={{ width: "60%" }} />
@@ -914,11 +918,11 @@ export const TeacherPage = (props) => {
                     <div class="w3-container w3-light-grey w3-padding">
                         <button class="w3-button w3-right w3-white w3-border"
                             onClick={() => document.getElementById('id01').style.display = 'none'} style={{ width: "15%" }}>Close</button>
-                        <button class="w3-button w3-right w3-teal w3-border"
+                        {/* <button class="w3-button w3-right w3-teal w3-border"
                             onClick={() => {
                                 gradeStudent()
 
-                            }} style={{ width: "15%", marginRight: "5px" }}>Save</button>
+                            }} style={{ width: "15%", marginRight: "5px" }}>Save</button> */}
 
                     </div>
                 </div>
